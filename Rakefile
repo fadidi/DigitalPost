@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-PeaceCorpsAfrica::Application.load_tasks
+DigitalPost::Application.load_tasks

@@ -1,4 +1,4 @@
-PeaceCorpsAfrica::Application.routes.draw do
+DigitalPost::Application.routes.draw do
 
   resources :references
 

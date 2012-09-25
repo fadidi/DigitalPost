@@ -17,3 +17,13 @@ Preferences:
 ________________________
 
 License
+
+Define default url action_mailer options in environment files.
+
+Define root_url to something in config/routes.rb.
+
+Set flash messages in app layouts.
+
+set config.assets.initialize_on_precompile = false for Heroku.
+
+Set roles in config/initializers/rolify.rb
