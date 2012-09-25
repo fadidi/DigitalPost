@@ -8,14 +8,6 @@ FactoryGirl.define do
     "Test Name #{n}"
   end
 
-  sequence :code do |n|
-    Carmen.countries[n][1]
-  end
-
-  sequence :abbreviation do |n|
-    Carmen.countries[n][1] + Carmen.countries[n+1][1]
-  end
-
   sequence :content do |n|
     "Fresh content number #{n}!"
   end
