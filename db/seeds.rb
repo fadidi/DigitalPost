@@ -19,6 +19,9 @@ puts 'New user created: ' << user.name
 ValidEmail.create!([{
   :email => 'jack@brownjohnf.com',
   :permissions => 'admin,volunteer'
+},{
+  :email => 'web@pcsenegal.org',
+  :permissions => 'admin,volunteer'
 }])
 
 # create default page
