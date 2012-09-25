@@ -24,7 +24,6 @@ ValidEmail.create!([{
 # create default page
 puts 'CREATING DEFAULT PAGES'
 Page.create([{
-  :country_id => 1,
   :title => 'Default Page',
   :html => '<p>You should edit this page, or replace it with a better page...</p>'
 }])

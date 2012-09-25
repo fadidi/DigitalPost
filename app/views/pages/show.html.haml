@@ -4,21 +4,11 @@
       .hero-unit.green
         %h1
           = @page.title
-          %small= @page.country.name
   .row
     .span9
       = raw @page.html
     .span3
       %h2 Page Usage
-      %ul.nav.nav-list
-        - if @page.countries.any?
-          %li.nav-header= pluralize(@page.countries.count, 'Country')
-          - for country in @page.countries do
-            %li= link_to country.name, country
-        - if @page.initiatives.any?
-          %li.nav-header= pluralize(@page.initiatives.count, 'Initiative')
-          - for init in @page.initiatives do
-            %li= link_to init.name, init
       %h2 Internal Links
       %ul.nav.nav-list
         - if @page.links_in.any?

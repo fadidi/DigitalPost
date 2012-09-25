@@ -10,10 +10,6 @@ DigitalPost::Application.routes.draw do
     resources :revisions, :except => [:destroy]
   end
 
-  resources :initiatives
-
-  resources :countries
-
   authenticated :user do
     root :to => 'home#index'
   end
@@ -24,6 +20,7 @@ DigitalPost::Application.routes.draw do
   
   resources :users, :only => [:show, :index]
 
+=begin
   namespace :initiative, :path => '/:abbreviation', :constraints => { :abbreviation => /[a-z]{3,7}/i } do
     resources :countries
     get '/' => 'home#index', :as => :home
@@ -33,5 +30,6 @@ DigitalPost::Application.routes.draw do
     resources :initiatives
     get '/' => 'home#index', :as => :home
   end
+=end
 
 end

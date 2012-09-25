@@ -8,33 +8,28 @@
         %h1
           %small #{pluralize(@revisions.count, 'Revision')} for 
           #{@page.title}
-      .row-fluid
-        .span4
-          .well.blue.center
-            %h3 Raw Text
-        .span4
-          .well.red.center
-            %h3 Raw HTML
-        .span4
-          .well.orange.center
-            %h3 Interpreted HTML
-      - @revisions.each do |revision|
-        .row-fluid
-          .span12
-            %h3
-              = timeago(revision.created_at)
-              %small
+  .row-fluid
+    .span12
+      %table.table.table-bordered
+        %thead
+          %th Raw Text
+          %th Raw HTML
+          %th Interpreted HTML
+        %tbody
+          - @revisions.each do |revision|
+            %thead
+              %th{:colspan => 3}
+                = timeago(revision.created_at)
                 by
                 = revision.author.name
                 = link_to 'view', [@page,revision]
-            %hr
-        .row-fluid
-          .span4
-            %pre= revision.content
-          .span4
-            %pre= revision.html
-          .span4
-            - if revision.prev
-              = raw markdown(Differ.diff_by_line(revision.content, revision.prev.content).format_as(:html))
-            - else
-              = raw revision.html
+            %tr
+              %td
+                %pre= revision.content
+              %td
+                %pre= revision.html
+              %td
+                - if revision.prev
+                  = raw markdown(Differ.diff_by_line(revision.content, revision.prev.content).format_as(:html))
+                - else
+                  = raw revision.html

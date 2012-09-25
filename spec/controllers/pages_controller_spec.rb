@@ -19,14 +19,14 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe PagesController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Page. As you add validations to Page, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      :title => 'Test Title',
-      :country_id => 1
+      :title => 'Test Title'
     }
   end
 
@@ -217,11 +217,11 @@ describe PagesController do
       end
 
       it 'redirects to a session[:redirect_to] if present' do
-        @country = FactoryGirl.create(:country)
-        session[:redirect_to] = country_path(@country)
+        @user = FactoryGirl.create(:user)
+        session[:redirect_to] = user_path(@user)
         page = Page.create! valid_attributes
         put :update, :id => page.to_param
-        response.should redirect_to(country_path(@country))
+        response.should redirect_to(user_path(@user))
       end
 
       context 'no current revisions' do

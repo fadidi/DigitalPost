@@ -1,17 +1,8 @@
 class Page < ActiveRecord::Base
-  attr_accessible :html, :locked_at, :locked_by, :title, :country_id, :revisions_attributes
-
-  # country of creation, for permission tracking
-  belongs_to :country
+  attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes
 
   # user currently editing the page
   belongs_to :editor, :class_name => User, :foreign_key => :locked_by
-
-  # countries which use this page as their default page
-  has_many :countries
-
-  # initiatives which use this page as their default page
-  has_many :initiatives
 
   # links in the page
   has_many :links_out, :class_name => Reference, :as => :link_source
@@ -33,10 +24,8 @@ class Page < ActiveRecord::Base
 
   accepts_nested_attributes_for :revisions, :reject_if => Proc.new { |a| a.blank? }
   
-  validates :country_id, :title, :presence => true
-  validates :country_id, :numericality => { :is_integer => true }
   validates :locked_by, :numericality => { :is_integer => true }, :allow_blank => true
-  validates :title, :length => { :minimum => 3, :maximum => 255 }
+  validates :title, :presence => true, :length => { :minimum => 3, :maximum => 255 }
 
   default_scope :order => 'title ASC'
 

@@ -8,25 +8,7 @@
         %li= link_to 'Email', ''
         %li= link_to 'Facebook', ''
         %li= link_to 'Twitter', ''
-    .span3
-      %ul.nav.nav-list
-        %li.nav-header Initiatives
-        - for initiative in Initiative.all do
-          %li= link_to initiative.name, initiative
-    .span3
-      %ul.nav.nav-list
-        %li.nav-header Countries
-        - for country in Country.paginate(:page => 1, :per_page => (Country.count / 2)) do
-          %li= link_to country.name, country
-    .span3
-      %ul.nav.nav-list
-        %li.nav-header.visible-desktop Countries cont.
-        - for country in Country.paginate(:page => 2, :per_page => (Country.count / 2)) do
-          %li= link_to country.name, country
-        - if Country.count.odd?
-          - for country in Country.paginate(:page => 3, :per_page => (Country.count / 2)) do
-            %li= link_to country.name, country
   .row-fluid
     .span12
       %hr
-      %p.center #{link_to 'Peace Corps | Africa', root_path} &copy; 2012
+      %p.center #{link_to "Peace Corps|#{ENV['COUNTRY']}", root_path} &copy; 2011-2012

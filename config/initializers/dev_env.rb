@@ -4,4 +4,5 @@ unless Rails.env.production?
   ENV['MAILGUN_SMTP_LOGIN'] = ''
   ENV['MAILGUN_SMTP_PASSWORD'] = ''
   ENV['DOMAIN'] = ''
+  ENV['COUNTRY'] = 'Senegal'
 end

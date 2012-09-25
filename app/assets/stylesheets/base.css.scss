@@ -34,9 +34,14 @@ body {
       overflow: hidden;
     }
     .full-height-text {
-      font-size: 15em;
+      font-size: 12em;
       line-height: 100%;
       font-weight: bold;
+    }
+    #pc_logo {
+      img {
+        height: 11em;
+      }
     }
     #splash_title {
       //color: darken($darkBlue, 10%);

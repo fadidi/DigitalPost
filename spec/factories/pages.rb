@@ -3,6 +3,5 @@
 FactoryGirl.define do
   factory :page, :aliases => [:link_target, :link_source] do
     title
-    country
   end
 end

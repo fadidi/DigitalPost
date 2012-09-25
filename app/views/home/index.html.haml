@@ -1,10 +1,10 @@
 .container
   .row.visible-desktop
-    .span2
+    .span2#pc_logo
       = image_tag 'pc_logo.png'
-    .span10
-      #splash_title.full-height-text.right
-        = cookies[:country].upcase
+    .span10#splash_title
+      .full-height-text.right
+        = ENV['COUNTRY'].upcase
   .row
     .span12
       .carousel.slide#splash
@@ -39,17 +39,14 @@
   .row.equal-heights-1
     .span6
       .well.blue.equalize
-        %h1 #{pluralize(@countries.count, 'Country')} in Africa
         %p Since 1961, Peace Corps Volunteers have been serving across Africa, working hand in hand with community partners to promote sustainable development and enhance understanding between Americans and Africans.
-        %p We're currently serving in #{link_to pluralize(@countries.count, 'country'), countries_path} across Africa.
     .span6
       .well.red.equalize
         %h1 Delivering Results
         %p Volunteers work in education, health, including #{link_to 'HIV/AIDS', ''} and #{link_to 'malaria prevention', ''}, business development, the environment, and agriculture and #{link_to 'food security', ''}.
-        %p For more information about Peace Corps in Africa, see the #{link_to 'Peace Corps agency web site', 'http://www.peacecorps.gov/learn/wherepc/africa/', :target => '_blank'}, individual Peace Corps #{link_to 'country web sites', countries_path}, and #{link_to 'Initiatives in Africa', initiatives_path}.
   .row
     .span12
       %ul.thumbnails
-        %li.span4= link_to image_tag('http://static.pcsenegal.org/photos/ag1-370x250.jpg'), countries_path, :class => 'thumbnail'
-        %li.span4= link_to image_tag('http://static.pcsenegal.org/photos/ag3-370x250.jpg'), countries_path, :class => 'thumbnail'
-        %li.span4= link_to image_tag('http://static.pcsenegal.org/photos/ag4-370x250.jpg'), countries_path, :class => 'thumbnail'
+        %li.span4= link_to image_tag('http://static.pcsenegal.org/photos/ag1-370x250.jpg'), '', :class => 'thumbnail'
+        %li.span4= link_to image_tag('http://static.pcsenegal.org/photos/ag3-370x250.jpg'), '', :class => 'thumbnail'
+        %li.span4= link_to image_tag('http://static.pcsenegal.org/photos/ag4-370x250.jpg'), '', :class => 'thumbnail'

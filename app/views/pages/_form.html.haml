@@ -3,10 +3,6 @@
   %legend The basics
   = render 'shared/form_info'
   .control-group
-    %label.control-label Country
-    .controls
-      = f.collection_select :country_id, Country.all, :id, :name, {}, { :class => 'required' }
-  .control-group
     %label.control-label Page Title
     .controls
       = f.text_field :title, :class => 'required'

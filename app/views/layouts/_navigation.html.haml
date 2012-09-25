@@ -8,10 +8,10 @@
       = link_to root_path, :class => 'brand' do
         %span#peacecorps Peace Corps
         %span#brand-divider= '|'
-        %span#brand-locale= cookies[:country]
+        %span#brand-locale= ENV['COUNTRY']
       .nav-collapse
         %ul.nav
-          %li.dropdown
+          -#%li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
               Countries
               %b.caret
@@ -30,7 +30,7 @@
               - for country in Country.all do
                 %li= link_to country.name, country
           -# initiatives
-          %li.dropdown
+          -#%li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
               Initiatives
               %b.caret
@@ -100,9 +100,9 @@
                     Sign up
         -# country / initiative / page edit indicator
         %ul.nav.pull-right
-          - if @country
+          -# if @country
             %li= link_to (raw('<span class="icon-globe icon-white"></span>')), countries_path, :rel => 'tooltip', 'data-placement' => 'bottom', :title => "you're in a country"
-          - if @initiative
+          -# if @initiative
             %li= link_to (raw('<span class="icon-flag icon-white"></span>')), initiatives_path, :rel => 'tooltip', 'data-placement' => 'bottom', :title => "you're in an initiative"
           - if signed_in?
             - if @page && !@page.new_record?

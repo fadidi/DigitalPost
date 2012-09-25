@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Page do
   before :each do
     @attr = {
-      :title => 'Test Page',
-      :country_id => 1
+      :title => 'Test Page'
     }
   end
 
@@ -15,10 +14,6 @@ describe Page do
   describe 'properties' do
     before :each do
       @page = Page.new @attr
-    end
-    
-    it 'should respond to country_id' do
-      @page.should respond_to(:country_id)
     end
     
     it 'should respond to html' do
@@ -49,24 +44,12 @@ describe Page do
       @page = FactoryGirl.create(:page)
     end
 
-    it 'should respond to country' do
-      @page.should respond_to :country
-    end
-
-    it 'should respond to countries' do
-      @page.should respond_to :countries
-    end
-
     it 'should respond to current_revision' do
       Page.new(@attr).should respond_to :current_revision
     end
 
     it 'should respond to editor' do
       @page.should respond_to :editor
-    end
-
-    it 'should respond to initiatives' do
-      @page.should respond_to :initiatives
     end
 
     it 'should respond to links_in' do
@@ -99,26 +82,6 @@ describe Page do
 
       it 'should return the correct authors' do
         @page.authors.should eq [@user]
-      end
-    end
-
-    describe 'country' do
-      before :each do
-        @page = FactoryGirl.create(:page, :country => @country = FactoryGirl.create(:country))
-      end
-
-      it 'should return the correct country' do
-        @page.country.should eq @country
-      end
-    end
-
-    describe 'countries' do
-      before :each do
-        @country = FactoryGirl.create(:country, :page => @page = FactoryGirl.create(:page))
-      end
-
-      it 'should return the correct countries' do
-        @page.countries.should eq [@country]
       end
     end
 
@@ -171,20 +134,6 @@ describe Page do
       end
     end
 
-    describe 'initiatives' do
-      before :each do
-        @initiative = FactoryGirl.create(:initiative, :page => @page = FactoryGirl.create(:page))
-      end
-
-      it 'should be an instance of Initiative' do
-        @page.initiatives.first.should be_an_instance_of Initiative
-      end
-
-      it 'should return the correct initiatives' do
-        @page.initiatives.should eq [@initiative]
-      end
-    end
-
     describe 'links_in' do
       before :each do
         @page = FactoryGirl.create :page
@@ -212,7 +161,7 @@ describe Page do
 
     describe 'revisions' do
       before :each do
-        @page = Page.create!(:title => 'test', :country_id => 1)
+        @page = Page.create!(:title => 'test')
         @page.update_attributes(:revisions_attributes => [{:content => 'testing', :author_id => 1}])
         @revision = @page.revisions.first
       end
@@ -356,16 +305,6 @@ describe Page do
         @page.lock(@user)
         @page.unlock.locked_at.should be_blank
       end
-    end
-  end
-
-  describe 'country_ids' do
-    it 'should require a country_id' do
-      Page.new(@attr.merge(:country_id => '')).should_not be_valid
-    end
-
-    it 'should be an integer' do
-      Page.new(@attr.merge(:country_id => 'a')).should_not be_valid
     end
   end
 

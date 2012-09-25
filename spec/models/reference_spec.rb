@@ -82,7 +82,7 @@ describe Reference do
       end
     end
 
-    describe 'each target/source/text combo should be unique' do
+    pending 'each target/source/text combo should be unique' do
       it 'should not allow duplicate entries' do
         Reference.create! @attr
         Reference.create(@attr).should_not be_valid

@@ -246,13 +246,13 @@ describe User do
         @ability = Ability.new(User.new)
       end
 
-      describe 'countries' do
+      describe 'pages' do
         it 'should read' do
-          @ability.should be_able_to :read, Country
+          @ability.should be_able_to :read, Page
         end
 
         it 'should not create' do
-          @ability.should_not be_able_to :create, Country
+          @ability.should_not be_able_to :create, Page
         end
       end
     end

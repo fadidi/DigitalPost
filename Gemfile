@@ -9,6 +9,7 @@ gem "bootstrap-sass", '2.1.0.0'
 gem "sendgrid", ">= 1.0.1"
 gem "devise", ">= 2.1.2"
 gem "devise_invitable", ">= 1.0.3"
+gem 'omniauth-facebook'
 gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
 gem 'carmen'
