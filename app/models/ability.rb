@@ -8,8 +8,11 @@ class Ability
 
     if user.has_role? :admin
       can :manage, :all
+    elsif user.has_role? :volunteer
+      can :read, User
     else
       can :read, [ Page, Revision, Reference ]
+      can :read, User, :id => user.id
     end
 
     # Define abilities for the passed in user here. For example:

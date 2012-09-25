@@ -19,7 +19,7 @@ DigitalPost::Application.routes.draw do
   #devise_for :users
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
    
-  resources :users, :only => [:show, :index]
+  resources :users, :except => [:new, :create]
 
 =begin
   namespace :initiative, :path => '/:abbreviation', :constraints => { :abbreviation => /[a-z]{3,7}/i } do

@@ -26,6 +26,14 @@ class AlphanumericValidator < ActiveModel::EachValidator
   end
 end
 
+class PhoneValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    unless value =~ /^[0-9\.\- +]+$/
+      record.errors[attribute] << (options[:message] || "is not a reasonable phone number")
+    end
+  end
+end
+
 class UrlValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     unless value =~ /^https?:\/\/[a-z]+.[a-zA-Z]+[-\/0-9a-z_%?=.&]*$/i

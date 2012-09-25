@@ -86,10 +86,6 @@ class PagesController < ApplicationController
       format.json { head :no_content }
     end
   end
-    def do_after_save
-      self.set_html(self.revisions.any? ? self.current_revision.content : '<p>No content.</p>')
-    end
-
 
   private
 

@@ -1,8 +1,6 @@
-.well.well-small.blue
-  %h2 Internal Links
-%table.table.table-striped.table-hover.table-bordered
+%table.table.table-bordered
   %thead
-    %th plain text
+    %th Internal Links
     %th effect
   %tbody
     %tr
@@ -12,12 +10,9 @@
         = link_to Page.first.title, Page.first
         %br
         = link_to 'Jack Brown', User.find_by_email('jack@brownjohnf.com')
-    %tr
-      %td ![alt text](image_url)
-      %td= markdown '![alt text](image_url)'
-.well.well-small.orange
-  %h2 External Links
-%table.table.table-striped.table-hover.table-bordered
+  %thead
+    %th External Links
+    %th effect
   %tbody
     %tr
       %td
@@ -26,9 +21,9 @@
     %tr
       %td ![alt text](image_url)
       %td= markdown '![alt text](image_url)'
-.well.well-small.green
-  %h2 Text Styles
-%table.table.table-striped.table-hover.table-bordered
+  %thead
+    %th Text Styles
+    %th effect
   %tbody
     %tr
       %td # H1 header
@@ -52,9 +47,9 @@
       %td
         %pre `code`
       %td= markdown '`code`'
-.well.well-small.red
-  %h2 Lists
-%table.table.table-striped.table-hover.table-bordered
+  %thead
+    %th Lists
+    %th effect
   %tbody
     %tr
       %td

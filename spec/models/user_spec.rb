@@ -17,9 +17,19 @@ describe User do
   end
 
   describe 'properties' do
+    it 'should have a bio attribute' do
+      User.new(@attr).should respond_to :bio
+    end
+
+    it 'should have a bio_markdown attribute' do
+      User.new(@attr).should respond_to :bio_markdown
+    end
+
     it "should have an encrypted password attribute" do
       User.new(@attr).should respond_to(:encrypted_password)
     end
+
+    it {should respond_to :name }
 
     it "should have a password attribute" do
       User.new(@attr).should respond_to(:password)
@@ -28,6 +38,8 @@ describe User do
     it "should have a password confirmation attribute" do
       User.new(@attr).should respond_to(:password_confirmation)
     end
+
+    it {should respond_to :phone }
 
     it 'should have a provider attribute' do
       User.new(@attr).should respond_to :provider
@@ -41,8 +53,31 @@ describe User do
       User.new(@attr).should respond_to :uid
     end
 
+    describe 'bio' do
+      it 'should be blank by default' do
+        User.new(@attr).bio.should be_blank
+      end
+
+      it 'should be populated before save' do
+        @user = User.new(@attr)
+        @user.save!
+        @user.bio.should_not be_blank
+      end
+
+      it 'should update bio based on bio_markdown' do
+        @user = FactoryGirl.create :user
+        @user.update_attributes(:bio_markdown => 'new cool content')
+        @user.bio.should =~ /new cool content/i
+      end
+    end
+
+    describe 'bio_markdown' do
+      it 'should not be blank by default' do
+        User.new(@attr).bio_markdown.should_not be_blank
+      end
+    end
+
     describe "password encryption" do
-      
       before(:each) do
         @user = User.create!(@attr)
       end
@@ -50,6 +85,10 @@ describe User do
       it "should set the encrypted password attribute" do
         @user.encrypted_password.should_not be_blank
       end
+    end
+
+    describe 'phone' do
+      it { User.new(@attr.merge(:phone => '')).should be_valid }
     end
 
     describe 'verified_at' do
@@ -76,6 +115,12 @@ describe User do
       @user.should respond_to :verify
     end
 
+    describe 'to_param' do
+      it 'should use id-name' do
+        @user.to_param.should eq "#{@user.id}-#{@user.name.parameterize}"
+      end
+    end
+
     describe 'verified?' do
       before :each do
         @user = FactoryGirl.create :user
@@ -92,10 +137,6 @@ describe User do
     end
 
     describe 'verify' do
-      before :each do
-        @user = FactoryGirl.create :user
-      end
-
       it 'should set verified = true' do
         @user.verify
         @user.reload
@@ -175,6 +216,18 @@ describe User do
   end
   
   describe 'validations' do
+    describe 'bio' do
+      it 'should always be valid' do
+        User.new(@attr.merge(:bio => '')).should be_valid
+      end
+    end
+
+    describe 'bio_markdown' do
+      it 'should require a bio_markdown' do
+        User.new(@attr.merge(:bio_markdown => '')).should_not be_valid
+      end
+    end
+
     it "should require an email address" do
       no_email_user = User.new(@attr.merge(:email => ""))
       no_email_user.should_not be_valid
@@ -226,6 +279,28 @@ describe User do
         User.new(hash).should_not be_valid
       end
     end
+
+    describe 'phone' do
+      it 'should reject phone numbers longer than 20 chars' do
+        long = '1' * 21
+        User.new(@attr.merge(:phone => long)).should_not be_valid
+      end
+
+      it 'should reject phone numbers shorter than 7 chars' do
+        short = '1' * 6
+        User.new(@attr.merge(:phone => short)).should_not be_valid
+      end
+
+      it 'should allow numbers, -, ., +, and spaces' do
+        good_numbers = ['+221773304831', '221 77 330 48 31', '221.77.330.4831', '221-77-330-4831']
+        good_numbers.each { |num| User.new(@attr.merge(:phone => num)).should be_valid }
+      end
+
+      it 'should reject characters other than numbers, -, ., +, and spaces' do
+        bad_numbers = ['1509869e498', ' 345,23535654654', '57393850/38302']
+        bad_numbers.each { |num| User.new(@attr.merge(:phone => num)).should_not be_valid }
+      end
+    end
   end
 
   describe 'associations' do
@@ -261,6 +336,23 @@ describe User do
 
         it 'should not create' do
           @ability.should_not be_able_to :create, Page
+        end
+      end
+    end
+
+    context 'user' do
+      before :each do
+        @ability = Ability.new(@user = FactoryGirl.create(:user))
+      end
+
+      describe 'users' do
+        it "should be able to read its own profile" do
+          @ability.should be_able_to :read, @user
+        end
+        
+        it 'should not be able to read random profiles' do
+          @user2 = FactoryGirl.create :user
+          @ability.should_not be_able_to :read, @user2
         end
       end
     end
