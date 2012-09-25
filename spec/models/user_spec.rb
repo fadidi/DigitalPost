@@ -29,8 +29,16 @@ describe User do
       User.new(@attr).should respond_to(:password_confirmation)
     end
 
+    it 'should have a provider attribute' do
+      User.new(@attr).should respond_to :provider
+    end
+
     it 'should respond to verified_at' do
       User.new(@attr).should respond_to :verified_at
+    end
+
+    it 'should have a provider attribute' do
+      User.new(@attr).should respond_to :uid
     end
 
     describe "password encryption" do

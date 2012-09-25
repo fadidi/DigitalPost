@@ -95,6 +95,10 @@
                     %span.icon-arrow-right
                     Sign in
                 %li
+                  = link_to user_omniauth_authorize_path(:facebook) do
+                    %span.icon-arrow-right
+                    Sign in with Facebook
+                %li
                   = link_to new_user_registration_path do
                     %span.icon-plus
                     Sign up

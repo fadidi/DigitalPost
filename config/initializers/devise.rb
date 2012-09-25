@@ -225,9 +225,12 @@ Devise.setup do |config|
   config.sign_out_via = Rails.env.test? ? :get : :delete
 
   # ==> OmniAuth
+  require 'omniauth-facebook'
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
+  config.omniauth :facebook, ENV['FB_ID'], ENV['FB_SECRET'],
+    {:scope => 'email, offline_access', :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}}
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
