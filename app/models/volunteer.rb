@@ -3,7 +3,7 @@ class Volunteer < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :user_id, :presence => true
+  validates :user_id, :presence => true, :numericality => { :is_integer => true }
 
   before_save :do_before_save
 

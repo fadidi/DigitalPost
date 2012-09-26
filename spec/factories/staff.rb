@@ -2,8 +2,6 @@
 
 FactoryGirl.define do
   factory :staff do
-    user_id 1
-    location "MyString"
-    job_description "MyText"
+    user
   end
 end

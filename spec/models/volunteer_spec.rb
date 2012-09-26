@@ -27,7 +27,7 @@ describe Volunteer do
 
   describe 'properties' do
     before :each do
-      @vol = Volunteer.new(@attr)
+      @vol = Volunteer.new
     end
 
     describe 'cos_date' do
@@ -46,12 +46,14 @@ describe Volunteer do
       it {@vol.service_info_html.should be_blank}
 
       it 'should populate on save' do
+        @vol.user_id = 1
         @vol.save!
         @vol.service_info_html.should_not be_blank
       end
 
       it 'should update from service_info_markdown' do
         @vol.service_info_markdown = 'New text.'
+        @vol.user_id = 1
         @vol.save!
         @vol.reload
         @vol.service_info_html.should =~ /new text/i
@@ -71,7 +73,7 @@ describe Volunteer do
     end
 
     describe 'user_id' do
-      it {@vol.stage_id.should be_blank}
+      it {@vol.user_id.should be_blank}
     end
   end
 
@@ -79,11 +81,14 @@ describe Volunteer do
     it {Volunteer.new(@attr.merge(:cos_date => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:local_name => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:sector_id => '')).should be_valid}
+    it {Volunteer.new(@attr.merge(:sector_id => 'a')).should be_valid}
     it {Volunteer.new(@attr.merge(:service_info_html => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:service_info_markdown => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:site => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:stage_id => '')).should be_valid}
+    it {Volunteer.new(@attr.merge(:stage_id => 'a')).should be_valid}
     it {Volunteer.new(@attr.merge(:user_id => '')).should_not be_valid}
+    it {Volunteer.new(@attr.merge(:user_id => 'a')).should_not be_valid}
   end
 
   describe 'associations' do

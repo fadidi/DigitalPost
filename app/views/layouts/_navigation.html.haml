@@ -11,24 +11,42 @@
         %span#brand-locale= ENV['COUNTRY']
       .nav-collapse
         %ul.nav
-          -#%li.dropdown
+          %li
+            = link_to pages_path do
+              %span.icon-list-alt.icon-white
+              Site Map
+          %li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-              Countries
+              Resources
               %b.caret
             %ul.dropdown-menu
-              - if signed_in? && can?(:create, Country)
-                %li
-                  = link_to new_country_path do
-                    %span.icon-plus
-                    New Country
-                %li.divider
+              %li.nav-header Things
               %li
-                = link_to countries_path do
-                  %span.icon-globe
-                  Overview Map
-              %li.divider
-              - for country in Country.all do
-                %li= link_to country.name, country
+                = link_to pages_path do
+                  %span.icon-list-alt
+                  Pages
+              - if signed_in?
+                %li.divider
+                %li.nav-header People
+                %li
+                  = link_to users_path do
+                    %span.icon-user
+                    Everyone
+                %li
+                  = link_to staff_index_path do
+                    %span.icon-user
+                    Staff
+                %li
+                  = link_to volunteers_path do
+                    %span.icon-user
+                    Volunteers
+                %li.divider
+                %li.nav-header Create
+                - if can?(:create, Page)
+                  %li
+                    = link_to new_page_path do
+                      %span.icon-plus
+                      New Page
           -# initiatives
           -#%li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
@@ -48,25 +66,24 @@
               %li.divider
               - for initiative in Initiative.all do
                 %li= link_to initiative.name, initiative
-          %li.dropdown
-            %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-              Pages
-              %b.caret
-            %ul.dropdown-menu
-              - if signed_in? && can?(:create, Page)
-                %li
-                  = link_to new_page_path do
-                    %span.icon-plus
-                    New Page
-                %li.divider
-              %li
-                = link_to pages_path do
-                  %span.icon-list-alt
-                  All Pages
         -# user menu
         %ul.nav.pull-right
-          %li.dropdown
-            - if user_signed_in?
+          - if user_signed_in?
+            - if current_user.has_role?(:moderator) || current_user.has_role?(:admin)
+              %li.dropdown
+                %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+                  Manage
+                  %b.caret
+                %ul.dropdown-menu.pull-right
+                  %li
+                    = link_to valid_emails_path do
+                      %span.icon-envelope
+                      Valid Emails
+                  %li
+                    = link_to new_valid_email_path do
+                      %span.icon-plus
+                      Add Valid Emails
+            %li.dropdown
               %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
                 = current_user.name
                 %b.caret
@@ -85,7 +102,8 @@
                   = link_to destroy_user_session_path, :method=>'delete' do
                     %span.icon-remove
                     Sign out
-            - else
+          - else
+            %li.dropdown
               %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
                 Sign in
                 %b.caret

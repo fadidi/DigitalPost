@@ -1,5 +1,6 @@
 %ul.nav.nav-pills.pull-right
   %li= link_to 'Everyone', users_path
+  %li= link_to 'Staff', staff_index_path
   %li= link_to 'Volunteers', volunteers_path
   - if @user && can?(:edit, @user)
     %li

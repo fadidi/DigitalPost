@@ -1,18 +1,19 @@
 .container-fluid
   .row-fluid
-    .span4
-      = render 'shared/markdown_help'
+    .span2
+      = render 'shared/menu'
     .span6
       = form_for @user do |f|
         = render 'shared/form_errors', :item => @user if @user.errors.any?
         .page-header
           %h1 Profile Info
+        = render 'shared/form_info'
         .row-fluid
           .span6
             = f.label :name
-            = f.text_field :name, :class => 'required'
+            = f.text_field :name, :class => 'span12 required'
             = f.label :phone
-            = f.text_field :phone, :class => 'required'
+            = f.text_field :phone, :class => 'span12 required'
           .span6
             = f.label :bio
             = f.text_area :bio_markdown, :rows => 7, :class => 'span12'
@@ -24,17 +25,33 @@
               .row-fluid
                 .span6
                   = ff.label :local_name
-                  = ff.text_field :local_name
+                  = ff.text_field :local_name, :class => 'span12'
                   = ff.label :stage_id
-                  = ff.text_field :stage_id
+                  = ff.number_field :stage_id, :class => 'span12'
                   = ff.label :site
-                  = ff.text_field :site
+                  = ff.text_field :site, :class => 'span12'
                   = ff.label :sector_id
-                  = ff.number_field :sector_id
+                  = ff.number_field :sector_id, :class => 'span12 required'
                   = ff.label :cos_date
-                  = ff.date_select :cos_date
+                  = ff.text_field :cos_date, :class => 'span12 datepicker required'
                 .span6
                   = ff.label :service_info_markdown
                   = ff.text_area :service_info_markdown, :rows => 10, :class => 'span12'
+        = f.fields_for :staff do |ff|
+          .row-fluid
+            .span12
+              .page-header
+                %h1 Staff Info
+              .row-fluid
+                .span6
+                  = ff.label :location
+                  = ff.text_field :location, :class => 'span12'
+                .span6
+                  = ff.label :job_description_markdown
+                  = ff.text_area :job_description_markdown, :rows => 10, :class => 'span12'
         .form-actions
-          = f.submit
+          = f.submit :class => 'btn btn-primary'
+    .span4
+      .page-header
+        %h1 Markdown Help
+      = render 'shared/markdown_help'

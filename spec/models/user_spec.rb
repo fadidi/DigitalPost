@@ -27,14 +27,17 @@ describe User do
   it {should respond_to :uid}
 
   # methods
+  it {should respond_to :staff?}
   it {should respond_to :to_param}
   it {should respond_to :verified?}
   it {should respond_to :verify}
   it {should respond_to :volunteer?}
+  it {should respond_to :remove_staff}
   it {should respond_to :remove_volunteer}
 
   #associations
   it {should respond_to :revisions}
+  it {should respond_to :staff}
   it {should respond_to :volunteer}
 
   describe 'properties' do
@@ -80,7 +83,16 @@ describe User do
       @user = FactoryGirl.create :user
     end
 
-    describe 'destroy_volunteer' do
+    describe 'remove_staff' do
+      it 'should destroy an associated volunteer' do
+        FactoryGirl.create(:staff, :user => @user)
+        expect {
+          @user.remove_staff
+        }.to change(Staff, :count).by(-1)
+      end
+    end
+
+    describe 'remove_volunteer' do
       it 'should destroy an associated volunteer' do
         FactoryGirl.create(:volunteer, :user => @user)
         expect {
@@ -89,6 +101,17 @@ describe User do
       end
     end
 
+    describe 'staff?' do
+      it 'should be true if there is a staff record' do
+        FactoryGirl.create(:staff, :user => @user)
+        @user.staff?.should be_true
+      end
+
+      it 'should be false without a volunteer' do
+        @user.staff?.should_not be_true
+      end
+    end
+  
     describe 'to_param' do
       it 'should use id-name' do
         @user.to_param.should eq "#{@user.id}-#{@user.name.parameterize}"
@@ -174,6 +197,27 @@ describe User do
               @user.has_role?(role).should be_false
             end
             @user.roles.count.should eq @valid_email.permissions.split(',').count
+          end
+
+          context 'staff role' do
+            before :each do
+              @valid_email = FactoryGirl.
+                create(:valid_email, :email => @user.email, :permissions => 'staff')
+            end
+
+            it 'should create a staff for the user' do
+              @user.staff?.should_not be_true
+              @user.verify
+              @user.staff?.should be_true
+            end
+
+            it 'should not remove staff on role removal' do
+              @user.verify
+              @valid_email.update_attributes(:permissions => 'knight')
+              @user.verify
+              @user.reload
+              @user.staff?.should be_true
+            end
           end
 
           context 'volunteer role' do
@@ -320,6 +364,33 @@ describe User do
 
       it 'should have the correct revisions' do
         @user.revisions.should eq [@revision]
+      end
+    end
+
+    describe 'staff' do
+      before :each do
+        @staff = FactoryGirl.create(:staff, :user => @user)
+      end
+
+      it 'should accept nested attributes' do
+        @user.update_attributes(:staff_attributes => {:location => 'dakar'})
+        @staff = Staff.find_by_user_id(@user.id)
+        @staff.location.should =~ /dakar/i
+      end
+
+      it 'should be a staff' do
+        @user.staff.should be_an_instance_of Staff
+      end
+
+      it 'should be the right staff' do
+        FactoryGirl.create :staff
+        @user.staff.should eq @staff
+      end
+
+      it 'should destroy the staff on destroy' do
+        expect {
+          @user.destroy
+        }.to change(Staff, :count).by(-1)
       end
     end
 

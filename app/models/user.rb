@@ -9,20 +9,30 @@ class User < ActiveRecord::Base
          :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes, :staff_attributes
 
   validates :name, :bio_markdown, :presence => true
   validates :phone, :length => { :minimum => 7, :maximum => 20 }, :phone => true, :allow_blank => true
 
   has_many :revisions, :foreign_key => :author_id
   has_one :volunteer, :dependent => :destroy
+  has_one :staff, :dependent => :destroy
 
   accepts_nested_attributes_for :volunteer
+  accepts_nested_attributes_for :staff
 
   before_save :do_before_save
 
+  def remove_staff
+    staff.destroy
+  end
+
   def remove_volunteer
     volunteer.destroy
+  end
+
+  def staff?
+    staff
   end
 
   def verified?
@@ -52,6 +62,7 @@ class User < ActiveRecord::Base
       valid_email.check_in
     end
     user.create_volunteer if !self.volunteer? && self.has_role?(:volunteer)
+    user.create_staff if !self.staff? && self.has_role?(:staff)
     self.update_attributes(:verified_at => Time.now)
   end
 

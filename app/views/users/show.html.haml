@@ -1,32 +1,60 @@
-.container
-  .row
-    .span12
+.container-fluid
+  .row-fluid
+    .span2
+      = render 'shared/menu'
+    .span10
       .hero-unit.red
         %h1
           = @user.name
           %small= @user.email
-  .row
-    .span8
-      .page-header
-        %h1 Contact Info
-      %dl
-        %dt Name
-        %dd= @user.name
-        %dt Email
-        %dd= @user.email
-        %dt Phone
-        %dd= @user.phone
-      = raw(@user.bio)
-    .span4
-      - if @user.verified?
-        .page-header
-          %h1 Revisions
-        %p #{@user.name} has made #{pluralize(@user.revisions.count, 'revision')} on the site.
-        .page-header
-          %h1 Roles
-        %ul
-          - for role in @user.roles do
-            %li= role.name
-      - else
-        .hero-unit.blue
-          %h1 This user is not verified.
+      .row-fluid
+        .span2
+          = image_tag 'http://placehold.it/250x250'
+        .span10
+          .tabbable.tabs-right
+            %ul.nav.nav-tabs
+              %li.active= link_to 'User Profile', '#profile', 'data-toggle' => 'tab'
+              %li= link_to 'Pages', '#pages', 'data-toggle' => 'tab'
+              %li= link_to 'Revisions', '#revisions', 'data-toggle' => 'tab'
+            .tab-content
+              .tab-pane#profile.active
+                .row-fluid
+                  .span6
+                    %h3 Contact
+                    %dl.dl-horizontal
+                      %dt Name
+                      %dd= @user.name
+                      %dt Email
+                      %dd= @user.email
+                      %dt Phone
+                      %dd= @user.phone
+                    %blockquote= raw(@user.bio)
+                    %h3 Roles
+                    %ul
+                      - for role in @user.roles do
+                        %li= role.name
+                  .span6
+                    - if @user.volunteer?
+                      %h3 Volunteer Info
+                      %dl.dl-horizontal
+                        %dt Local Name
+                        %dd= @user.volunteer.local_name
+                        %dt Site
+                        %dd= @user.volunteer.site
+                        %dt Stage
+                        %dd= @user.volunteer.stage_id
+                        %dt Sector
+                        %dd= @user.volunteer.sector_id
+                        %dt COS Date
+                        %dd= @user.volunteer.cos_date
+                      %blockquote= raw(@user.volunteer.service_info_html)
+              .tab-pane#pages
+              .tab-pane#revisions
+                - if @user.verified?
+                  .page-header
+                    %h1 Revisions
+                  %p #{@user.name} has made #{pluralize(@user.revisions.count, 'revision')} on the site.
+                - else
+                  .hero-unit.blue
+                    %h1 This user is not verified.
+

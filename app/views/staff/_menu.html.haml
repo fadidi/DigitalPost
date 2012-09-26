@@ -2,8 +2,8 @@
   %li= link_to 'Everyone', users_path
   %li= link_to 'Staff', staff_index_path
   %li= link_to 'Volunteers', volunteers_path
-  - if @volunteer && can?(:edit, @volunteer.user)
+  - if !@staff.kind_of?(Array) && @staff && can?(:edit, @staff.user)
     %li
-      = link_to edit_user_path(@volunteer.user) do
+      = link_to edit_user_path(@staff.user) do
         %span.icon-pencil
-        Edit #{@volunteer.user.name}
+        Edit #{@staff.user.name}
