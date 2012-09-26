@@ -2,17 +2,20 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    #alias_action :by_code, :to => :read
-
     user ||= User.new # guest user (not logged in)
+
+    can :read, [ Page ]
+    can :manage, user
 
     if user.has_role? :admin
       can :manage, :all
-    elsif user.has_role? :volunteer
-      can :read, User
-    else
-      can :read, [ Page, Revision, Reference ]
-      can :read, User, :id => user.id
+    elsif user.has_role?(:volunteer) || user.has_role?(:staff)
+      can :read, [ Page, Reference, Revision, User, Volunteer ]
+      can :create, [ Page, Revision ]
+    end
+
+    if user.has_role? :moderator
+      can :manage, [Page, Revision, Role, ValidEmail]
     end
 
     # Define abilities for the passed in user here. For example:

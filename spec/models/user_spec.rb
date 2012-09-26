@@ -12,51 +12,34 @@ describe User do
     }
   end
   
-  it "should create a new instance given a valid attribute" do
-    User.create!(@attr)
-  end
+  it {User.create! @attr}
+
+  # properties
+  it {should respond_to :bio}
+  it {should respond_to :bio_markdown}
+  it {should respond_to(:encrypted_password)}
+  it {should respond_to :name }
+  it {should respond_to(:password)}
+  it {should respond_to(:password_confirmation)}
+  it {should respond_to :phone }
+  it {should respond_to :provider}
+  it {should respond_to :verified_at}
+  it {should respond_to :uid}
+
+  #methods
+  it {should respond_to :to_param}
+  it {should respond_to :verified?}
+  it {should respond_to :verify}
+  it {should respond_to :volunteer?}
+  it {should respond_to :remove_volunteer}
+
+  #associations
+  it {should respond_to :revisions}
+  it {should respond_to :volunteer}
 
   describe 'properties' do
-    it 'should have a bio attribute' do
-      User.new(@attr).should respond_to :bio
-    end
-
-    it 'should have a bio_markdown attribute' do
-      User.new(@attr).should respond_to :bio_markdown
-    end
-
-    it "should have an encrypted password attribute" do
-      User.new(@attr).should respond_to(:encrypted_password)
-    end
-
-    it {should respond_to :name }
-
-    it "should have a password attribute" do
-      User.new(@attr).should respond_to(:password)
-    end
-
-    it "should have a password confirmation attribute" do
-      User.new(@attr).should respond_to(:password_confirmation)
-    end
-
-    it {should respond_to :phone }
-
-    it 'should have a provider attribute' do
-      User.new(@attr).should respond_to :provider
-    end
-
-    it 'should respond to verified_at' do
-      User.new(@attr).should respond_to :verified_at
-    end
-
-    it 'should have a provider attribute' do
-      User.new(@attr).should respond_to :uid
-    end
-
     describe 'bio' do
-      it 'should be blank by default' do
-        User.new(@attr).bio.should be_blank
-      end
+      it {User.new(@attr).bio.should be_blank}
 
       it 'should be populated before save' do
         @user = User.new(@attr)
@@ -72,9 +55,7 @@ describe User do
     end
 
     describe 'bio_markdown' do
-      it 'should not be blank by default' do
-        User.new(@attr).bio_markdown.should_not be_blank
-      end
+      it {User.new(@attr).bio_markdown.should_not be_blank}
     end
 
     describe "password encryption" do
@@ -82,9 +63,7 @@ describe User do
         @user = User.create!(@attr)
       end
       
-      it "should set the encrypted password attribute" do
-        @user.encrypted_password.should_not be_blank
-      end
+      it {@user.encrypted_password.should_not be_blank}
     end
 
     describe 'phone' do
@@ -92,13 +71,7 @@ describe User do
     end
 
     describe 'verified_at' do
-      before :each do
-        @user = FactoryGirl.create :user
-      end
-
-      it 'should be false by default' do
-        @user.verified_at.should be_false
-      end
+      it {User.new(@attr).verified_at.should be_false}
     end
   end
 
@@ -107,12 +80,13 @@ describe User do
       @user = FactoryGirl.create :user
     end
 
-    it 'should respond to verified?' do
-      @user.should respond_to :verified?
-    end
-
-    it 'should respond to verify' do
-      @user.should respond_to :verify
+    describe 'destroy_volunteer' do
+      it 'should destroy an associated volunteer' do
+        FactoryGirl.create(:volunteer, :user => @user)
+        expect {
+          @user.remove_volunteer
+        }.to change(Volunteer, :count).by(-1)
+      end
     end
 
     describe 'to_param' do
@@ -122,13 +96,7 @@ describe User do
     end
 
     describe 'verified?' do
-      before :each do
-        @user = FactoryGirl.create :user
-      end
-
-      it 'should be false by default' do
-        @user.verified?.should be_false
-      end
+      it {@user.verified?.should be_false}
 
       it 'should be true after verification' do
         @user.verify
@@ -167,11 +135,26 @@ describe User do
             @user.verified?.should be_true
           end
 
+          it 'should set no roles if no valid_email record' do
+            @user.verify
+            @user.roles.any?.should_not be_true
+            @user.volunteer?.should_not be_true
+          end
+
           it 'should add default role if no roles are set' do
             @valid_email = FactoryGirl.create(:valid_email, :email => @user.email)
             @role = @valid_email.permissions.split(',')
             @user.verify
             @user.has_role?(@role[0]).should be_true
+          end
+
+          it 'should not remove roles after deletion of valid_email' do
+            @valid_email = FactoryGirl.create(:valid_email, :email => @user.email)
+            @user.verify
+            roles = @user.roles
+            @valid_email.destroy
+            @user.verify
+            @user.roles.should eq roles
           end
 
           it 'should add any roles set in ValidEmail' do
@@ -191,6 +174,27 @@ describe User do
               @user.has_role?(role).should be_false
             end
             @user.roles.count.should eq @valid_email.permissions.split(',').count
+          end
+
+          context 'volunteer role' do
+            before :each do
+              @valid_email = FactoryGirl.
+                create(:valid_email, :email => @user.email, :permissions => 'volunteer')
+            end
+
+            it 'should create a volunteer for the user' do
+              @user.volunteer?.should_not be_true
+              @user.verify
+              @user.volunteer?.should be_true
+            end
+
+            it 'should not remove volunteer on role removal' do
+              @user.verify
+              @valid_email.update_attributes(:permissions => 'knight')
+              @user.verify
+              @user.reload
+              @user.volunteer?.should be_true
+            end
           end
         end
 
@@ -213,6 +217,17 @@ describe User do
         end
       end
     end
+
+    describe 'volunteer?' do
+      it 'should be true if there is a volunteer record' do
+        FactoryGirl.create(:volunteer, :user => @user)
+        @user.volunteer?.should be_true
+      end
+
+      it 'should be false without a volunteer' do
+        @user.volunteer?.should_not be_true
+      end
+    end
   end
   
   describe 'validations' do
@@ -223,9 +238,7 @@ describe User do
     end
 
     describe 'bio_markdown' do
-      it 'should require a bio_markdown' do
-        User.new(@attr.merge(:bio_markdown => '')).should_not be_valid
-      end
+      it {User.new(@attr.merge(:bio_markdown => '')).should_not be_valid}
     end
 
     it "should require an email address" do
@@ -264,41 +277,33 @@ describe User do
     
     describe "password validations" do
       it "should require a password" do
-        User.new(@attr.merge(:password => "", :password_confirmation => "")).
-          should_not be_valid
+        User.new(@attr.merge(:password => "", :password_confirmation => "")).should_not be_valid
       end
 
       it "should require a matching password confirmation" do
-        User.new(@attr.merge(:password_confirmation => "invalid")).
-          should_not be_valid
+        User.new(@attr.merge(:password_confirmation => "invalid")).should_not be_valid
       end
       
       it "should reject short passwords" do
-        short = "a" * 5
-        hash = @attr.merge(:password => short, :password_confirmation => short)
-        User.new(hash).should_not be_valid
+        User.new(@attr.merge(:password => 'a'*5, :password_confirmation => 'a'*5)).should_not be_valid
       end
     end
 
     describe 'phone' do
       it 'should reject phone numbers longer than 20 chars' do
-        long = '1' * 21
-        User.new(@attr.merge(:phone => long)).should_not be_valid
+        User.new(@attr.merge(:phone => '1'*21)).should_not be_valid
       end
 
       it 'should reject phone numbers shorter than 7 chars' do
-        short = '1' * 6
-        User.new(@attr.merge(:phone => short)).should_not be_valid
+        User.new(@attr.merge(:phone => '1'*6)).should_not be_valid
       end
 
       it 'should allow numbers, -, ., +, and spaces' do
-        good_numbers = ['+221773304831', '221 77 330 48 31', '221.77.330.4831', '221-77-330-4831']
-        good_numbers.each { |num| User.new(@attr.merge(:phone => num)).should be_valid }
+        ['+221773304831', '221 77 330 48 31', '221.77.330.4831', '221-77-330-4831'].each { |num| User.new(@attr.merge(:phone => num)).should be_valid }
       end
 
       it 'should reject characters other than numbers, -, ., +, and spaces' do
-        bad_numbers = ['1509869e498', ' 345,23535654654', '57393850/38302']
-        bad_numbers.each { |num| User.new(@attr.merge(:phone => num)).should_not be_valid }
+        ['1509869e498', ' 345,23535654654', '57393850/38302'].each { |num| User.new(@attr.merge(:phone => num)).should_not be_valid }
       end
     end
   end
@@ -308,17 +313,34 @@ describe User do
       @user = FactoryGirl.create :user
     end
 
-    it 'should respond to revisions' do
-      @user.should respond_to :revisions
-    end
-
-    context 'revisions' do
+    describe 'revisions' do
       before :each do
         @revision = FactoryGirl.create(:revision, :author => @user)
       end
 
       it 'should have the correct revisions' do
         @user.revisions.should eq [@revision]
+      end
+    end
+
+    describe 'volunteer' do
+      before :each do
+        @vol = FactoryGirl.create(:volunteer, :user => @user)
+      end
+
+      it 'should be a volunteer' do
+        @user.volunteer.should be_an_instance_of Volunteer
+      end
+
+      it 'should be the right volunteer' do
+        FactoryGirl.create :volunteer
+        @user.volunteer.should eq @vol
+      end
+
+      it 'should destroy the volunteer on destroy' do
+        expect {
+          @user.destroy
+        }.to change(Volunteer, :count).by(-1)
       end
     end
   end
@@ -329,31 +351,69 @@ describe User do
         @ability = Ability.new(User.new)
       end
 
-      describe 'pages' do
-        it 'should read' do
-          @ability.should be_able_to :read, Page
-        end
+      it 'should read correctly' do
+        [Page].
+          each { |resource| @ability.should be_able_to :read, resource }
+        [Ability, Reference, Revision, Role, @user, ValidEmail, Volunteer].
+          each { |resource| @ability.should_not be_able_to :read, resource }
+      end
 
-        it 'should not create' do
-          @ability.should_not be_able_to :create, Page
+      it 'should create, edit, destroy correctly' do
+        [Ability, Page, Reference, Revision, Role, User, ValidEmail, Volunteer].
+          each { |resource| @ability.should_not be_able_to [:create, :edit, :destroy], resource }
+      end
+    end
+
+    context 'volunteer/staff' do
+      before :each do
+        @vol = FactoryGirl.create(:user)
+        @vol.add_role(:volunteer)
+        @staff = FactoryGirl.create(:user)
+        @staff.add_role(:staff)
+      end
+
+      it 'should read correctly' do
+        [@vol, @staff].each do |user|
+          @ability = Ability.new(user)
+          [Page, Reference, Revision, User, Volunteer].
+            each { |resource| @ability.should be_able_to :read, resource }
+          [Ability, Role, ValidEmail].
+            each { |resource| @ability.should_not be_able_to :read, resource }
+        end
+      end
+
+      it 'should create correctly' do
+        [@vol, @staff].each do |user|
+          @ability = Ability.new(user)
+          [Page, Revision].
+            each { |resource| @ability.should be_able_to :create, resource }
         end
       end
     end
 
-    context 'user' do
+    context 'moderator' do
       before :each do
-        @ability = Ability.new(@user = FactoryGirl.create(:user))
+        @user = FactoryGirl.create(:user)
+        @user.add_role(:moderator)
+        @ability = Ability.new(@user)
       end
 
-      describe 'users' do
-        it "should be able to read its own profile" do
-          @ability.should be_able_to :read, @user
-        end
-        
-        it 'should not be able to read random profiles' do
-          @user2 = FactoryGirl.create :user
-          @ability.should_not be_able_to :read, @user2
-        end
+      it 'should manage correctly' do
+        [Page, Revision, Role, ValidEmail].
+          each { |resource| @ability.should be_able_to :manage, resource }
+      end
+    end
+
+    context 'admin' do
+      before :each do
+        @user = FactoryGirl.create(:user)
+        @user.add_role(:admin)
+        @ability = Ability.new(@user)
+      end
+
+      it 'should manage everything' do
+        [Ability, Page, Reference, Revision, Role, User, ValidEmail, Volunteer].
+          each { |resource| @ability.should be_able_to :manage, resource }
       end
     end
   end

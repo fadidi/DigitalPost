@@ -1,4 +1,6 @@
 class VolunteersController < ApplicationController
+  load_and_authorize_resource
+
   # GET /volunteers
   # GET /volunteers.json
   def index

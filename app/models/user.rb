@@ -15,8 +15,13 @@ class User < ActiveRecord::Base
   validates :phone, :length => { :minimum => 7, :maximum => 20 }, :phone => true, :allow_blank => true
 
   has_many :revisions, :foreign_key => :author_id
+  has_one :volunteer, :dependent => :destroy
 
   before_save :do_before_save
+
+  def remove_volunteer
+    volunteer.destroy
+  end
 
   def verified?
     !verified_at.nil?
@@ -44,7 +49,12 @@ class User < ActiveRecord::Base
       end
       valid_email.check_in
     end
+    user.create_volunteer if !self.volunteer? && self.has_role?(:volunteer)
     self.update_attributes(:verified_at => Time.now)
+  end
+
+  def volunteer?
+    volunteer
   end
 
   def self.find_for_facebook_oauth(auth, signed_in_resource=nil)

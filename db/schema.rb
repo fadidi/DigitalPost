@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120925161431) do
+ActiveRecord::Schema.define(:version => 20120926094223) do
 
   create_table "pages", :force => true do |t|
     t.string   "title"
@@ -105,6 +105,19 @@ ActiveRecord::Schema.define(:version => 20120925161431) do
     t.string   "permissions",   :default => "volunteer"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+  end
+
+  create_table "volunteers", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "service_info_html"
+    t.string   "service_info_markdown", :default => "No service info provided."
+    t.string   "stage_id"
+    t.string   "local_name"
+    t.string   "site"
+    t.integer  "sector_id"
+    t.date     "cos_date"
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
   end
 
 end
