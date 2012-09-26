@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @staff.user_id
+%p
+  %b Location:
+  = @staff.location
+%p
+  %b Job description:
+  = @staff.job_description
+
+= link_to 'Edit', edit_staff_path(@staff)
+\|
+= link_to 'Back', staff_index_path

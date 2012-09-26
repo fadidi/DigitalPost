@@ -4,7 +4,7 @@ describe "References" do
   describe "GET /references" do
     it "should be successful" do
       get references_path
-      response.status.should be(200)
+      response.status.should be(302)
     end
   end
 
@@ -18,7 +18,7 @@ describe "References" do
   describe "GET /references/1" do
     it "should be successful" do
       get references_path(:id => 1)
-      response.status.should be(200)
+      response.status.should be(302)
     end
   end
   

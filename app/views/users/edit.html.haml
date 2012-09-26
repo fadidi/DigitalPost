@@ -1,6 +1,40 @@
 .container-fluid
   .row-fluid
-    .span3
+    .span4
       = render 'shared/markdown_help'
     .span6
-      = render 'form'
+      = form_for @user do |f|
+        = render 'shared/form_errors', :item => @user if @user.errors.any?
+        .page-header
+          %h1 Profile Info
+        .row-fluid
+          .span6
+            = f.label :name
+            = f.text_field :name, :class => 'required'
+            = f.label :phone
+            = f.text_field :phone, :class => 'required'
+          .span6
+            = f.label :bio
+            = f.text_area :bio_markdown, :rows => 7, :class => 'span12'
+        = f.fields_for :volunteer do |ff|
+          .row-fluid
+            .span12
+              .page-header
+                %h1 Volunteer Info
+              .row-fluid
+                .span6
+                  = ff.label :local_name
+                  = ff.text_field :local_name
+                  = ff.label :stage_id
+                  = ff.text_field :stage_id
+                  = ff.label :site
+                  = ff.text_field :site
+                  = ff.label :sector_id
+                  = ff.number_field :sector_id
+                  = ff.label :cos_date
+                  = ff.date_select :cos_date
+                .span6
+                  = ff.label :service_info_markdown
+                  = ff.text_area :service_info_markdown, :rows => 10, :class => 'span12'
+        .form-actions
+          = f.submit

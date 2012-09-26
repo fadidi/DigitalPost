@@ -38,6 +38,8 @@ describe RevisionsController do
     {}
   end
 
+  login_admin
+
   before :each do
     @revision = FactoryGirl.create(:revision, :page => @page = FactoryGirl.create(:page))
   end
@@ -68,7 +70,6 @@ describe RevisionsController do
   end
 
   describe "DELETE destroy" do
-    login_admin
     it "destroys the requested revision" do
       expect {
         delete :destroy, :id => @revision

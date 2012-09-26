@@ -26,7 +26,7 @@ describe User do
   it {should respond_to :verified_at}
   it {should respond_to :uid}
 
-  #methods
+  # methods
   it {should respond_to :to_param}
   it {should respond_to :verified?}
   it {should respond_to :verify}
@@ -326,6 +326,12 @@ describe User do
     describe 'volunteer' do
       before :each do
         @vol = FactoryGirl.create(:volunteer, :user => @user)
+      end
+
+      it 'should accept nested attributes' do
+        @user.update_attributes(:volunteer_attributes => {:local_name => 'babakar'})
+        @vol = Volunteer.find_by_user_id(@user.id)
+        @vol.local_name.should =~ /babakar/i
       end
 
       it 'should be a volunteer' do

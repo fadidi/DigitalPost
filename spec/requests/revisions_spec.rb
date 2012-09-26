@@ -9,14 +9,14 @@ describe "Revisions" do
     describe "GET /revisions" do
       it "should be successful" do
         get page_revisions_path @page
-        response.status.should be(200)
+        response.status.should be(302)
       end
     end
 
     describe "GET /revisions/1" do
       it "should be successful" do
         get page_revisions_path @page
-        response.status.should be(200)
+        response.status.should be(302)
       end
     end
   end

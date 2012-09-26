@@ -1,0 +1,23 @@
+%h1 Listing staff
+
+%table
+  %tr
+    %th User
+    %th Location
+    %th Job description
+    %th
+    %th
+    %th
+
+  - @staff.each do |staff|
+    %tr
+      %td= staff.user_id
+      %td= staff.location
+      %td= staff.job_description
+      %td= link_to 'Show', staff
+      %td= link_to 'Edit', edit_staff_path(staff)
+      %td= link_to 'Destroy', staff, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Staff', new_staff_path

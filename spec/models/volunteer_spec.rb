@@ -8,6 +8,8 @@ describe Volunteer do
   end
 
   it {Volunteer.create! @attr}
+
+  # properties
   it {should respond_to :cos_date}
   it {should respond_to :local_name}
   it {should respond_to :sector_id}
@@ -16,6 +18,12 @@ describe Volunteer do
   it {should respond_to :site}
   it {should respond_to :stage_id}
   it {should respond_to :user_id}
+
+  # associations
+  it {should respond_to :user}
+
+  # methods
+  it {should respond_to :to_param}
 
   describe 'properties' do
     before :each do
@@ -79,8 +87,6 @@ describe Volunteer do
   end
 
   describe 'associations' do
-    it {should respond_to :user}
-
     describe 'user' do
       before :each do
         @vol = FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user))
@@ -93,6 +99,18 @@ describe Volunteer do
       it 'should be the correct user' do
         FactoryGirl.create :user
         @vol.user.should eq @user
+      end
+    end
+  end
+
+  describe 'methods' do
+    describe 'to_param' do
+      before :each do
+        @vol = FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user))
+      end
+
+      it 'should using the user id' do
+        @vol.to_param.should eq "#{@vol.user.id}-#{@vol.user.name.parameterize}"
       end
     end
   end

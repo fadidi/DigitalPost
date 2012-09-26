@@ -1,6 +1,9 @@
 DigitalPost::Application.routes.draw do
 
-  resources :volunteers
+  resources :staff
+
+  resources :volunteers, :only => [:index, :destroy]
+  resources :volunteers, :only => [:show], :controller => 'users'
 
   resources :references
 

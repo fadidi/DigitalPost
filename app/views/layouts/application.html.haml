@@ -21,7 +21,8 @@
       .container-fluid
         .row-fluid
           .span12
-            = render 'menu' rescue nil
+            .subnav
+              = render 'menu' rescue nil
       = yield
       .container-fluid
         - if Rails.env.development?

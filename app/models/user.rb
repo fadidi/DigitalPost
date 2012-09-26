@@ -9,13 +9,15 @@ class User < ActiveRecord::Base
          :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes
 
   validates :name, :bio_markdown, :presence => true
   validates :phone, :length => { :minimum => 7, :maximum => 20 }, :phone => true, :allow_blank => true
 
   has_many :revisions, :foreign_key => :author_id
   has_one :volunteer, :dependent => :destroy
+
+  accepts_nested_attributes_for :volunteer
 
   before_save :do_before_save
 

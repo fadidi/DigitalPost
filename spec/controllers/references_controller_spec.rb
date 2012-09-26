@@ -38,6 +38,8 @@ describe ReferencesController do
     {}
   end
 
+  login_admin
+
   describe "GET index" do
     it "assigns all references as @references" do
       reference = Reference.create! valid_attributes
@@ -55,7 +57,6 @@ describe ReferencesController do
   end
 
   describe "GET new" do
-    login_admin
 
     it "assigns a new reference as @reference" do
       get :new, {}
@@ -64,7 +65,6 @@ describe ReferencesController do
   end
 
   describe "GET edit" do
-    login_admin
 
     it "assigns the requested reference as @reference" do
       reference = Reference.create! valid_attributes
@@ -74,7 +74,6 @@ describe ReferencesController do
   end
 
   describe "POST create" do
-    login_admin
 
     describe "with valid params" do
       it "creates a new Reference" do
@@ -113,7 +112,6 @@ describe ReferencesController do
   end
 
   describe "PUT update" do
-    login_admin
 
     describe "with valid params" do
       it "updates the requested reference" do
@@ -159,7 +157,6 @@ describe ReferencesController do
   end
 
   describe "DELETE destroy" do
-    login_admin
 
     it "destroys the requested reference" do
       reference = Reference.create! valid_attributes
