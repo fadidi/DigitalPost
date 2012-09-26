@@ -1,0 +1,31 @@
+%h1 Listing volunteers
+
+%table
+  %tr
+    %th User
+    %th Service info
+    %th Stage
+    %th Local name
+    %th Site
+    %th Sector
+    %th Cos date
+    %th
+    %th
+    %th
+
+  - @volunteers.each do |volunteer|
+    %tr
+      %td= volunteer.user_id
+      %td= volunteer.service_info
+      %td= volunteer.stage_id
+      %td= volunteer.local_name
+      %td= volunteer.site
+      %td= volunteer.sector_id
+      %td= volunteer.cos_date
+      %td= link_to 'Show', volunteer
+      %td= link_to 'Edit', edit_volunteer_path(volunteer)
+      %td= link_to 'Destroy', volunteer, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Volunteer', new_volunteer_path

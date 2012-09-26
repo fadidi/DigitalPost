@@ -1,5 +1,7 @@
 DigitalPost::Application.routes.draw do
 
+  resources :volunteers
+
   resources :references
 
   resources :valid_emails, :except => [:show]
