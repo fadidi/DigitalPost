@@ -1,3 +1,4 @@
 %h3 Browse
 %ul.nav.nav-list
-  %li= link_to 'test', pages_path
+  - for page in Page.all
+    %li= link_to page.title, page

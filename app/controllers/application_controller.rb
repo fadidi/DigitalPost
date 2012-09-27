@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  layout 'two_column'
 
   protect_from_forgery
 

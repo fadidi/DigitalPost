@@ -4,26 +4,26 @@
     %meta{:charset => "utf-8"}
     %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-    %title= content_for?(:title) ? yield(:title) : "Peace Corps|#{ENV['COUNTRY']}"
+    %title= content_for?(:title) ? "PC|SN - #{yield(:title)}" : "Peace Corps|#{ENV['COUNTRY']}"
     %meta{:content => "Peace Corps|#{ENV['COUNTRY']} Online", :name => "description"}
     %meta{:content => "John Brown | Peace Corps Senegal", :name => "author"}
     %link{:href => image_path('favicon.ico'), :type => 'image/x-icon', :rel => 'icon'}
     = stylesheet_link_tag    "application", :media => "all"
+    = yield :stylesheets
     = javascript_include_tag "application"
+    = yield :javascripts
     = csrf_meta_tags
-    = yield(:head)
+    = yield :head
   %body
     %header
       = render 'layouts/navigation'
     #main{:role => "main"}
       = render 'layouts/developer_messages'
       = render 'layouts/messages' if flash.any?
-      .container-fluid
-        .row-fluid
-          .span12
-            .subnav
-              = render 'menu' rescue nil
-      = yield
+      - if content_for?(:body)
+        = yield :body
+      - else
+        = yield
       .container-fluid
         - if Rails.env.development?
           .row-fluid

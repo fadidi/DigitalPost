@@ -1,0 +1,10 @@
+- content_for :body do
+  .container
+    .row
+      .span12
+        = yield
+  - if Rails.env.development?
+    .container
+      .row
+        .span12= debug(params)
+= render :template => 'layouts/application'

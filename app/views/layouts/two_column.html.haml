@@ -1,0 +1,14 @@
+- content_for :body do
+  .container-fluid
+    .row-fluid
+      .span2
+        = render 'shared/menu'
+      .span10
+        .row-fluid
+          .span12
+            .subnav
+              = render 'menu' rescue nil
+        .row-fluid
+          .span12
+            = yield
+= render :template => 'layouts/application'
