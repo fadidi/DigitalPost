@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   validates :name, :bio_markdown, :presence => true
   validates :phone, :length => { :minimum => 7, :maximum => 20 }, :phone => true, :allow_blank => true
 
+  has_many :pages
   has_many :revisions, :foreign_key => :author_id
   has_one :volunteer, :dependent => :destroy
   has_one :staff, :dependent => :destroy

@@ -44,6 +44,14 @@
                   %dd= @user.volunteer.cos_date
                 %blockquote= raw(@user.volunteer.service_info_html)
         .tab-pane#pages
+          - if @user.verified?
+            .page-header
+              %h1 Pages
+            %p #{@user.name} has created #{pluralize(@user.pages.count, 'revision')}.
+          - else
+            .hero-unit.blue
+              %h1 This user is not verified.
+
         .tab-pane#revisions
           - if @user.verified?
             .page-header

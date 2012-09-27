@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20120926141726) do
     t.text     "html",       :default => "<p>No content.</p>"
     t.integer  "locked_by"
     t.datetime "locked_at"
+    t.integer  "user_id"
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
   end

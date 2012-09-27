@@ -2,11 +2,7 @@
   .container
     .row
       .span12
-        %ul.nav.nav-tabs.pull-left
-          %li= link_to 'Home', root_path
-          = render 'breadcrumbs' rescue nil
-        %ul.nav.nav-tabs.pull-right
-          = render 'menu' rescue nil
+        = render 'layouts/backtrack'
     .row
       .span12
         = yield

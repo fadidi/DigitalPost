@@ -3,33 +3,40 @@ require 'spec_helper'
 describe Page do
   before :each do
     @attr = {
-      :title => 'Test Page'
+      :title => 'Test Page',
+      :user_id => 1
     }
   end
 
-  it 'should create a valid instance given valid attrs' do
-    Page.create! @attr
-  end
+  it {Page.create! @attr}
+
+  # properties
+  it {should respond_to(:html)}
+  it {should respond_to(:locked_at)}
+  it {should respond_to(:locked_by)}
+  it {should respond_to(:title)}
+  it {should respond_to :user_id}
+
+  # associations
+  it {should respond_to :authors}
+  it {should respond_to :current_author}
+  it {should respond_to :current_revision}
+  it {should respond_to :editor}
+  it {should respond_to :links_in}
+  it {should respond_to :links_out}
+  it {should respond_to :revisions}
+  it {should respond_to :user}
+
+  # methods
+  it {should respond_to(:lock).with(1).argument}
+  it {should respond_to :locked?}
+  it {should respond_to(:set_html).with(1).argument}
+  it {should respond_to :to_param}
+  it {should respond_to :unlock}
 
   describe 'properties' do
     before :each do
-      @page = Page.new @attr
-    end
-    
-    it 'should respond to html' do
-      @page.should respond_to(:html)
-    end
-    
-    it 'should respond to locked_at' do
-      @page.should respond_to(:locked_at)
-    end
-    
-    it 'should respond to locked_by' do
-      @page.should respond_to(:locked_by)
-    end
-    
-    it 'should respond to title' do
-      @page.should respond_to(:title)
+      @page = FactoryGirl.create :page
     end
 
     describe 'to_param' do
@@ -37,39 +44,50 @@ describe Page do
         @page.to_param.should eq "#{@page.id}-#{@page.title.parameterize}"
       end
     end
+
+    describe 'htmls' do
+      it 'should set default html' do
+        page = Page.new @attr
+        page.html.should =~ /no content/i
+      end
+    end
+
+    describe 'locked_ats' do
+      it 'should not be set by default' do
+        Page.new(@attr).locked_at.should be_blank
+      end
+
+      it 'should be a datetime' do
+        Page.new(@attr.merge(:locked_at => Time.now)).locked_at.should be_an_instance_of(ActiveSupport::TimeWithZone)
+      end
+    end
+  end
+
+
+
+  describe 'validations' do
+    it {Page.new(@attr.merge(:html => '')).should be_valid}
+    it {Page.new(@attr.merge(:locked_at => '')).should be_valid}
+
+    describe 'locked_by' do
+      it {Page.new(@attr.merge(:locked_by => '')).should be_valid}
+
+      it 'should be an integer' do
+        Page.new(@attr.merge(:locked_by => 'a')).should_not be_valid
+      end
+    end
+
+    describe 'title' do
+      it {Page.new(@attr.merge(:title => '')).should_not be_valid}
+      it {Page.new(@attr.merge(:title => 'a'*256)).should_not be_valid}
+    end
+
+    it {Page.new(@attr.merge(:user_id => '')).should_not be_valid}
   end
 
   describe 'associations' do
     before :each do
       @page = FactoryGirl.create(:page)
-    end
-
-    it 'should respond to current_revision' do
-      Page.new(@attr).should respond_to :current_revision
-    end
-
-    it 'should respond to editor' do
-      @page.should respond_to :editor
-    end
-
-    it 'should respond to links_in' do
-      @page.should respond_to :links_in
-    end
-
-    it 'should respond to links_out' do
-      @page.should respond_to :links_out
-    end
-
-    it 'should respond to revisions' do
-      Page.new(@attr).should respond_to :revisions
-    end
-
-    it 'should respond to authors' do
-      Page.new(@attr).should respond_to :authors
-    end
-
-    it 'should respond to current_author' do
-      Page.new(@attr).should respond_to :current_author
     end
 
     describe 'authors' do
@@ -161,7 +179,7 @@ describe Page do
 
     describe 'revisions' do
       before :each do
-        @page = Page.create!(:title => 'test')
+        @page = Page.create!(:title => 'test', :user_id => 1)
         @page.update_attributes(:revisions_attributes => [{:content => 'testing', :author_id => 1}])
         @revision = @page.revisions.first
       end
@@ -195,22 +213,6 @@ describe Page do
   end
 
   describe 'methods' do
-    it 'should respond to lock(user)' do
-      Page.new(@attr).should respond_to(:lock).with(1).argument
-    end
-
-    it 'should respond to locked?' do
-      Page.new(@attr).should respond_to :locked?
-    end
-
-    it 'should respond to unlock' do
-      Page.new(@attr).should respond_to :unlock
-    end
-
-    it 'should respond to set_html(content)' do
-      Page.new(@attr).should respond_to(:set_html).with(1).argument
-    end
-
     describe 'lock(user)' do
       before :each do
         @page = FactoryGirl.create :page
@@ -308,44 +310,6 @@ describe Page do
     end
   end
 
-  describe 'htmls' do
-    it 'should set default html' do
-      page = Page.new @attr
-      page.html.should =~ /no content/i
-    end
-  end
-
-  describe 'locked_ats' do
-    it 'should not be set by default' do
-      Page.new(@attr).locked_at.should be_blank
-    end
-
-    it 'should be a datetime' do
-      Page.new(@attr.merge(:locked_at => Time.now)).locked_at.should be_an_instance_of(ActiveSupport::TimeWithZone)
-    end
-  end
-
-  describe 'locked_by' do
-    it 'should be an integer' do
-      Page.new(@attr.merge(:locked_by => 'a')).should_not be_valid
-    end
-  end
-
-  describe 'titles' do
-    it 'should require a title' do
-      Page.new(@attr.merge(:title => '')).should_not be_valid
-    end
-
-    it 'should reject titles longer than 255 chars' do
-      long_title = 'a'*256
-      Page.new(@attr.merge(:title => long_title)).should_not be_valid
-    end
-
-    it 'should reject titles shorter than 3 chars' do
-      short_title = 'a'*2
-      Page.new(@attr.merge(:title => short_title)).should_not be_valid
-    end
-  end
 
   describe 'scopes' do
     describe 'default' do

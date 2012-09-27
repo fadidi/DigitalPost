@@ -5,6 +5,7 @@ class CreatePages < ActiveRecord::Migration
       t.text :html, :default => '<p>No content.</p>'
       t.integer :locked_by
       t.datetime :locked_at
+      t.integer :user_id
 
       t.timestamps
     end

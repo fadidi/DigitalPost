@@ -2,11 +2,7 @@
   .container-fluid
     .row-fluid
       .span12
-        %ul.nav.nav-pills.pull-left
-          %li= link_to 'Home', root_path
-          = render 'breadcrumps' rescue nil
-        %ul.nav.nav-pills.pull-right
-          = render 'menu' rescue nil
+        = render 'layouts/backtrack'
     .row-fluid
       .span2
         = render 'shared/menu'

@@ -1,36 +1,38 @@
-.container
-  .row
-    .span9
-      .hero-unit.green
-        %h1
-          = @page.title
-  .row
-    .span9
-      = raw @page.html
-    .span3
-      %h2 Page Usage
-      %h2 Internal Links
-      %ul.nav.nav-list
-        - if @page.links_in.any?
-          %li.nav-header Inbound
-          - for ref in @page.links_in.to_pages do
-            %li= link_to ref.link_source.title, ref.link_source
-        - if @page.links_out.any?
-          %li.nav-header Outbound
-          - for ref in @page.links_out do
-            %li= link_to ref.link_text, ref.link_target
-  .row
-    .span9
+- content_for :backtrack do
+  %li= link_to raw("Pages &rang;"), pages_path
+  %li.disabled= link_to raw("#{@page.title} &rang;"), @page
+.row-fluid
+  .span12
+    .hero-unit.green
+      %h1
+        = @page.title
+.row-fluid
+  .span9
+    = raw @page.html
+  .span3
+    %h2 Page Usage
+    %h2 Internal Links
+    %ul.nav.nav-list
+      - if @page.links_in.any?
+        %li.nav-header Inbound
+        - for ref in @page.links_in.to_pages do
+          %li= link_to ref.link_source.title, ref.link_source
+      - if @page.links_out.any?
+        %li.nav-header Outbound
+        - for ref in @page.links_out do
+          %li= link_to ref.link_text, ref.link_target
+.row-fluid
+  .span12
+    %hr
+    %p
+      created
+      = pretty_time @page.created_at
+      = ' | '
+      last updated
+      = timeago @page.updated_at
+.row-fluid
+  .span12
+    %h1 Revision History
+    - for revision in @page.revisions
       %hr
-      %p
-        created
-        = pretty_time @page.created_at
-        = ' | '
-        last updated
-        = timeago @page.updated_at
-  .row
-    .span9
-      %h1 Revision History
-      - for revision in @page.revisions
-        %hr
-        = raw(markdown(Differ.diff_by_line(revision.content, revision.prev.content).format_as(:html))) if revision.prev
+      = raw(markdown(Differ.diff_by_line(revision.content, revision.prev.content).format_as(:html))) if revision.prev

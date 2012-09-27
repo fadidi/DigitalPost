@@ -1,8 +1,11 @@
 class Page < ActiveRecord::Base
-  attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes
+  attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes, :user_id
 
   # user currently editing the page
   belongs_to :editor, :class_name => User, :foreign_key => :locked_by
+
+  # user who created the page originally
+  belongs_to :user
 
   # links in the page
   has_many :links_out, :class_name => Reference, :as => :link_source
@@ -25,7 +28,8 @@ class Page < ActiveRecord::Base
   accepts_nested_attributes_for :revisions, :reject_if => Proc.new { |a| a.blank? }
   
   validates :locked_by, :numericality => { :is_integer => true }, :allow_blank => true
-  validates :title, :presence => true, :length => { :minimum => 3, :maximum => 255 }
+  validates :title, :presence => true, :length => { :maximum => 255 }
+  validates :user_id, :presence => true, :numericality => { :is_integer => true }
 
   default_scope :order => 'title ASC'
 

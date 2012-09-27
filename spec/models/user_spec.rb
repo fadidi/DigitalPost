@@ -36,6 +36,7 @@ describe User do
   it {should respond_to :remove_volunteer}
 
   #associations
+  it {should respond_to :pages}
   it {should respond_to :revisions}
   it {should respond_to :staff}
   it {should respond_to :volunteer}
@@ -355,6 +356,21 @@ describe User do
   describe 'associations' do
     before :each do
       @user = FactoryGirl.create :user
+    end
+
+    describe 'pages' do
+      before :each do
+        @page = FactoryGirl.create(:page, :user => @user)
+      end
+
+      it 'should be a page' do
+        @user.pages.first.should be_an_instance_of Page
+      end
+
+      it 'should have the correct pages' do
+        FactoryGirl.create :page
+        @user.pages.should eq [@page]
+      end
     end
 
     describe 'revisions' do

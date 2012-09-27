@@ -26,7 +26,8 @@ describe PagesController do
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      :title => 'Test Title'
+      :title => 'Test Title',
+      :user_id => 1
     }
   end
 

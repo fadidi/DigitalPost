@@ -1,0 +1,8 @@
+%ul.nav.nav-pills.pull-left
+  %li
+    = link_to root_path do
+      %span.icon-home
+      Home &rang;
+  = yield :backtrack
+%ul.nav.nav-pills.pull-right
+  = render 'menu' rescue nil
