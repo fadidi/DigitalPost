@@ -8,6 +8,13 @@ describe "Volunteers" do
     end
   end
 
+  describe "post /volunteers" do
+    it "should be redirect" do
+      post volunteers_path, {:staff => { :user_id => 1 }}
+      response.status.should be(302)
+    end
+  end
+
   describe "DELETE /volunteers/1" do
     before :each do
       @volunteer = FactoryGirl.create :volunteer

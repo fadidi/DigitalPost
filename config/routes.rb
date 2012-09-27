@@ -3,7 +3,7 @@ DigitalPost::Application.routes.draw do
   resources :staff, :only => [:index, :create, :destroy]
   resources :staff, :only => [:show], :controller => 'users'
 
-  resources :volunteers, :only => [:index, :destroy]
+  resources :volunteers, :only => [:index, :create, :destroy]
   resources :volunteers, :only => [:show], :controller => 'users'
 
   resources :references

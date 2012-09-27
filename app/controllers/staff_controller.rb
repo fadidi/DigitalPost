@@ -18,10 +18,9 @@ class StaffController < ApplicationController
     respond_to do |format|
       if @staff.save
         format.html { redirect_to user_path(@staff.user_id), notice: 'Staff member was successfully created.' }
-        format.json { render json: @staff, status: :created, location: user_path(params[:staff][:user_id]) }
+        format.js
       else
         format.html { redirect_to users_path, notice: 'Staff member could not be created.' }
-        format.json { render json: @staff.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -29,13 +28,12 @@ class StaffController < ApplicationController
   # DELETE /staff/1
   # DELETE /staff/1.json
   def destroy
-    user = User.find(params[:id])
-    @staff = user.staff
+    @staff = Staff.find(params[:id])
     @staff.destroy
 
     respond_to do |format|
-      format.html { redirect_to user_path(user) }
-      format.json { head :no_content }
+      format.html { redirect_to @staff.user }
+      format.js
     end
   end
 end

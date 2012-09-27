@@ -46,6 +46,43 @@ describe VolunteersController do
     end
   end
 
+  describe 'POST create' do
+    describe "with valid params" do
+      it "creates a new Volunteer" do
+        expect {
+          post :create, {:volunteer => valid_attributes.merge(:user_id => User.first.id)}
+        }.to change(Volunteer, :count).by(1)
+      end
+
+      it "assigns a newly created volunteer as @volunteer" do
+        post :create, {:volunteer => valid_attributes.merge(:user_id => User.first.id)}
+        assigns(:volunteer).should be_a(Volunteer)
+        assigns(:volunteer).should be_persisted
+      end
+
+      it "redirects to the volunteer user" do
+        post :create, {:volunteer => valid_attributes.merge(:user_id => User.first.id)}
+        response.should redirect_to user_path(assigns(:volunteer).user_id)
+      end
+    end
+    
+    describe "with invalid params" do
+      it "assigns a newly created but unsaved volunteer as @volunteer" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Volunteer.any_instance.stub(:save).and_return(false)
+        post :create, {:volunteer => {}}
+        assigns(:volunteer).should be_a_new(Volunteer)
+      end
+
+      it "redirects to users path" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Volunteer.any_instance.stub(:save).and_return(false)
+        post :create, {:volunteer => {}}
+        response.should redirect_to users_path
+      end
+    end
+  end
+
   describe "DELETE destroy" do
     before :each do
       @volunteer = FactoryGirl.create :volunteer
@@ -53,12 +90,18 @@ describe VolunteersController do
 
     it "destroys the requested volunteer" do
       expect {
-        delete :destroy, :id => @volunteer
+        delete :destroy, :id => @volunteer.id
       }.to change(Volunteer, :count).by(-1)
     end
 
+    it 'should not destroy the user' do
+      expect {
+        delete :destroy, :id => @volunteer.id
+      }.to change(User, :count).by(0)
+    end
+
     it "redirects to the volunteers list" do
-      delete :destroy, :id => @volunteer
+      delete :destroy, :id => @volunteer.id
       response.should redirect_to(user_path(@volunteer.user))
     end
   end

@@ -90,12 +90,18 @@ describe StaffController do
 
     it "destroys the requested staff" do
       expect {
-        delete :destroy, :id => @staff
+        delete :destroy, :id => @staff.id
       }.to change(Staff, :count).by(-1)
     end
 
+    it 'should not destroy the user' do
+      expect {
+        delete :destroy, :id => @staff.id
+      }.to change(User, :count).by(0)
+    end
+
     it "redirects to the staff list" do
-      delete :destroy, {:id => @staff.to_param}
+      delete :destroy, :id => @staff.id
       response.should redirect_to(user_path(@staff.user))
     end
   end

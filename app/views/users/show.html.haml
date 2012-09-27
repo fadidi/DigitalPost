@@ -5,7 +5,19 @@
   %li.active= link_to @user.name, @user
   %li= link_to raw('<span class ="icon-pencil"></span> Edit'), edit_user_path(@user) if can? :edit, @user
 - content_for :top_right_menu do
-  %li= link_to raw('<span class ="icon-plus"></span> Make Staff'), staff_index_path(:user_id => @user.id), :method => :post if can?(:edit, @user) && can?(:create, Staff)
+  - if can? :edit, @user
+    - if @user.staff?
+      %li#destroy_staff
+        = link_to raw('<span class ="icon-minus"></span> Remove Staff'), staff_path(@user.staff.id), :method => :delete, :remote => true if can?(:destroy, Staff)
+    - else
+      %li#create_staff
+        = link_to raw('<span class ="icon-plus"></span> Make Staff'), staff_index_path(:staff => {:user_id => @user.id}), :method => :post, :remote => true if can?(:create, Staff)
+    - if @user.volunteer?
+      %li#destroy_volunteer
+        = link_to raw('<span class ="icon-minus"></span> Remove PCV'), volunteer_path(@user.volunteer.id), :method => :delete, :remote => true if can?(:destroy, Volunteer)
+    - else
+      %li#create_volunteer
+        = link_to raw('<span class ="icon-plus"></span> Make PCV'), volunteers_path(:volunteer => {:user_id => @user.id}), :method => :post, :remote => true if can?(:create, Volunteer)
 .well.red
   %h1
     = @user.name
@@ -17,8 +29,8 @@
     .tabbable.tabs-right
       %ul.nav.nav-tabs
         %li.active= link_to 'Profile', '#profile', 'data-toggle' => 'tab'
-        %li= link_to 'Pages', '#pages', 'data-toggle' => 'tab'
-        %li= link_to 'Revisions', '#revisions', 'data-toggle' => 'tab'
+        %li= link_to "Pages (#{@user.pages.count})", '#pages', 'data-toggle' => 'tab'
+        %li= link_to "Revisions (#{@user.revisions.count})", '#revisions', 'data-toggle' => 'tab'
       .tab-content
         .tab-pane#profile.active
           .row-fluid
@@ -35,25 +47,37 @@
                   &nbsp;
                 %dt Blog
                 %dd
-                  = @user.blog_title.blank? ? link_to(@user.blog_url) : link_to(@user.blog_title, @user.blog_url)
+                  - unless @user.blog_url.blank?
+                    = @user.blog_title.blank? ? link_to(@user.blog_url) : link_to(@user.blog_title, @user.blog_url)
                   &nbsp;
                 %dt Website
                 %dd
-                  = link_to @user.website
+                  - unless @user.website.blank?
+                    = link_to @user.website
                   &nbsp;
               - if @user.volunteer?
                 %h3 Volunteer Info
                 %dl.dl-horizontal
                   %dt Local Name
-                  %dd= @user.volunteer.local_name
+                  %dd
+                    = @user.volunteer.local_name
+                    &nbsp;
                   %dt Site
-                  %dd= @user.volunteer.site
+                  %dd
+                    = @user.volunteer.site
+                    &nbsp;
                   %dt Stage
-                  %dd= @user.volunteer.stage_id
+                  %dd
+                    = @user.volunteer.stage_id
+                    &nbsp;
                   %dt Sector
-                  %dd= @user.volunteer.sector_id
+                  %dd
+                    = @user.volunteer.sector_id
+                    &nbsp;
                   %dt COS Date
-                  %dd= @user.volunteer.cos_date
+                  %dd
+                    = @user.volunteer.cos_date
+                    &nbsp;
               - if @user.staff?
                 %h3 Staff Info
                 %dl.dl-horizontal
@@ -82,7 +106,7 @@
           - if @user.verified?
             .page-header
               %h1 Pages
-            %p #{@user.name} has created #{pluralize(@user.pages.count, 'revision')}.
+            %p #{@user.name} has created #{pluralize(@user.pages.count, 'page')}.
           - else
             .hero-unit.blue
               %h1 This user is not verified.

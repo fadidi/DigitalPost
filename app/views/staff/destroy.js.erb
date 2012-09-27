@@ -1,0 +1,4 @@
+$(function(){
+  $('#destroy_staff').html('<%= link_to raw('<span class="icon-ok"></span> Removed; refresh to view'), @staff.user %>');
+  $('#top-message').html('<div class="alert">This does not affect permissions set in valid emails!</div>');
+});
