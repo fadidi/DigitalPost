@@ -2,6 +2,13 @@
   .container-fluid
     .row-fluid
       .span12
+        %ul.nav.nav-tabs.pull-left
+          %li= link_to 'Home', root_path
+          = render 'breadcrumbs' rescue nil
+        %ul.nav.nav-tabs.pull-right
+          = render 'menu' rescue nil
+    .row-fluid
+      .span12
         = yield
   - if Rails.env.development?
     .container-fluid

@@ -25,6 +25,9 @@ body {
     }
   }
   #main {
+    #left-menu-container {
+      border-right: 1px solid lightgray;
+    }
     table {
       background-color: $white;
     }

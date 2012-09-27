@@ -1,9 +1,21 @@
-.container
-  .row
-    .span12
-      %h3 Users
-      %ul.users
-        - @users.each do |user|
-          %li
-            = link_to user.name, user
-            signed up #{user.created_at.to_date}
+.well.blue
+  %h1 Everyone
+%table.table
+  %thead
+    %th Name
+    %th Phone
+    %th Email
+    %th Join Date
+    %th Volunteer?
+    %th Staff?
+    %th Confirmed?
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= link_to user.name, user
+        %td= user.phone
+        %td= user.email
+        %td= user.created_at.to_date
+        %td= user.volunteer? ? 'true' : 'false'
+        %td= user.staff? ? 'true' : 'false'
+        %td= user.confirmed_at.blank? ? 'false' : 'true'

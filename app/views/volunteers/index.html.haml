@@ -1,5 +1,25 @@
-.container-fluid
-  .row-fluid
-    .span12
-      - for volunteer in @volunteers
-        = render volunteer.user
+.well.orange
+  %h1 Volunteers
+%table.table
+  %thead
+    %th Name
+    %th Phone
+    %th Email
+    %th Local Name
+    %th Site
+    %th Stage
+    %th Sector
+    %th COS Date
+    %th Staff?
+  %tbody
+    - @volunteers.each do |vol|
+      %tr
+        %td= link_to vol.user.name, vol.user
+        %td= vol.user.phone
+        %td= vol.user.email
+        %td= vol.local_name
+        %td= vol.site
+        %td= vol.stage_id
+        %th= vol.sector_id
+        %th= vol.cos_date.to_date
+        %td= vol.user.staff? ? 'true' : 'false'

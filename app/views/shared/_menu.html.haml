@@ -1,4 +1,11 @@
-%h3 Browse
-%ul.nav.nav-list
-  - for page in Page.all
-    %li= link_to page.title, page
+#left-menu-container
+  %ul.nav.nav-list
+    %li.nav-header Browse
+    - for page in Page.all
+      %li= link_to page.title, page
+    %li.nav-header Quick Links
+    %li.nav-header Resources
+    %li= link_to 'Site Map', pages_path
+    %li= link_to 'Everyone', users_path
+    %li= link_to 'Staff', staff_index_path
+    %li= link_to 'Volunteers', volunteers_path

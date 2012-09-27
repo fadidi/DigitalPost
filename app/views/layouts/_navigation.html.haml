@@ -88,12 +88,11 @@
                 = current_user.name
                 %b.caret
               %ul.dropdown-menu.pull-right
-                - if current_user.has_role? :admin
-                  %li
-                    = link_to users_path do
-                      %span.icon-user
-                      Users
-                  %li.divider
+                %li
+                  = link_to current_user do
+                    %span.icon-user
+                    Profile
+                %li.divider
                 %li
                   = link_to edit_user_registration_path do
                     %span.icon-wrench
