@@ -1,7 +1,7 @@
 - content_for :backtrack do
   %li= link_to raw("Pages &rang;"), pages_path
   %li= link_to raw("#{@page.title} &rang;"), @page
-  %li.disabled= link_to 'Edit Page', ''
+  %li.active= link_to 'Edit Page', ''
 .span4
   = render 'shared/markdown_help'
 .span8

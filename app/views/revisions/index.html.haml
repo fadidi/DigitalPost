@@ -1,35 +1,37 @@
-.container-fluid
-  .row-fluid
-    .span12
-      = render 'pages/menu'
-  .row-fluid
-    .span12
-      .well.green
-        %h1
-          %small #{pluralize(@revisions.count, 'Revision')} for 
-          #{@page.title}
-  .row-fluid
-    .span12
-      %table.table.table-bordered
-        %thead
-          %th Raw Text
-          %th Raw HTML
-          %th Interpreted HTML
-        %tbody
-          - @revisions.each do |revision|
-            %thead
-              %th{:colspan => 3}
-                = timeago(revision.created_at)
-                by
-                = revision.author.name
-                = link_to 'view', [@page,revision]
-            %tr
-              %td
-                %pre= revision.content
-              %td
-                %pre= revision.html
-              %td
-                - if revision.prev
-                  = raw markdown(Differ.diff_by_line(revision.content, revision.prev.content).format_as(:html))
-                - else
-                  = raw revision.html
+- content_for :backtrack do
+  %li= link_to raw("Pages &rang;"), pages_path
+  %li= link_to raw("#{@page.title} &rang;"), @page
+  %li.active= link_to raw("Revisions &rang;"), page_revisions_path(@page)
+- content_for :top_right_menu do
+  %li= link_to 'Edit Page', edit_page_path(@page)
+.row-fluid
+  .span12
+    .well.green
+      %h1
+        %small #{pluralize(@revisions.count, 'Revision')} for 
+        #{@page.title}
+.row-fluid
+  .span12
+    %table.table.table-bordered
+      %thead
+        %th Raw Text
+        %th Raw HTML
+        %th Interpreted HTML
+      %tbody
+        - @revisions.each do |revision|
+          %thead
+            %th{:colspan => 3}
+              = timeago(revision.created_at)
+              by
+              = revision.author.name
+              = link_to 'view', [@page,revision]
+          %tr
+            %td
+              %pre= revision.content
+            %td
+              %pre= revision.html
+            %td
+              - if revision.prev
+                = raw markdown(Differ.diff_by_line(revision.content, revision.prev.content).format_as(:html))
+              - else
+                = raw revision.html

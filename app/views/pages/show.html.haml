@@ -1,6 +1,9 @@
 - content_for :backtrack do
   %li= link_to raw("Pages &rang;"), pages_path
-  %li.disabled= link_to raw("#{@page.title} &rang;"), @page
+  %li.active= link_to raw("#{@page.title} &rang;"), @page
+  %li= link_to 'Edit', edit_page_path(@page)
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-globe"></span> Revision History'), page_revisions_path(@page) unless @page.revisions.count < 1
 .row-fluid
   .span12
     .hero-unit.green

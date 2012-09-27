@@ -1,30 +1,33 @@
-.container-fluid
-  .row-fluid
-    .span12
-      = render 'pages/menu'
-  .row-fluid
-    .span12
-      .well.green
-        %h1
-          = @page.title
-          %small
-            Authored by
-            = @revision.author.name
-            = timeago(@revision.created_at)
-  .row-fluid
-    .span4
-      .well.blue.center
-        %h3 Raw Text
-    .span4
-      .well.red.center
-        %h3 Raw HTML
-    .span4
-      .well.orange.center
-        %h3 Interpreted HTML
-  .row-fluid
-    .span4
-      %pre= @revision.content
-    .span4
-      %pre= @revision.html
-    .span4
-      = raw markdown(Differ.diff_by_line(@revision.content, @revision.prev.content).format_as(:html))
+- content_for :backtrack do
+  %li= link_to raw("Pages &rang;"), pages_path
+  %li= link_to raw("#{@page.title} &rang;"), @page
+  %li= link_to raw("Revisions &rang;"), page_revisions_path(@page)
+  %li.active= link_to 'Revision X', @revision
+- content_for :top_right_menu do
+  %li= link_to 'Edit Page', edit_page_path(@page)
+.row-fluid
+  .span12
+    .well.green
+      %h1
+        = @page.title
+        %small
+          Authored by
+          = @revision.author.name
+          = timeago(@revision.created_at)
+.row-fluid
+  .span4
+    .well.blue.center
+      %h3 Raw Text
+  .span4
+    .well.red.center
+      %h3 Raw HTML
+  .span4
+    .well.orange.center
+      %h3 Interpreted HTML
+.row-fluid
+  .span4
+    %pre= @revision.content
+  .span4
+    %pre= @revision.html
+  .span4
+    = raw markdown(Differ.diff_by_line(@revision.content, @revision.prev.content).format_as(:html))
