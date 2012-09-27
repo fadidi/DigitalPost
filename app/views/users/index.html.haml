@@ -1,3 +1,7 @@
+- content_for :backtrack do
+  %li.active= link_to 'Everyone', users_path
+  %li= link_to 'Staff', staff_index_path
+  %li= link_to 'Volunteers', volunteers_path
 .well.blue
   %h1 Everyone
 %table.table
@@ -8,6 +12,8 @@
     %th Join Date
     %th Volunteer?
     %th Staff?
+    %th Blog?
+    %th Website?
     %th Confirmed?
   %tbody
     - @users.each do |user|
@@ -18,4 +24,6 @@
         %td= user.created_at.to_date
         %td= user.volunteer? ? 'true' : 'false'
         %td= user.staff? ? 'true' : 'false'
+        %td= user.blog_url.blank? ? 'false' : 'true'
+        %td= user.website.blank? ? 'false' : 'true'
         %td= user.confirmed_at.blank? ? 'false' : 'true'

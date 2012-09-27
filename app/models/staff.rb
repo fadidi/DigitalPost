@@ -1,9 +1,10 @@
 class Staff < ActiveRecord::Base
-  attr_accessible :job_description_html, :job_description_markdown, :location, :user_id
+  attr_accessible :job_description_html, :job_description_markdown, :location, :user_id, :unit_id
 
   belongs_to :user
 
-  validates :user_id, :presence => true, :numericality => { :is_integer => true }
+  validates :user_id, :presence => true, :numericality => { :is_integer => true }, :uniqueness => true
+  validates :unit_id, :numericality => { :is_integer => true }, :allow_blank => true
 
   before_save :do_before_save
 

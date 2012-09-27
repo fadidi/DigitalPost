@@ -46,6 +46,43 @@ describe StaffController do
     end
   end
 
+  describe 'POST create' do
+    describe "with valid params" do
+      it "creates a new Staff" do
+        expect {
+          post :create, {:staff => valid_attributes.merge(:user_id => User.first.id)}
+        }.to change(Staff, :count).by(1)
+      end
+
+      it "assigns a newly created staff as @staff" do
+        post :create, {:staff => valid_attributes.merge(:user_id => User.first.id)}
+        assigns(:staff).should be_a(Staff)
+        assigns(:staff).should be_persisted
+      end
+
+      it "redirects to the staff user" do
+        post :create, {:staff => valid_attributes.merge(:user_id => User.first.id)}
+        response.should redirect_to user_path(assigns(:staff).user_id)
+      end
+    end
+    
+    describe "with invalid params" do
+      it "assigns a newly created but unsaved staff as @staff" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Staff.any_instance.stub(:save).and_return(false)
+        post :create, {:staff => {}}
+        assigns(:staff).should be_a_new(Staff)
+      end
+
+      it "redirects to users path" do
+        # Trigger the behavior that occurs when invalid params are submitted
+        Page.any_instance.stub(:save).and_return(false)
+        post :create, {:page => {}}
+        response.should redirect_to users_path
+      end
+    end
+  end
+
   describe "DELETE destroy" do
     before :each do
       @staff = FactoryGirl.create :staff

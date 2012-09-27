@@ -1,3 +1,11 @@
+- content_for :backtrack do
+  %li= link_to raw('Everyone &rang;'), users_path
+  %li= link_to raw('Staff &rang;'), staff_index_path if @user.staff?
+  %li= link_to raw('Volunteers &rang;'), volunteers_path if @user.volunteer?
+  %li.active= link_to @user.name, @user
+  %li= link_to raw('<span class ="icon-pencil"></span> Edit'), edit_user_path(@user) if can? :edit, @user
+- content_for :top_right_menu do
+  %li= link_to raw('<span class ="icon-plus"></span> Make Staff'), staff_index_path(:user_id => @user.id), :method => :post if can?(:edit, @user) && can?(:create, Staff)
 .well.red
   %h1
     = @user.name
@@ -8,7 +16,7 @@
   .span10
     .tabbable.tabs-right
       %ul.nav.nav-tabs
-        %li.active= link_to 'User Profile', '#profile', 'data-toggle' => 'tab'
+        %li.active= link_to 'Profile', '#profile', 'data-toggle' => 'tab'
         %li= link_to 'Pages', '#pages', 'data-toggle' => 'tab'
         %li= link_to 'Revisions', '#revisions', 'data-toggle' => 'tab'
       .tab-content
@@ -22,13 +30,17 @@
                 %dt Email
                 %dd= @user.email
                 %dt Phone
-                %dd= @user.phone
-              %blockquote= raw(@user.bio)
-              %h3 Roles
-              %ul
-                - for role in @user.roles do
-                  %li= role.name
-            .span6
+                %dd
+                  = @user.phone
+                  &nbsp;
+                %dt Blog
+                %dd
+                  = @user.blog_title.blank? ? link_to(@user.blog_url) : link_to(@user.blog_title, @user.blog_url)
+                  &nbsp;
+                %dt Website
+                %dd
+                  = link_to @user.website
+                  &nbsp;
               - if @user.volunteer?
                 %h3 Volunteer Info
                 %dl.dl-horizontal
@@ -42,7 +54,30 @@
                   %dd= @user.volunteer.sector_id
                   %dt COS Date
                   %dd= @user.volunteer.cos_date
+              - if @user.staff?
+                %h3 Staff Info
+                %dl.dl-horizontal
+                  %dt Location
+                  %dd
+                    = @user.staff.location
+                    &nbsp;
+                  %dt Unit
+                  %dd
+                    = @user.staff.unit_id
+                    &nbsp;
+            .span6
+              %h3 #{@user.fname}'s Bio
+              %blockquote= raw(@user.bio)
+              - if @user.volunteer?
+                %h3 Service Info
                 %blockquote= raw(@user.volunteer.service_info_html)
+              - if @user.staff?
+                %h3 Job Description
+                %blockquote= raw(@user.staff.job_description_html)
+              %h3 Permissions
+              %ul.no-bullet
+                - for role in @user.roles do
+                  %li= role.name
         .tab-pane#pages
           - if @user.verified?
             .page-header

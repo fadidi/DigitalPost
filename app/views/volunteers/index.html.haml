@@ -1,3 +1,7 @@
+- content_for :backtrack do
+  %li= link_to raw('Everyone &rang;'), users_path
+  %li= link_to 'Staff', staff_index_path
+  %li.active= link_to 'Volunteers', volunteers_path
 .well.orange
   %h1 Volunteers
 %table.table
@@ -7,6 +11,7 @@
     %th Email
     %th Local Name
     %th Site
+    %th Work Zone
     %th Stage
     %th Sector
     %th COS Date
@@ -19,6 +24,7 @@
         %td= vol.user.email
         %td= vol.local_name
         %td= vol.site
+        %td= vol.work_zone_id
         %td= vol.stage_id
         %th= vol.sector_id
         %th= vol.cos_date.to_date unless vol.cos_date.blank?

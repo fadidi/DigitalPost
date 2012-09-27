@@ -9,10 +9,13 @@ class User < ActiveRecord::Base
          :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes, :staff_attributes
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes, :staff_attributes, :blog_title, :blog_url, :website
 
   validates :name, :bio_markdown, :presence => true
   validates :phone, :length => { :minimum => 7, :maximum => 20 }, :phone => true, :allow_blank => true
+  validates :blog_url, :website, :length => { :maximum => 255 }, :url => true, :allow_blank => true
+  validates :name, :length => { :minimum => 8, :maximum => 255 }, :uniqueness => { :case_sensitive => false }
+  validates :blog_title, :length => { :maximum => 255 }
 
   has_many :pages
   has_many :revisions, :foreign_key => :author_id
@@ -23,6 +26,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :staff
 
   before_save :do_before_save
+
+  def fname
+    name[/^([^ ]+)/i,1]
+  end
 
   def remove_staff
     staff.destroy

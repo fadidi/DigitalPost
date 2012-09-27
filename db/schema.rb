@@ -60,9 +60,12 @@ ActiveRecord::Schema.define(:version => 20120926141726) do
     t.string   "location"
     t.text     "job_description_html"
     t.text     "job_description_markdown", :default => "No job description."
+    t.integer  "unit_id"
     t.datetime "created_at",                                                  :null => false
     t.datetime "updated_at",                                                  :null => false
   end
+
+  add_index "staff", ["user_id"], :name => "index_staff_on_user_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                                :default => "",                      :null => false
@@ -94,11 +97,15 @@ ActiveRecord::Schema.define(:version => 20120926141726) do
     t.text     "bio"
     t.text     "bio_markdown",                         :default => "This user has no bio."
     t.string   "phone"
+    t.string   "blog_title"
+    t.string   "blog_url"
+    t.string   "website"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token"
   add_index "users", ["invited_by_id"], :name => "index_users_on_invited_by_id"
+  add_index "users", ["name"], :name => "index_users_on_name", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "users_roles", :id => false, :force => true do |t|
@@ -126,8 +133,11 @@ ActiveRecord::Schema.define(:version => 20120926141726) do
     t.string   "site"
     t.integer  "sector_id"
     t.date     "cos_date"
+    t.integer  "work_zone_id"
     t.datetime "created_at",                                                     :null => false
     t.datetime "updated_at",                                                     :null => false
   end
+
+  add_index "volunteers", ["user_id"], :name => "index_volunteers_on_user_id", :unique => true
 
 end

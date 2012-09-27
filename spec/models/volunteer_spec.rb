@@ -18,6 +18,7 @@ describe Volunteer do
   it {should respond_to :site}
   it {should respond_to :stage_id}
   it {should respond_to :user_id}
+  it {should respond_to :work_zone_id}
 
   # associations
   it {should respond_to :user}
@@ -75,20 +76,33 @@ describe Volunteer do
     describe 'user_id' do
       it {@vol.user_id.should be_blank}
     end
+
+    it {Volunteer.new.work_zone_id.should be_blank}
   end
 
   describe 'validations' do
     it {Volunteer.new(@attr.merge(:cos_date => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:local_name => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:sector_id => '')).should be_valid}
-    it {Volunteer.new(@attr.merge(:sector_id => 'a')).should be_valid}
+    it {Volunteer.new(@attr.merge(:sector_id => 'a')).should_not be_valid}
     it {Volunteer.new(@attr.merge(:service_info_html => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:service_info_markdown => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:site => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:stage_id => '')).should be_valid}
-    it {Volunteer.new(@attr.merge(:stage_id => 'a')).should be_valid}
-    it {Volunteer.new(@attr.merge(:user_id => '')).should_not be_valid}
-    it {Volunteer.new(@attr.merge(:user_id => 'a')).should_not be_valid}
+    it {Volunteer.new(@attr.merge(:stage_id => 'a')).should_not be_valid}
+
+    describe 'user_id' do
+      it {Volunteer.new(@attr.merge(:user_id => '')).should_not be_valid}
+      it {Volunteer.new(@attr.merge(:user_id => 'a')).should_not be_valid}
+
+      it 'should validate unique' do
+        Volunteer.create!(@attr)
+        Volunteer.new(@attr).should_not be_valid
+      end
+    end
+
+    it {Volunteer.new(@attr.merge(:work_zone_id => '')).should be_valid}
+    it {Volunteer.new(@attr.merge(:work_zone_id => 'a')).should_not be_valid}
   end
 
   describe 'associations' do

@@ -9,8 +9,11 @@ class CreateVolunteers < ActiveRecord::Migration
       t.string :site
       t.integer :sector_id
       t.date :cos_date
+      t.integer :work_zone_id
 
       t.timestamps
     end
+
+    add_index :volunteers, :user_id, :unique => true
   end
 end

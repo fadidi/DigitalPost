@@ -1,3 +1,7 @@
+- content_for :backtrack do
+  %li= link_to raw('Everyone &rang;'), users_path
+  %li.active= link_to 'Staff', staff_index_path
+  %li= link_to 'Volunteers', volunteers_path
 .well.green
   %h1 Staff
 %table.table
@@ -5,6 +9,7 @@
     %th Name
     %th Phone
     %th Email
+    %th Unit
     %th Location
     %th Volunteer?
   %tbody
@@ -13,5 +18,6 @@
         %td= link_to staff.user.name, staff.user
         %td= staff.user.phone
         %td= staff.user.email
+        %td= staff.unit_id
         %td= staff.location
         %td= staff.user.volunteer? ? 'true' : 'false'

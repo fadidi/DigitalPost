@@ -17,16 +17,20 @@ describe User do
   # properties
   it {should respond_to :bio}
   it {should respond_to :bio_markdown}
+  it {should respond_to :blog_title}
+  it {should respond_to :blog_url}
   it {should respond_to(:encrypted_password)}
   it {should respond_to :name }
   it {should respond_to(:password)}
   it {should respond_to(:password_confirmation)}
   it {should respond_to :phone }
   it {should respond_to :provider}
-  it {should respond_to :verified_at}
   it {should respond_to :uid}
+  it {should respond_to :verified_at}
+  it {should respond_to :website}
 
   # methods
+  it {should respond_to :fname}
   it {should respond_to :staff?}
   it {should respond_to :to_param}
   it {should respond_to :verified?}
@@ -62,6 +66,9 @@ describe User do
       it {User.new(@attr).bio_markdown.should_not be_blank}
     end
 
+    it {User.new.blog_title.should be_blank}
+    it {User.new.blog_title.should be_blank}
+
     describe "password encryption" do
       before(:each) do
         @user = User.create!(@attr)
@@ -77,11 +84,25 @@ describe User do
     describe 'verified_at' do
       it {User.new(@attr).verified_at.should be_false}
     end
+
+    it {User.new.website.should be_blank}
   end
 
   describe 'methods' do
     before :each do
       @user = FactoryGirl.create :user
+    end
+
+    describe 'fname' do
+      it 'should retrieve name up to a whitespace' do
+        @user.name = 'Jack Brown'
+        @user.fname.should =~ /^jack$/i
+      end
+
+      it 'sholud return full name without whitespace' do
+        @user.name = 'JackBrown'
+        @user.fname.should =~ /jackbrown/i
+      end
     end
 
     describe 'remove_staff' do
@@ -286,38 +307,71 @@ describe User do
       it {User.new(@attr.merge(:bio_markdown => '')).should_not be_valid}
     end
 
-    it "should require an email address" do
-      no_email_user = User.new(@attr.merge(:email => ""))
-      no_email_user.should_not be_valid
+    describe 'blog_title' do
+      it {User.new(@attr.merge(:blog_title => '')).should be_valid}
+      it {User.new(@attr.merge(:blog_title => 'a'*256)).should_not be_valid}
     end
-    
-    it "should accept valid email addresses" do
-      addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
-      addresses.each do |address|
-        valid_email_user = User.new(@attr.merge(:email => address))
-        valid_email_user.should be_valid
+
+    describe 'blog_url' do
+      it {User.new(@attr.merge(:blog_url => '')).should be_valid}
+      it {User.new(@attr.merge(:blog_url => 'a'*256)).should_not be_valid}
+
+      it 'should allow valid hyperlinks' do
+        ['http://www.example.com', 'https://www.example.com', 'http://example.com', 'http://example.com/test.html', 'http://example.com/test', 'http://example.com/?q=test', 'http://example.com?q=test', 'http://example.com/test/?q=test'].
+          each { |good_url| User.new(@attr.merge(:blog_url => good_url)).should be_valid }
+      end
+
+      it 'should reject non-valid hyperlinks' do
+        ['www.example.com', 'example.com', 'http/www.example.com', 'http:/www.example.com', 'this is not a link', 'http://www.example.com/this is invalid'].
+          each { |bad_url| User.new(@attr.merge(:blog_url => bad_url)).should_not be_valid }
       end
     end
-    
-    it "should reject invalid email addresses" do
-      addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
-      addresses.each do |address|
-        invalid_email_user = User.new(@attr.merge(:email => address))
-        invalid_email_user.should_not be_valid
+
+    describe 'email' do
+      it "should require an email address" do
+        no_email_user = User.new(@attr.merge(:email => ""))
+        no_email_user.should_not be_valid
+      end
+      
+      it "should accept valid email addresses" do
+        addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
+        addresses.each do |address|
+          valid_email_user = User.new(@attr.merge(:email => address))
+          valid_email_user.should be_valid
+        end
+      end
+      
+      it "should reject invalid email addresses" do
+        addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
+        addresses.each do |address|
+          invalid_email_user = User.new(@attr.merge(:email => address))
+          invalid_email_user.should_not be_valid
+        end
+      end
+      
+      it "should reject duplicate email addresses" do
+        User.create!(@attr)
+        user_with_duplicate_email = User.new(@attr)
+        user_with_duplicate_email.should_not be_valid
+      end
+      
+      it "should reject email addresses identical up to case" do
+        upcased_email = @attr[:email].upcase
+        User.create!(@attr.merge(:email => upcased_email))
+        user_with_duplicate_email = User.new(@attr)
+        user_with_duplicate_email.should_not be_valid
       end
     end
-    
-    it "should reject duplicate email addresses" do
-      User.create!(@attr)
-      user_with_duplicate_email = User.new(@attr)
-      user_with_duplicate_email.should_not be_valid
-    end
-    
-    it "should reject email addresses identical up to case" do
-      upcased_email = @attr[:email].upcase
-      User.create!(@attr.merge(:email => upcased_email))
-      user_with_duplicate_email = User.new(@attr)
-      user_with_duplicate_email.should_not be_valid
+
+    describe 'name' do
+      it {User.new(@attr.merge(:name => '')).should_not be_valid}
+      it {User.new(@attr.merge(:name => 'a'*7)).should_not be_valid}
+      it {User.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
+
+      it 'should reject duplicate names up to case' do
+        @user = FactoryGirl.create :user
+        User.new(@attr.merge(:name => @user.name.upcase)).should_not be_valid
+      end
     end
     
     describe "password validations" do
@@ -349,6 +403,21 @@ describe User do
 
       it 'should reject characters other than numbers, -, ., +, and spaces' do
         ['1509869e498', ' 345,23535654654', '57393850/38302'].each { |num| User.new(@attr.merge(:phone => num)).should_not be_valid }
+      end
+    end
+
+    describe 'website' do
+      it {User.new(@attr.merge(:website => '')).should be_valid}
+      it {User.new(@attr.merge(:website => 'a'*256)).should_not be_valid}
+
+      it 'should allow valid hyperlinks' do
+        ['http://www.example.com', 'https://www.example.com', 'http://example.com', 'http://example.com/test.html', 'http://example.com/test', 'http://example.com/?q=test', 'http://example.com?q=test', 'http://example.com/test/?q=test'].
+          each { |good_url| User.new(@attr.merge(:website => good_url)).should be_valid }
+      end
+
+      it 'should reject non-valid hyperlinks' do
+        ['www.example.com', 'example.com', 'http/www.example.com', 'http:/www.example.com', 'this is not a link', 'http://www.example.com/this is invalid'].
+          each { |bad_url| User.new(@attr.merge(:website => bad_url)).should_not be_valid }
       end
     end
   end

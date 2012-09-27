@@ -13,6 +13,7 @@ describe Staff do
   it {should respond_to :location}
   it {should respond_to :job_description_html}
   it {should respond_to :job_description_markdown}
+  it {should respond_to :unit_id}
   it {should respond_to :user_id}
 
   # associations
@@ -51,6 +52,8 @@ describe Staff do
       it {@staff.job_description_markdown.should_not be_blank}
     end
 
+    it {@staff.unit_id.should be_blank}
+
     describe 'user_id' do
       it {@staff.user_id.should be_blank}
     end
@@ -60,8 +63,19 @@ describe Staff do
     it {Staff.new(@attr.merge(:location => '')).should be_valid}
     it {Staff.new(@attr.merge(:job_description_html => '')).should be_valid}
     it {Staff.new(@attr.merge(:job_description_markdown => '')).should be_valid}
-    it {Staff.new(@attr.merge(:user_id => '')).should_not be_valid}
-    it {Staff.new(@attr.merge(:user_id => 'a')).should_not be_valid}
+
+    describe 'user_id' do
+      it {Staff.new(@attr.merge(:user_id => '')).should_not be_valid}
+      it {Staff.new(@attr.merge(:user_id => 'a')).should_not be_valid}
+
+      it 'should be unique' do
+        Staff.create(@attr)
+        Staff.new(@attr).should_not be_valid
+      end
+    end
+
+    it {Staff.new(@attr.merge(:unit_id => '')).should be_valid}
+    it {Staff.new(@attr.merge(:unit_id => 'a')).should_not be_valid}
   end
 
   describe 'associations' do

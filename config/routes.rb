@@ -1,6 +1,6 @@
 DigitalPost::Application.routes.draw do
 
-  resources :staff, :only => [:index, :destroy]
+  resources :staff, :only => [:index, :create, :destroy]
   resources :staff, :only => [:show], :controller => 'users'
 
   resources :volunteers, :only => [:index, :destroy]

@@ -3,5 +3,10 @@ class AddMetadataToUsers < ActiveRecord::Migration
     add_column :users, :bio, :text, :default => nil
     add_column :users, :bio_markdown, :text, :default => 'This user has no bio.'
     add_column :users, :phone, :string
+    add_column :users, :blog_title, :string
+    add_column :users, :blog_url, :string
+    add_column :users, :website, :string
+
+    add_index :users, :name ,:unique => true
   end
 end

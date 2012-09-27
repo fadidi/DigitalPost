@@ -11,6 +11,10 @@ describe StaffController do
       get("/staff/1").should route_to("users#show", :id => "1")
     end
 
+    it "routes to #create" do
+      post("/staff").should route_to("staff#create")
+    end
+
     it "routes to #destroy" do
       delete("/staff/1").should route_to("staff#destroy", :id => "1")
     end
