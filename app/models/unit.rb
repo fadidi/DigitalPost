@@ -8,8 +8,14 @@ class Unit < ActiveRecord::Base
   has_many :staff
   has_many :users, :through => :staff
 
+  default_scope :order => 'name ASC'
+
   def head?
     !head.nil?
+  end
+
+  def to_param
+    "#{id}-#{name.parameterize}"
   end
 
 end

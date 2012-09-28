@@ -18,8 +18,6 @@ $(function(){
   // apply correct bootstrap styles to form error fields
   $('.field_with_errors').closest('.control-group').addClass('error');
 
-  $('[rel=tooltip]').tooltip();
-
   /*********************************************/
   /* jquery.timeago binding */
   $.timeago.settings.allowFuture = true;
@@ -33,5 +31,14 @@ $(function(){
   $('.row-fluid ul.thumbnails li.span4:nth-child(3n + 4)').css('margin-left','0px');
   $('.row-fluid ul.thumbnails li.span3:nth-child(4n + 5)').css('margin-left','0px'); 
   $('.row-fluid ul.thumbnails li.span2:nth-child(5n + 7)').css('margin-left','0px'); 
+
+  /********************************************/
+  /* bootstrap bindings */
+
+  // tooltips
+  $('[rel=tooltip]').tooltip();
+
+  // popover
+  $('[rel=popover]').popover();
 
 });

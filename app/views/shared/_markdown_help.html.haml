@@ -1,16 +1,5 @@
 %table.table.table-bordered
   %thead
-    %th Internal Links
-    %th effect
-  %tbody
-    %tr
-      %td
-        %pre= "[page[#{Page.first.title}]]\n[user[Jack Brown]]"
-      %td
-        = link_to Page.first.title, Page.first
-        %br
-        = link_to 'Jack Brown', User.find_by_email('jack@brownjohnf.com')
-  %thead
     %th External Links
     %th effect
   %tbody

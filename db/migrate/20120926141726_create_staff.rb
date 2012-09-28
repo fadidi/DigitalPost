@@ -5,6 +5,7 @@ class CreateStaff < ActiveRecord::Migration
       t.string :location
       t.text :job_description_html
       t.text :job_description_markdown, :default => 'No job description.'
+      t.string :job_title
       t.integer :unit_id
 
       t.timestamps

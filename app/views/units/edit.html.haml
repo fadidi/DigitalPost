@@ -4,5 +4,6 @@
   %li.active= link_to 'Edit', edit_unit_path(@unit)
 - content_for :top_right_menu do
   %li= link_to raw('<span class="icon-plus"></span> New Unit'), new_unit_path if can? :create, Unit
+
 = render 'form'
 

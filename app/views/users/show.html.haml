@@ -81,13 +81,17 @@
               - if @user.staff?
                 %h3 Staff Info
                 %dl.dl-horizontal
+                  %dt Unit
+                  %dd
+                    = link_to @user.staff.unit.name, @user.staff.unit if @user.unit?
+                    &nbsp;
+                  %dt Job Title
+                  %dd
+                    = @user.staff.job_title
+                    &nbsp;
                   %dt Location
                   %dd
                     = @user.staff.location
-                    &nbsp;
-                  %dt Unit
-                  %dd
-                    = @user.staff.unit_id
                     &nbsp;
             .span6
               %h3 #{@user.fname}'s Bio

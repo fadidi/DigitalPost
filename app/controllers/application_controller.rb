@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   check_authorization :unless => :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, :alert => exception.message
+    redirect_to new_user_session_path, :alert => exception.message
   end
 
   def after_sign_in_path_for(resource)
@@ -18,7 +18,13 @@ class ApplicationController < ActionController::Base
         current_user.verify
       end
     end
-    user_path(current_user)
+    if current_user.staff?
+      current_user.unit? ? unit_path(current_user.unit) : units_path
+    elsif current_user.volunteer?
+      units_path
+    else
+      user_path(current_user)
+    end
   end
 
 end

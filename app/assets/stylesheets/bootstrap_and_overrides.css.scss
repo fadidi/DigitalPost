@@ -11,18 +11,20 @@ $obama_light_blue: #8fbfe2;
 $obama_med_blue: #2575ad;
 $obama_dark_blue: #0d5d9b;
 
+// color overrides for obama theme
+$red: $obama_red;
+$blue: $obama_med_blue;
+$lightBlue: $obama_light_blue;
+$darkBlue: $obama_dark_blue;
+
 // used the color for $grayLight
 $navbarSearchBackgroundFocus: #ccc;
 // define a nice brown color
 $brown: #7f462c;
 // light yellow, defined for required form fields
 $requiredColor: #ffffe0;
-
-// color overrides for obama theme
-$red: $obama_red;
-$blue: $obama_med_blue;
-$lightBlue: $obama_light_blue;
-$darkBlue: $obama_dark_blue;
+// ?, defined for markdown fields
+$markdownColor: lighten($lightBlue, 20%);
 
 // load bootstrap
 @import "bootstrap";

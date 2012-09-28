@@ -7,8 +7,8 @@
     %ul.thumbnails
       - for unit in @units do
         %li.span6
-          = link_to unit, :class => 'thumbnail' do
-            = image_tag 'http://placehold.it/415x250'
+          = link_to unit, :class => 'thumbnail', :rel => 'popover', 'data-trigger' => 'hover', 'title' => unit.name, 'data-content' => unit.description, 'data-placement' => 'bottom' do
+            = image_tag 'http://placehold.it/450x200'
             %h3.center #{unit.name} Unit
   .span4
     .well.green
@@ -18,25 +18,3 @@
       %li Staff contact info
       %li Official resources/documents
     %p Hover over the unit for a description of its responsibilities.
-
-%table
-  %tr
-    %th Name
-    %th Head
-    %th Description
-    %th
-    %th
-    %th
-
-  - @units.each do |unit|
-    %tr
-      %td= unit.name
-      %td= unit.head_id
-      %td= unit.description
-      %td= link_to 'Show', unit
-      %td= link_to 'Edit', edit_unit_path(unit)
-      %td= link_to 'Destroy', unit, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Unit', new_unit_path

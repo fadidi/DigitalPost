@@ -4,8 +4,6 @@
   %li.active= link_to 'Edit', edit_page_path(@page)
 - content_for :top_right_menu do
   %li= link_to raw('<span class="icon-plus"></span> New Page'), new_page_path if can? :create, Page
-.span4
-  = render 'shared/markdown_help'
 .span8
   .hero-unit.red
     %h1 Edit page
@@ -16,7 +14,7 @@
     .row-fluid
       .span6
         %label Page Title
-        = f.text_field :title, :class => 'required span5'
+        = f.text_field :title, :class => 'required span12'
     = f.fields_for :revisions do |ff|
       = render 'revisions/fields', :f => ff if ff.object.new_record?
     .form-actions
@@ -42,3 +40,6 @@
           %p= timeago(revision.created_at)
         .span9
           = markdown(revision.content)
+.span4
+  = render 'shared/wiki_help'
+  = render 'shared/markdown_help'

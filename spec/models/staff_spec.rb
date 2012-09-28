@@ -13,6 +13,7 @@ describe Staff do
   it {should respond_to :location}
   it {should respond_to :job_description_html}
   it {should respond_to :job_description_markdown}
+  it {should respond_to :job_title}
   it {should respond_to :unit_id}
   it {should respond_to :user_id}
 
@@ -21,6 +22,7 @@ describe Staff do
   it {should respond_to :unit}
 
   #methods
+  it {should respond_to :name}
   it {should respond_to :to_param}
   it {should respond_to :unit?}
 
@@ -54,6 +56,7 @@ describe Staff do
       it {@staff.job_description_markdown.should_not be_blank}
     end
 
+    it {@staff.job_title.should be_blank}
     it {@staff.unit_id.should be_blank}
 
     describe 'user_id' do
@@ -65,6 +68,8 @@ describe Staff do
     it {Staff.new(@attr.merge(:location => '')).should be_valid}
     it {Staff.new(@attr.merge(:job_description_html => '')).should be_valid}
     it {Staff.new(@attr.merge(:job_description_markdown => '')).should be_valid}
+    it {Staff.new(@attr.merge(:job_title => '')).should be_valid}
+    it {Staff.new(@attr.merge(:job_title => 'a'*256)).should_not be_valid}
 
     describe 'user_id' do
       it {Staff.new(@attr.merge(:user_id => '')).should_not be_valid}
@@ -113,6 +118,13 @@ describe Staff do
   end
 
   describe 'methods' do
+    describe 'name' do
+      it 'should be the user name' do
+        @staff = FactoryGirl.create(:staff, :user => @user = FactoryGirl.create(:user))
+        @staff.name.should eq @user.name
+      end
+    end
+
     describe 'to_param' do
       before :each do
         @staff = FactoryGirl.create(:staff, :user => @user = FactoryGirl.create(:user))

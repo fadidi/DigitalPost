@@ -21,6 +21,7 @@ describe Unit do
 
   # methods
   it {should respond_to :head?}
+  it {should respond_to :to_param}
 
   describe 'properties' do
     it {Unit.new.name.should be_blank}
@@ -97,6 +98,24 @@ describe Unit do
 
       it 'should be true with a unit assigned' do
         FactoryGirl.create(:unit, :head => FactoryGirl.create(:user)).head?.should be_true
+      end
+    end
+
+    describe 'to_param' do
+      it 'should include the unit name' do
+        @unit = FactoryGirl.create(:unit)
+        @unit.to_param.should eq "#{@unit.id}-#{@unit.name.parameterize}"
+      end
+    end
+  end
+
+  describe 'scopes' do
+    describe 'default' do
+      it 'should order by name' do
+        @unita = FactoryGirl.create(:unit, :name => 'Aaa')
+        @unitc = FactoryGirl.create(:unit, :name => 'Ccc')
+        @unitb = FactoryGirl.create(:unit, :name => 'Bbb')
+        Unit.all.should eq [@unita,@unitb,@unitc]
       end
     end
   end
