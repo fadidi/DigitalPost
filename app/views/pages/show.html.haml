@@ -3,7 +3,8 @@
   %li.active= link_to raw("#{@page.title} &rang;"), @page
   %li= link_to 'Edit', edit_page_path(@page)
 - content_for :top_right_menu do
-  %li= link_to raw('<span class="icon-globe"></span> Revision History'), page_revisions_path(@page) unless @page.revisions.count < 1
+  %li= link_to raw('<span class="icon-globe"></span> Revision History'), page_revisions_path(@page) if can?(:read, Revision) && @page.revisions.count > 1
+  %li= link_to raw('<span class="icon-plus"></span> New Page'), new_page_path if can? :create, Page
 .row-fluid
   .span12
     .hero-unit.green

@@ -40,7 +40,15 @@ class User < ActiveRecord::Base
   end
 
   def staff?
-    staff
+    !staff.nil?
+  end
+
+  def unit
+    staff? ? staff.unit : nil
+  end
+
+  def unit?
+    staff? ? staff.unit? : false
   end
 
   def verified?
@@ -75,7 +83,7 @@ class User < ActiveRecord::Base
   end
 
   def volunteer?
-    volunteer
+    !volunteer.nil?
   end
 
   def self.find_for_facebook_oauth(auth, signed_in_resource=nil)

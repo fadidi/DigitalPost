@@ -1,5 +1,7 @@
 - content_for :backtrack do
-  %li.disabled= link_to raw("Pages &rang;"), pages_path
+  %li.active= link_to raw("Pages &rang;"), pages_path
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Page'), new_page_path if can? :create, Page
 .well.red
   %h1
     Site Map

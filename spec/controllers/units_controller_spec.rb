@@ -20,11 +20,15 @@ require 'spec_helper'
 
 describe UnitsController do
 
+  login_admin
+
   # This should return the minimal set of attributes required to create a valid
   # Unit. As you add validations to Unit, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {
+      :name => 'Test'
+    }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -37,7 +41,7 @@ describe UnitsController do
   describe "GET index" do
     it "assigns all units as @units" do
       unit = Unit.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:units).should eq([unit])
     end
   end
@@ -45,14 +49,14 @@ describe UnitsController do
   describe "GET show" do
     it "assigns the requested unit as @unit" do
       unit = Unit.create! valid_attributes
-      get :show, {:id => unit.to_param}, valid_session
+      get :show, {:id => unit.to_param}
       assigns(:unit).should eq(unit)
     end
   end
 
   describe "GET new" do
     it "assigns a new unit as @unit" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:unit).should be_a_new(Unit)
     end
   end
@@ -60,7 +64,7 @@ describe UnitsController do
   describe "GET edit" do
     it "assigns the requested unit as @unit" do
       unit = Unit.create! valid_attributes
-      get :edit, {:id => unit.to_param}, valid_session
+      get :edit, {:id => unit.to_param}
       assigns(:unit).should eq(unit)
     end
   end
@@ -69,18 +73,18 @@ describe UnitsController do
     describe "with valid params" do
       it "creates a new Unit" do
         expect {
-          post :create, {:unit => valid_attributes}, valid_session
+          post :create, {:unit => valid_attributes}
         }.to change(Unit, :count).by(1)
       end
 
       it "assigns a newly created unit as @unit" do
-        post :create, {:unit => valid_attributes}, valid_session
+        post :create, {:unit => valid_attributes}
         assigns(:unit).should be_a(Unit)
         assigns(:unit).should be_persisted
       end
 
       it "redirects to the created unit" do
-        post :create, {:unit => valid_attributes}, valid_session
+        post :create, {:unit => valid_attributes}
         response.should redirect_to(Unit.last)
       end
     end
@@ -89,14 +93,14 @@ describe UnitsController do
       it "assigns a newly created but unsaved unit as @unit" do
         # Trigger the behavior that occurs when invalid params are submitted
         Unit.any_instance.stub(:save).and_return(false)
-        post :create, {:unit => {}}, valid_session
+        post :create, {:unit => {}}
         assigns(:unit).should be_a_new(Unit)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Unit.any_instance.stub(:save).and_return(false)
-        post :create, {:unit => {}}, valid_session
+        post :create, {:unit => {}}
         response.should render_template("new")
       end
     end
@@ -111,18 +115,18 @@ describe UnitsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Unit.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => unit.to_param, :unit => {'these' => 'params'}}, valid_session
+        put :update, {:id => unit.to_param, :unit => {'these' => 'params'}}
       end
 
       it "assigns the requested unit as @unit" do
         unit = Unit.create! valid_attributes
-        put :update, {:id => unit.to_param, :unit => valid_attributes}, valid_session
+        put :update, {:id => unit.to_param, :unit => valid_attributes}
         assigns(:unit).should eq(unit)
       end
 
       it "redirects to the unit" do
         unit = Unit.create! valid_attributes
-        put :update, {:id => unit.to_param, :unit => valid_attributes}, valid_session
+        put :update, {:id => unit.to_param, :unit => valid_attributes}
         response.should redirect_to(unit)
       end
     end
@@ -132,7 +136,7 @@ describe UnitsController do
         unit = Unit.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Unit.any_instance.stub(:save).and_return(false)
-        put :update, {:id => unit.to_param, :unit => {}}, valid_session
+        put :update, {:id => unit.to_param, :unit => {}}
         assigns(:unit).should eq(unit)
       end
 
@@ -140,7 +144,7 @@ describe UnitsController do
         unit = Unit.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Unit.any_instance.stub(:save).and_return(false)
-        put :update, {:id => unit.to_param, :unit => {}}, valid_session
+        put :update, {:id => unit.to_param, :unit => {}}
         response.should render_template("edit")
       end
     end
@@ -150,13 +154,13 @@ describe UnitsController do
     it "destroys the requested unit" do
       unit = Unit.create! valid_attributes
       expect {
-        delete :destroy, {:id => unit.to_param}, valid_session
+        delete :destroy, {:id => unit.to_param}
       }.to change(Unit, :count).by(-1)
     end
 
     it "redirects to the units list" do
       unit = Unit.create! valid_attributes
-      delete :destroy, {:id => unit.to_param}, valid_session
+      delete :destroy, {:id => unit.to_param}
       response.should redirect_to(units_url)
     end
   end

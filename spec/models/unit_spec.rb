@@ -29,8 +29,16 @@ describe Unit do
   end
 
   describe 'validations' do
-    it {Unit.new(@attr.merge(:name => '')).should_not be_valid}
-    it {Unit.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
+    describe 'name' do
+      it {Unit.new(@attr.merge(:name => '')).should_not be_valid}
+      it {Unit.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
+
+      it 'should validate uniqueness up to case' do
+        Unit.create! @attr.merge(:name => 'Test')
+        Unit.new(@attr.merge(:name => 'Test'.upcase)).should_not be_valid
+      end
+    end
+
     it {Unit.new(@attr.merge(:description => '')).should be_valid}
     it {Unit.new(@attr.merge(:head_id => '')).should be_valid}
     it {Unit.new(@attr.merge(:head_id => 'a')).should_not be_valid}
@@ -79,6 +87,16 @@ describe Unit do
       it 'should be the correct user' do
         FactoryGirl.create :staff
         @unit.users.should eq [@user]
+      end
+    end
+  end
+
+  describe 'methods' do
+    describe 'head?' do
+      it {Unit.new.head?.should_not be_true}
+
+      it 'should be true with a unit assigned' do
+        FactoryGirl.create(:unit, :head => FactoryGirl.create(:user)).head?.should be_true
       end
     end
   end

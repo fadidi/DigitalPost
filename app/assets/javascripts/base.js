@@ -25,4 +25,13 @@ $(function(){
   $.timeago.settings.allowFuture = true;
   $('time.timeago').timeago();  
 
+  /***********************************************/
+  /* bootstrap fixes */
+
+  // thumbnails in fluid grid
+  $('.row-fluid ul.thumbnails li.span6:nth-child(2n + 3)').css('margin-left','0px');
+  $('.row-fluid ul.thumbnails li.span4:nth-child(3n + 4)').css('margin-left','0px');
+  $('.row-fluid ul.thumbnails li.span3:nth-child(4n + 5)').css('margin-left','0px'); 
+  $('.row-fluid ul.thumbnails li.span2:nth-child(5n + 7)').css('margin-left','0px'); 
+
 });

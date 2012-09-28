@@ -1,8 +1,14 @@
 %ul.nav.nav-pills.pull-left
-  %li
-    = link_to root_path do
+  %li.dropdown
+    = link_to '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown' do
       %span.icon-home
-      Home &rang;
+      Home
+      %b.caret
+    %ul.dropdown-menu
+      %li= link_to 'Pages', pages_path
+      %li= link_to 'Everyone', users_path if can? :read, User
+      %li= link_to 'Staff', staff_index_path if can? :read, Staff
+      %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
   = yield :backtrack
 %ul.nav.nav-pills.pull-right
   = yield :top_right_menu

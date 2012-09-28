@@ -1,7 +1,8 @@
-%h1 Editing unit
-
+- content_for :backtrack do
+  %li= link_to raw('Units &rang;'), units_path
+  %li= link_to raw("#{@unit.name} &rang;"), @unit
+  %li.active= link_to 'Edit', edit_unit_path(@unit)
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Unit'), new_unit_path if can? :create, Unit
 = render 'form'
 
-= link_to 'Show', @unit
-\|
-= link_to 'Back', units_path

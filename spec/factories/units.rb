@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :unit do
-    name "MyString"
+    name
     head
   end
 end

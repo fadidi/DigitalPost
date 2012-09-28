@@ -13,6 +13,10 @@ class Staff < ActiveRecord::Base
     "#{user.id}-#{user.name.parameterize}"
   end
 
+  def unit?
+    !unit.nil?
+  end
+
   private
 
     def do_before_save

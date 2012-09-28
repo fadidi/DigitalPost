@@ -1,4 +1,23 @@
-%h1 Listing units
+- content_for :backtrack do
+  %li.active= link_to 'Units', units_path
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Unit'), new_unit_path if can? :create, Unit
+.row-fluid
+  .span8
+    %ul.thumbnails
+      - for unit in @units do
+        %li.span6
+          = link_to unit, :class => 'thumbnail' do
+            = image_tag 'http://placehold.it/415x250'
+            %h3.center #{unit.name} Unit
+  .span4
+    .well.green
+      %h1 Select a Unit
+    %p Select the unit you're looking for from the options on the left. In each unit's section you will find:
+    %ul.no-bullet
+      %li Staff contact info
+      %li Official resources/documents
+    %p Hover over the unit for a description of its responsibilities.
 
 %table
   %tr

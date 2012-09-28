@@ -1,7 +1,9 @@
 - content_for :backtrack do
   %li= link_to raw("Pages &rang;"), pages_path
   %li= link_to raw("#{@page.title} &rang;"), @page
-  %li.active= link_to 'Edit Page', ''
+  %li.active= link_to 'Edit', edit_page_path(@page)
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Page'), new_page_path if can? :create, Page
 .span4
   = render 'shared/markdown_help'
 .span8

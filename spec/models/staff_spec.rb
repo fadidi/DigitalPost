@@ -122,5 +122,13 @@ describe Staff do
         @staff.to_param.should eq "#{@staff.user.id}-#{@staff.user.name.parameterize}"
       end
     end
+
+    describe 'unit?' do
+      it {Staff.new.unit?.should_not be_true}
+
+      it 'it should be true with a unit set' do
+        FactoryGirl.create(:staff, :unit => FactoryGirl.create(:unit)).unit?.should be_true
+      end
+    end
   end
 end

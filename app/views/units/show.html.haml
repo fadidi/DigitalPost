@@ -1,5 +1,9 @@
-%p#notice= notice
-
+- content_for :backtrack do
+  %li= link_to raw('Units &rang;'), units_path
+  %li.active= link_to raw("#{@unit.name} &rang;"), @unit
+  %li= link_to 'Edit', edit_unit_path(@unit) if can? :edit, @unit
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Unit'), new_unit_path if can? :create, Unit
 %p
   %b Name:
   = @unit.name
