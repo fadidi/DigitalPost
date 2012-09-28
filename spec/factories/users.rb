@@ -1,7 +1,7 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :user, :aliases => [:author, :editor] do
+  factory :user, :aliases => [:author, :editor, :head] do
     name
     email
     password 'please'

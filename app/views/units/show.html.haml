@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @unit.name
+%p
+  %b Head:
+  = @unit.head_id
+%p
+  %b Description:
+  = @unit.description
+
+= link_to 'Edit', edit_unit_path(@unit)
+\|
+= link_to 'Back', units_path

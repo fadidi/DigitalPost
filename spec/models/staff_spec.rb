@@ -18,9 +18,11 @@ describe Staff do
 
   # associations
   it {should respond_to :user}
+  it {should respond_to :unit}
 
   #methods
   it {should respond_to :to_param}
+  it {should respond_to :unit?}
 
   describe 'properties' do
     before :each do
@@ -91,6 +93,21 @@ describe Staff do
       it 'should be the correct user' do
         FactoryGirl.create :user
         @staff.user.should eq @user
+      end
+    end
+
+    describe 'user' do
+      before :each do
+        @staff = FactoryGirl.create(:staff, :unit => @unit = FactoryGirl.create(:unit))
+      end
+
+      it 'should be a unit' do
+        @staff.unit.should be_an_instance_of Unit
+      end
+
+      it 'should be the correct user' do
+        FactoryGirl.create :unit
+        @staff.unit.should eq @unit
       end
     end
   end

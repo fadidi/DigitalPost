@@ -6,15 +6,56 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts 'SETTING UP DEFAULT UNITS'
+Unit.create!([{
+  :name => 'Administrative',
+  :description => 'The Administrative unit is responsible for the operations and management of the Post.',
+},{
+  :name => 'Programming',
+  :description => 'The programming unit is responsible for directing the actions and goals of the Post.',
+},{
+  :name => 'Training',
+  :description => 'The training unit is responsible for PST, IST, and the ongoing education of Volunteers.',
+},{
+  :name => 'Safety & Security',
+  :description => 'The safety & security unit is responsible for educating Volunteers about staying safe, and dealing with crises if they occur.',
+},{
+  :name => 'Medical',
+  :description => 'The medical unit is responsible for preventative and treatment healthcare for PCVs throughout their training and service.',
+}])
 # create default users
 puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create!(
+User.create!([{
   :name => 'Jack Brown',
   :email => 'jack@brownjohnf.com',
   :password => 'password',
   :password_confirmation => 'password'
-)
-puts 'New user created: ' << user.name
+},{
+  :name => 'Iffy Izeh',
+  :email => 'iezeh@peacecorps.gov',
+  :password => 'password',
+  :password_confirmation => 'password'
+},{
+  :name => 'Vanessa Dickey',
+  :email => 'vdickey@peacecorps.gov',
+  :password => 'password',
+  :password_confirmation => 'password'
+},{
+  :name => 'Mbouille Diallo',
+  :email => 'mdiallo@peacecorps.gov',
+  :password => 'password',
+  :password_confirmation => 'password'
+},{
+  :name => 'Dr. Ulle Drame',
+  :email => 'udrame@peacecorps.gov',
+  :password => 'password',
+  :password_confirmation => 'password'
+},{
+  :name => 'Etienne Senghor',
+  :email => 'esenghor@peacecorps.gov',
+  :password => 'password',
+  :password_confirmation => 'password'
+}])
 
 ValidEmail.create!([{
   :email => 'jack@brownjohnf.com',

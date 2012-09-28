@@ -1,0 +1,85 @@
+require 'spec_helper'
+
+describe Unit do
+  before :each do
+    @attr = {
+      :name => 'Test Unit'
+    }
+  end
+
+  it {Unit.create! @attr}
+
+  # properties
+  it {should respond_to :name}
+  it {should respond_to :description}
+  it {should respond_to :head_id}
+
+  #associations
+  it {should respond_to :head}
+  it {should respond_to :staff}
+  it {should respond_to :users}
+
+  # methods
+  it {should respond_to :head?}
+
+  describe 'properties' do
+    it {Unit.new.name.should be_blank}
+    it {Unit.new.description.should be_blank}
+    it {Unit.new.head_id.should be_blank}
+  end
+
+  describe 'validations' do
+    it {Unit.new(@attr.merge(:name => '')).should_not be_valid}
+    it {Unit.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
+    it {Unit.new(@attr.merge(:description => '')).should be_valid}
+    it {Unit.new(@attr.merge(:head_id => '')).should be_valid}
+    it {Unit.new(@attr.merge(:head_id => 'a')).should_not be_valid}
+  end
+
+  describe 'associations' do
+    describe 'head' do
+      before :each do
+        @unit = FactoryGirl.create(:unit, :head => @user = FactoryGirl.create(:user))
+      end
+
+      it 'should be a User' do
+        @unit.head.should be_a_kind_of User
+      end
+
+      it 'should be the correct user' do
+        FactoryGirl.create :user
+        @unit.head.should eq @user
+      end
+    end
+
+    describe 'staff' do
+      before :each do
+        @staff = FactoryGirl.create(:staff, :unit => @unit = FactoryGirl.create(:unit))
+      end
+
+      it 'should be a Staff' do
+        @unit.staff.first.should be_a_kind_of Staff
+      end
+
+      it 'should be the correct staff' do
+        FactoryGirl.create :staff
+        @unit.staff.should eq [@staff]
+      end
+    end
+
+    describe 'users' do
+      before :each do
+        @staff = FactoryGirl.create(:staff, :user => @user = FactoryGirl.create(:user), :unit => @unit = FactoryGirl.create(:unit))
+      end
+
+      it 'should be a User' do
+        @unit.users.first.should be_a_kind_of User
+      end
+
+      it 'should be the correct user' do
+        FactoryGirl.create :staff
+        @unit.users.should eq [@user]
+      end
+    end
+  end
+end
