@@ -161,7 +161,7 @@ describe UnitsController do
     it "redirects to the units list" do
       unit = Unit.create! valid_attributes
       delete :destroy, {:id => unit.to_param}
-      response.should redirect_to(units_url)
+      response.should redirect_to(units_path)
     end
   end
 

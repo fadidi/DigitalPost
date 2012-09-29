@@ -154,7 +154,7 @@ describe ValidEmailsController do
     it "redirects to the valid_emails list" do
       valid_email = ValidEmail.create! valid_attributes
       delete :destroy, {:id => valid_email.to_param}
-      response.should redirect_to(valid_emails_url)
+      response.should redirect_to(valid_emails_path)
     end
   end
 

@@ -168,7 +168,7 @@ describe ReferencesController do
     it "redirects to the references list" do
       reference = Reference.create! valid_attributes
       delete :destroy, {:id => reference.to_param}
-      response.should redirect_to(references_url)
+      response.should redirect_to(references_path)
     end
   end
 

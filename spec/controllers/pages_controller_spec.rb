@@ -283,7 +283,7 @@ describe PagesController do
     it "redirects to the pages list" do
       page = Page.create! valid_attributes
       delete :destroy, {:id => page.to_param}
-      response.should redirect_to(pages_url)
+      response.should redirect_to(pages_path)
     end
   end
 

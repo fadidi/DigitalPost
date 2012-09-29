@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'cancan/matchers'
 
 describe User do
-  
   before(:each) do
     @attr = { 
       :name => "Example User",

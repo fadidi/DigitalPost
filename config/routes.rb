@@ -22,6 +22,7 @@ DigitalPost::Application.routes.draw do
     root :to => 'home#index'
   end
   
+  match '/search', :to => 'home#search', :as => :search
   root :to => "home#index"
   
   #devise_for :users
