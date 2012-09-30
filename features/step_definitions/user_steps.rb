@@ -30,17 +30,17 @@ end
 def sign_up
   delete_user
   visit '/users/sign_up'
-  fill_in "Name", :with => @visitor[:name]
-  fill_in "Email", :with => @visitor[:email]
-  fill_in "Password", :with => @visitor[:password]
-  fill_in "Password confirmation", :with => @visitor[:password_confirmation]
+  fill_in "user[name]", :with => @visitor[:name]
+  fill_in "user[email]", :with => @visitor[:email]
+  fill_in "user[password]", :with => @visitor[:password]
+  fill_in "user[password_confirmation]", :with => @visitor[:password_confirmation]
   click_button "Sign up"
   find_user
 end
 
 def sign_in
   visit '/users/sign_in'
-  fill_in "Email", :with => @visitor[:email]
+  fill_in "user[email]", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
   click_button "Sign in"
 end
@@ -134,14 +134,14 @@ end
 
 ### THEN ###
 Then /^I should be signed in$/ do
-  page.should have_content "Logout"
+  page.should have_content "Sign out"
   page.should_not have_content "Sign up"
-  page.should_not have_content "Login"
+  page.should_not have_content "Sign in"
 end
 
 Then /^I should be signed out$/ do
   page.should have_content "Sign up"
-  page.should have_content "Login"
+  page.should have_content "Sign in"
   page.should_not have_content "Logout"
 end
 

@@ -3,7 +3,7 @@ unless Rails.env.production?
   ENV['MAILGUN_SMTP_PORT'] = ''
   ENV['MAILGUN_SMTP_LOGIN'] = ''
   ENV['MAILGUN_SMTP_PASSWORD'] = ''
-  ENV['DOMAIN'] = ''
+  ENV['DOMAIN'] = 'localhost'
   ENV['COUNTRY'] = 'Senegal'
   ENV['FB_ID'] = ''
   ENV['FB_KEY'] = ''

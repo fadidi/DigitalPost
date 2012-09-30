@@ -1,6 +1,16 @@
 class User < ActiveRecord::Base
   include Tire::Model::Search
   include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :title, :as => 'name'
+    indexes :email
+    indexes :phone
+    indexes :bio
+    indexes :blog_title
+    indexes :blog_url
+    indexes :website
+  end
 
   rolify
 

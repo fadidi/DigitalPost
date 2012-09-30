@@ -1,3 +1,6 @@
 - content_for :backtrack do
   %li.active= link_to 'Search', search_path
+- for result in @results do
+  #{link_to result.title, result}, #{result.type}
+%hr
 = @results.inspect

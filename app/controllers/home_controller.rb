@@ -7,7 +7,12 @@ class HomeController < ApplicationController
 
   def search
     if params[:q].present?
-      @results = User.search(params[:q])
+      search = Tire.search ELASTICSEARCH_INDEX do |search|
+        search.query do |query|
+          query.string params[:q]
+        end
+      end
+      @results = search.results
     else
       @results = User.all
     end
