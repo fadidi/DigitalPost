@@ -8,10 +8,21 @@
       %li= link_to 'Front Page', root_path
       %li.divider
       %li= link_to 'Pages', pages_path
-      %li= link_to 'Admin Units', units_path if can? :read, Unit
-      %li= link_to 'Everyone', users_path if can? :read, User
-      %li= link_to 'Staff', staff_index_path if can? :read, Staff
-      %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
+      - if can? :read, Unit
+        %li.dropdown-submenu
+          = link_to 'Admin Units', '#', :tabindex => '-1'
+          %ul.dropdown-menu
+            %li= link_to 'All Units', units_path
+            %li.divider
+            - for unit in Unit.all do
+              %li= link_to unit.name, unit
+      - if can? :read, User
+        %li.dropdown-submenu
+          = link_to 'People', '#', :tabindex => '-1'
+          %ul.dropdown-menu
+            %li= link_to 'Everyone', users_path
+            %li= link_to 'Staff', staff_index_path if can? :read, Staff
+            %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
   = yield :backtrack
 %ul.nav.nav-pills.pull-right
   = yield :top_right_menu

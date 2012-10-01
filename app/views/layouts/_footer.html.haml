@@ -6,16 +6,15 @@
         %li= link_to 'Pages', pages_path
     .span3
       %ul.nav.nav-list
-        - if signed_in?
-          - if can?(:read, User)
-            %li.nav-header People
-            %li= link_to 'Everyone', users_path
-            %li= link_to 'Staff', staff_index_path if can? :read, Staff
-            %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
-          - if can? :read, Unit
-            %li.nav-header Units
-            - for unit in Unit.all do
-              %li= link_to unit.name, unit
+        - if can?(:read, User)
+          %li.nav-header People
+          %li= link_to 'Everyone', users_path
+          %li= link_to 'Staff', staff_index_path if can? :read, Staff
+          %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
+        - if can? :read, Unit
+          %li.nav-header Units
+          - for unit in Unit.all do
+            %li= link_to unit.name, unit
     .span3
       %ul.nav.nav-list
         %li.nav-header Links
