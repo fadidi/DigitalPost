@@ -12,7 +12,6 @@
     %th Job Title
     %th Unit
     %th Location
-    %th Volunteer?
   %tbody
     - @staff.each do |staff|
       %tr
@@ -22,4 +21,3 @@
         %td= staff.job_title
         %td= staff.unit.name if staff.unit?
         %td= staff.location
-        %td= staff.user.volunteer? ? 'true' : 'false'

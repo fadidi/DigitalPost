@@ -34,4 +34,15 @@ module ApplicationHelper
     Markdown.render(text).html_safe
   end
 
+  # @author John Brown
+  # Converts boolean to icons.
+  #
+  # @param [Boolean] state
+  #
+  # @return [String] HTML icon
+  #
+  def boolean_icon_for(state)
+    raw('<span class="icon-ok"></span>') if state
+  end
+
 end

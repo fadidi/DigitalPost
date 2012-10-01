@@ -15,7 +15,6 @@
     %th Stage
     %th Sector
     %th COS Date
-    %th Staff?
   %tbody
     - @volunteers.each do |vol|
       %tr
@@ -28,4 +27,3 @@
         %td= vol.stage_id
         %th= vol.sector_id
         %th= vol.cos_date.to_date unless vol.cos_date.blank?
-        %td= vol.user.staff? ? 'true' : 'false'

@@ -22,8 +22,8 @@
         %td= user.phone
         %td= user.email
         %td= user.created_at.to_date
-        %td= user.volunteer? ? 'true' : 'false'
-        %td= user.staff? ? 'true' : 'false'
-        %td= user.blog_url.blank? ? 'false' : 'true'
-        %td= user.website.blank? ? 'false' : 'true'
-        %td= user.confirmed_at.blank? ? 'false' : 'true'
+        %td= boolean_icon_for user.volunteer?
+        %td= boolean_icon_for user.staff?
+        %td= boolean_icon_for user.blog_url.blank?
+        %td= boolean_icon_for user.website.blank?
+        %td= boolean_icon_for user.confirmed_at.blank?
