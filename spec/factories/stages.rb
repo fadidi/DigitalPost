@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :stage do
-    sequence(:anticipated_cos) {|n| Time.now + 820.days + n.seconds}
-    sequence(:arrival) {|n| Time.now + n.seconds}
-    sequence(:swear_in) {|n| Time.now + 90.days + n.seconds}
+    sequence(:anticipated_cos) {|n| Date.today + 820.days + n.days}
+    sequence(:arrival) {|n| Date.today + n.days}
+    sequence(:swear_in) {|n| Date.today + 90.days + n.days}
   end
 end

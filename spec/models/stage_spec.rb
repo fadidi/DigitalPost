@@ -54,8 +54,6 @@ describe Stage do
         stage1.update_attributes(@set_attr)
         stage2 = Stage.new
         stage2.anticipated_cos = @set_attr[:anticipated_cos]
-        puts stage1.anticipated_cos
-        puts stage2.anticipated_cos
         stage2.should_not be_valid
       end
 
@@ -76,6 +74,14 @@ describe Stage do
     end
 
     describe 'arrival' do
+      it 'should reject duplicates' do
+        stage1 = Stage.new
+        stage1.update_attributes(@set_attr)
+        stage2 = Stage.new
+        stage2.arrival = @set_attr[:arrival]
+        stage2.should_not be_valid
+      end
+
       it 'should reject invalid format dates' do
         @stage.arrival = '1963-24-21'
         @stage.should_not be_valid
@@ -93,6 +99,14 @@ describe Stage do
     end
 
     describe 'swear_in' do
+      it 'should reject duplicates' do
+        stage1 = Stage.new
+        stage1.update_attributes(@set_attr)
+        stage2 = Stage.new
+        stage2.swear_in = @set_attr[:swear_in]
+        stage2.should_not be_valid
+      end
+
       it 'should reject invalid format dates' do
         @stage.swear_in = '1963-24-21'
         @stage.should_not be_valid
@@ -124,11 +138,13 @@ describe Stage do
   describe 'scopes' do
     describe 'default' do
       it 'should be arrival DESC' do
-        @stage1 = FactoryGirl.create(:stage, :arrival => Time.now)
-        @stage2 = FactoryGirl.create(:stage, :arrival => Time.now + 1.day)
-        @stage3 = FactoryGirl.create(:stage, :arrival => Time.now - 1.day)
-        [@stage1,@stage2,@stage3].each { |stage| stage.save! }
-        Stage.all.should eq [@stage2,@stage1,@stage3]
+        stage1 = FactoryGirl.create(:stage)
+        stage1.update_attributes(:arrival => Date.today - 2.days)
+        stage2 = FactoryGirl.create(:stage)
+        stage2.update_attributes(:arrival => Date.today - 1.day)
+        stage3 = FactoryGirl.create(:stage)
+        stage3.update_attributes(:arrival => Date.today - 3.days)
+        Stage.all.should eq [stage2,stage1,stage3]
       end
     end
   end

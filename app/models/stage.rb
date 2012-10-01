@@ -6,6 +6,7 @@ class Stage < ActiveRecord::Base
   has_many :volunteers
   has_many :users, :through => :volunteers
 
+  default_scope :order => 'arrival DESC'
 
   def name
     arrival.blank? ? nil : arrival.strftime('%B %Y')
@@ -16,9 +17,9 @@ class Stage < ActiveRecord::Base
   private
 
     def do_after_initialize
-      self.anticipated_cos ||= Time.now + 820.days
-      self.arrival ||= Time.now
-      self.swear_in ||= Time.now + 90.days
+      self.anticipated_cos ||= Date.today + 820.days
+      self.arrival ||= Date.today
+      self.swear_in ||= Date.today + 90.days
     end
 
 end
