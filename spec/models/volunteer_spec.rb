@@ -33,6 +33,12 @@ describe Volunteer do
 
     describe 'cos_date' do
       it {@vol.cos_date.should be_blank}
+      # bad format
+      it {Volunteer.new(@attr.merge(:cos_date => '1963-24-21')).should_not be_valid}
+      # too old
+      it {Volunteer.new(@attr.merge(:cos_date => '1960-12-31')).should_not be_valid}
+      # future
+      it {Volunteer.new(@attr.merge(:cos_date => Time.now + 1.year)).should be_valid}
     end
 
     describe 'local_name' do

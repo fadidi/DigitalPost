@@ -7,12 +7,12 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class DateValidator < ActiveModel::EachValidator
-  def validate_each(record, attribute, value)
+  def validate_each(record, attribute, value, options = { :allow_future => true })
     if value.blank?
       record.errors[attribute] << (options[:message] || 'must be present and in the proper format (yyyy-mm-dd)')
     elsif value < '1961-01-01'.to_date
       record.errors[attribute] << (options[:message] || 'must be later than Jan 1, 1961')
-    elsif value > Date.today
+    elsif !options[:allow_future] && value > Date.today
       record.errors[attribute] << (options[:message] || "must not be in the future: that just doesn't make sense!")
     end
   end

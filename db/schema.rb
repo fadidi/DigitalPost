@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120928104755) do
+ActiveRecord::Schema.define(:version => 20121001105110) do
 
   create_table "pages", :force => true do |t|
     t.string   "title"
@@ -67,6 +67,18 @@ ActiveRecord::Schema.define(:version => 20120928104755) do
   end
 
   add_index "staff", ["user_id"], :name => "index_staff_on_user_id", :unique => true
+
+  create_table "stages", :force => true do |t|
+    t.date     "anticipated_cos"
+    t.date     "arrival"
+    t.date     "swear_in"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "stages", ["anticipated_cos"], :name => "index_stages_on_anticipated_cos", :unique => true
+  add_index "stages", ["arrival"], :name => "index_stages_on_arrival", :unique => true
+  add_index "stages", ["swear_in"], :name => "index_stages_on_swear_in", :unique => true
 
   create_table "units", :force => true do |t|
     t.string   "name"

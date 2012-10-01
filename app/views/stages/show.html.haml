@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Anticipated cos:
+  = @stage.anticipated_cos
+%p
+  %b Arrival:
+  = @stage.arrival
+%p
+  %b Swear in:
+  = @stage.swear_in
+
+= link_to 'Edit', edit_stage_path(@stage)
+\|
+= link_to 'Back', stages_path
