@@ -22,9 +22,13 @@
         %li= link_to 'Peace Corps', 'http://peacecorps.gov'
         %li.nav-header Contact us
         %li= link_to 'Email', "contact@#{ENV['DOMAIN']}"
-        %li= link_to 'Facebook', ENV['FB_URL']
-        %li= link_to 'Twitter', ENV['TWITTER_URL']
+        %li= link_to 'Facebook', ENV['FB_URL'] if ENV['FB_URL'] && !ENV['FB_URL'].blank?
+        %li= link_to 'Twitter', ENV['TWITTER_URL'] if ENV['TWITTER_URL'] && !ENV['TWITTER_URL'].blank?
   .row-fluid
     .span12
       %hr
-      %p.center #{link_to "Peace Corps|#{ENV['COUNTRY']}", root_path} &copy; 2011-2012
+  .row-fluid
+    .span6
+      %p #{link_to "Peace Corps|#{ENV['COUNTRY']}", root_path} &copy; 2011-2012
+    .span6.right
+      %p Powered by DigitalPost on Fadidi Media Network

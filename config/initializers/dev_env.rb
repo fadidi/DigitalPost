@@ -7,4 +7,6 @@ unless Rails.env.production?
   ENV['COUNTRY'] = 'Senegal'
   ENV['FB_ID'] = ''
   ENV['FB_KEY'] = ''
+  ENV['FB_URL'] = ''
+  ENV['TWITTER_URL'] = ''
 end
