@@ -27,17 +27,17 @@ describe Stage do
   describe 'properties' do
     describe 'anticipated_cos' do
       it {Stage.new.anticipated_cos.should_not be_blank}
-      it {Stage.new.anticipated_cos.to_date.should eq (Time.now + 820.days).to_date}
+      it {Stage.new.anticipated_cos.should eq (Date.today + 820.days)}
     end
     
     describe 'arrival' do
       it {Stage.new.arrival.should_not be_blank}
-      it {Stage.new.arrival.to_date.should eq Time.now.to_date}
+      it {Stage.new.arrival.should eq Date.today}
     end
 
     describe 'swear_in' do
       it {Stage.new.swear_in.should_not be_blank}
-      it {Stage.new.swear_in.to_date.should eq (Time.now + 90.days).to_date}
+      it {Stage.new.swear_in.to_date.should eq (Date.today + 90.days).to_date}
     end
   end
 
@@ -68,7 +68,7 @@ describe Stage do
       end
 
       it 'should allow future dates' do
-        @stage.anticipated_cos = Time.now + 1.year
+        @stage.anticipated_cos = Date.today + 1.year
         @stage.should be_valid
       end
     end
@@ -93,7 +93,7 @@ describe Stage do
       end
 
       it 'should allow future dates' do
-        @stage.arrival = Time.now + 1.year
+        @stage.arrival = Date.today + 1.year
         @stage.should be_valid
       end
     end
@@ -118,8 +118,36 @@ describe Stage do
       end
 
       it 'should allow future dates' do
-        @stage.swear_in = Time.now + 1.year
+        @stage.swear_in = Date.today + 1.year
         @stage.should be_valid
+      end
+    end
+  end
+
+  describe 'associations' do
+    describe 'volunteers' do
+      before :each do
+        @volunteer = FactoryGirl.create(:volunteer, :stage => @stage = FactoryGirl.create(:stage))
+      end
+      
+      it {@stage.volunteers.first.should be_a_kind_of Volunteer}
+      
+      it 'should return the correct volunteers' do
+        FactoryGirl.create :volunteer
+        @stage.volunteers.should eq [@volunteer]
+      end
+    end
+
+    describe 'users' do
+      before :each do
+        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :stage => @stage = FactoryGirl.create(:stage))
+      end
+      
+      it {@stage.users.first.should be_a_kind_of User}
+      
+      it 'should return the correct volunteers' do
+        FactoryGirl.create :volunteer
+        @stage.users.should eq [@user]
       end
     end
   end
@@ -129,7 +157,7 @@ describe Stage do
       it {Stage.new.name.should_not be_blank}
       
       it 'should be composed of arrival Month Year' do
-        date = Time.now
+        date = Date.today
         Stage.new(@attr.merge(:arrival => date)).name.should eq date.strftime('%B %Y')
       end
     end

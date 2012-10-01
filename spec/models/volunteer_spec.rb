@@ -21,7 +21,9 @@ describe Volunteer do
   it {should respond_to :work_zone_id}
 
   # associations
+  it {should respond_to :stage}
   it {should respond_to :user}
+  pending {should respond_to :work_zone}
 
   # methods
   it {should respond_to :to_param}
@@ -33,12 +35,11 @@ describe Volunteer do
 
     describe 'cos_date' do
       it {@vol.cos_date.should be_blank}
-      # bad format
-      it {Volunteer.new(@attr.merge(:cos_date => '1963-24-21')).should_not be_valid}
-      # too old
-      it {Volunteer.new(@attr.merge(:cos_date => '1960-12-31')).should_not be_valid}
-      # future
-      it {Volunteer.new(@attr.merge(:cos_date => Time.now + 1.year)).should be_valid}
+
+      it 'should set invalid formats to nil' do
+        vol = Volunteer.new(@attr.merge(:cos_date => '1963-24-21'))
+        vol.cos_date.should be_blank
+      end
     end
 
     describe 'local_name' do
@@ -87,8 +88,16 @@ describe Volunteer do
   end
 
   describe 'validations' do
-    it {Volunteer.new(@attr.merge(:cos_date => '')).should be_valid}
+    describe 'cos_date' do
+      it {Volunteer.new(@attr.merge(:cos_date => '')).should be_valid}
+      # too old
+      it {Volunteer.new(@attr.merge(:cos_date => '1960-12-31')).should_not be_valid}
+      # future
+      it {Volunteer.new(@attr.merge(:cos_date => Time.now + 1.year)).should be_valid}
+    end
+
     it {Volunteer.new(@attr.merge(:local_name => '')).should be_valid}
+    it {Volunteer.new(@attr.merge(:local_name => 'a'*256)).should_not be_valid}
     it {Volunteer.new(@attr.merge(:sector_id => '')).should be_valid}
     it {Volunteer.new(@attr.merge(:sector_id => 'a')).should_not be_valid}
     it {Volunteer.new(@attr.merge(:service_info_html => '')).should be_valid}

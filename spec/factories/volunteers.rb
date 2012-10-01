@@ -3,5 +3,6 @@
 FactoryGirl.define do
   factory :volunteer do
     user
+    stage
   end
 end
