@@ -1,23 +1,12 @@
-%h1 Listing stages
-
-%table
-  %tr
-    %th Anticipated cos
-    %th Arrival
-    %th Swear in
-    %th
-    %th
-    %th
-
-  - @stages.each do |stage|
-    %tr
-      %td= stage.anticipated_cos
-      %td= stage.arrival
-      %td= stage.swear_in
-      %td= link_to 'Show', stage
-      %td= link_to 'Edit', edit_stage_path(stage)
-      %td= link_to 'Destroy', stage, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Stage', new_stage_path
+- content_for :backtrack do
+  %li.active= link_to 'Stages', stages_path
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Stage'), new_stage_path if can? :create, Stage
+.well.orange
+  %h1 Training Stages
+%ul.thumbnails
+  - for stage in @stages do
+    %li.span2
+      = link_to stage, :class => 'thumbnail' do
+        = image_tag 'http://placehold.it/195x195'
+        %p.center= stage.name

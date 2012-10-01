@@ -24,6 +24,6 @@
         %td= vol.local_name
         %td= vol.site
         %td= vol.work_zone_id
-        %td= vol.stage_id
+        %td= link_to vol.stage.name, vol.stage if vol.stage?
         %th= vol.sector_id
         %th= vol.cos_date.to_date unless vol.cos_date.blank?

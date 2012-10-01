@@ -34,10 +34,12 @@ describe StagesController do
     {}
   end
 
+  login_admin
+
   describe "GET index" do
-    it "assigns all stages as @stages" do
+    it "assigns stages as @stages" do
       stage = Stage.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:stages).should eq([stage])
     end
   end
@@ -45,14 +47,14 @@ describe StagesController do
   describe "GET show" do
     it "assigns the requested stage as @stage" do
       stage = Stage.create! valid_attributes
-      get :show, {:id => stage.to_param}, valid_session
+      get :show, {:id => stage.to_param}
       assigns(:stage).should eq(stage)
     end
   end
 
   describe "GET new" do
     it "assigns a new stage as @stage" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:stage).should be_a_new(Stage)
     end
   end
@@ -60,7 +62,7 @@ describe StagesController do
   describe "GET edit" do
     it "assigns the requested stage as @stage" do
       stage = Stage.create! valid_attributes
-      get :edit, {:id => stage.to_param}, valid_session
+      get :edit, {:id => stage.to_param}
       assigns(:stage).should eq(stage)
     end
   end
@@ -69,18 +71,18 @@ describe StagesController do
     describe "with valid params" do
       it "creates a new Stage" do
         expect {
-          post :create, {:stage => valid_attributes}, valid_session
+          post :create, {:stage => valid_attributes}
         }.to change(Stage, :count).by(1)
       end
 
       it "assigns a newly created stage as @stage" do
-        post :create, {:stage => valid_attributes}, valid_session
+        post :create, {:stage => valid_attributes}
         assigns(:stage).should be_a(Stage)
         assigns(:stage).should be_persisted
       end
 
       it "redirects to the created stage" do
-        post :create, {:stage => valid_attributes}, valid_session
+        post :create, {:stage => valid_attributes}
         response.should redirect_to(Stage.last)
       end
     end
@@ -89,14 +91,14 @@ describe StagesController do
       it "assigns a newly created but unsaved stage as @stage" do
         # Trigger the behavior that occurs when invalid params are submitted
         Stage.any_instance.stub(:save).and_return(false)
-        post :create, {:stage => {}}, valid_session
+        post :create, {:stage => {}}
         assigns(:stage).should be_a_new(Stage)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Stage.any_instance.stub(:save).and_return(false)
-        post :create, {:stage => {}}, valid_session
+        post :create, {:stage => {}}
         response.should render_template("new")
       end
     end
@@ -111,18 +113,18 @@ describe StagesController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Stage.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => stage.to_param, :stage => {'these' => 'params'}}, valid_session
+        put :update, {:id => stage.to_param, :stage => {'these' => 'params'}}
       end
 
       it "assigns the requested stage as @stage" do
         stage = Stage.create! valid_attributes
-        put :update, {:id => stage.to_param, :stage => valid_attributes}, valid_session
+        put :update, {:id => stage.to_param, :stage => valid_attributes}
         assigns(:stage).should eq(stage)
       end
 
       it "redirects to the stage" do
         stage = Stage.create! valid_attributes
-        put :update, {:id => stage.to_param, :stage => valid_attributes}, valid_session
+        put :update, {:id => stage.to_param, :stage => valid_attributes}
         response.should redirect_to(stage)
       end
     end
@@ -132,7 +134,7 @@ describe StagesController do
         stage = Stage.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Stage.any_instance.stub(:save).and_return(false)
-        put :update, {:id => stage.to_param, :stage => {}}, valid_session
+        put :update, {:id => stage.to_param, :stage => {}}
         assigns(:stage).should eq(stage)
       end
 
@@ -140,7 +142,7 @@ describe StagesController do
         stage = Stage.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Stage.any_instance.stub(:save).and_return(false)
-        put :update, {:id => stage.to_param, :stage => {}}, valid_session
+        put :update, {:id => stage.to_param, :stage => {}}
         response.should render_template("edit")
       end
     end
@@ -150,14 +152,14 @@ describe StagesController do
     it "destroys the requested stage" do
       stage = Stage.create! valid_attributes
       expect {
-        delete :destroy, {:id => stage.to_param}, valid_session
+        delete :destroy, {:id => stage.to_param}
       }.to change(Stage, :count).by(-1)
     end
 
     it "redirects to the stages list" do
       stage = Stage.create! valid_attributes
-      delete :destroy, {:id => stage.to_param}, valid_session
-      response.should redirect_to(stages_url)
+      delete :destroy, {:id => stage.to_param}
+      response.should redirect_to(stages_path)
     end
   end
 

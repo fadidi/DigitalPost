@@ -1,15 +1,31 @@
-%p#notice= notice
-
-%p
-  %b Anticipated cos:
-  = @stage.anticipated_cos
-%p
-  %b Arrival:
-  = @stage.arrival
-%p
-  %b Swear in:
-  = @stage.swear_in
-
-= link_to 'Edit', edit_stage_path(@stage)
-\|
-= link_to 'Back', stages_path
+- content_for :backtrack do
+  %li= link_to raw('Stages &rang;'), stages_path
+  %li.active= link_to @stage.name, @stage
+  %li= link_to raw('<span class="icon-pencil"></span> Edit'), edit_stage_path(@stage) if can? :edit, @stage
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Stage'), new_stage_path if can? :create, Stage
+.well.orange
+  %h1
+    = @stage.name
+    %small arrived #{timeago(@stage.arrival.to_time)}, left #{timeago(@stage.anticipated_cos.to_time)}.
+%table.table
+  %thead
+    %th Name
+    %th Phone
+    %th Email
+    %th Local Name
+    %th Site
+    %th Work Zone
+    %th Sector
+    %th COS Date
+  %tbody
+    - for vol in @stage.volunteers do
+      %tr
+        %td= link_to vol.user.name, vol.user
+        %td= vol.user.phone
+        %td= vol.user.email
+        %td= vol.local_name
+        %td= vol.site
+        %td= vol.work_zone_id
+        %td= vol.sector_id
+        %td= vol.cos_date

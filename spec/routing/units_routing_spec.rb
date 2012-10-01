@@ -2,7 +2,6 @@ require "spec_helper"
 
 describe UnitsController do
   describe "routing" do
-
     it "routes to #index" do
       get("/units").should route_to("units#index")
     end
@@ -30,6 +29,5 @@ describe UnitsController do
     it "routes to #destroy" do
       delete("/units/1").should route_to("units#destroy", :id => "1")
     end
-
   end
 end

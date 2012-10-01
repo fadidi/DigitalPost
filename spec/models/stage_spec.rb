@@ -17,12 +17,16 @@ describe Stage do
   it {should respond_to :arrival}
   it {should respond_to :swear_in}
 
+  # settings?
+  it {Stage.should respond_to :per_page}
+
   # associations
   it {should respond_to :volunteers}
   it {should respond_to :users}
   
   # methods
   it {should respond_to :name}
+  it {should respond_to :to_param}
 
   describe 'properties' do
     describe 'anticipated_cos' do
@@ -39,6 +43,10 @@ describe Stage do
       it {Stage.new.swear_in.should_not be_blank}
       it {Stage.new.swear_in.to_date.should eq (Date.today + 90.days).to_date}
     end
+  end
+
+  describe 'settings' do
+    it {Stage.per_page.should eq 20}
   end
 
   describe 'validations' do
@@ -136,6 +144,12 @@ describe Stage do
         FactoryGirl.create :volunteer
         @stage.volunteers.should eq [@volunteer]
       end
+
+      it 'should not destroy volunteers' do
+        expect {
+          @stage.destroy
+        }.to change(Volunteer, :count).by(0)
+      end
     end
 
     describe 'users' do
@@ -149,6 +163,12 @@ describe Stage do
         FactoryGirl.create :volunteer
         @stage.users.should eq [@user]
       end
+
+      it 'should not destroy users' do
+        expect {
+          @stage.destroy
+        }.to change(User, :count).by(0)
+      end
     end
   end
 
@@ -159,6 +179,13 @@ describe Stage do
       it 'should be composed of arrival Month Year' do
         date = Date.today
         Stage.new(@attr.merge(:arrival => date)).name.should eq date.strftime('%B %Y')
+      end
+    end
+    
+    describe 'to_param' do
+      it 'should be stage name' do
+        stage = FactoryGirl.create(:stage)
+        stage.to_param.should eq "#{stage.id}-#{stage.name.parameterize}"
       end
     end
   end

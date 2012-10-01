@@ -1,19 +1,19 @@
 = form_for @stage do |f|
-  -if @stage.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@stage.errors.count, "error")} prohibited this stage from being saved:"
-      %ul
-        - @stage.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :anticipated_cos
-    = f.date_select :anticipated_cos
-  .field
-    = f.label :arrival
-    = f.date_select :arrival
-  .field
-    = f.label :swear_in
-    = f.date_select :swear_in
-  .actions
-    = f.submit 'Save'
+  .row-fluid
+    .span12
+      = render 'shared/form_errors', :item => @stage if @stage.errors.any?
+      = render 'shared/form_info'
+  .row-fluid
+    .span4
+      = f.label :arrival, 'Arrival Date'
+      = f.text_field :arrival, :class => 'required datepicker span12'
+    .span4
+      = f.label :swear_in, 'Swear-in Date'
+      = f.text_field :swear_in, :class => 'required datepicker span12'
+    .span4
+      = f.label :anticipated_cos, 'Anticipated COS Date'
+      = f.text_field :anticipated_cos, :class => 'required datepicker span12'
+  .row-fluid
+    .span12
+      .form-actions
+        = f.submit 'Save'

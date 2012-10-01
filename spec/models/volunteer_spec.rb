@@ -26,6 +26,7 @@ describe Volunteer do
   pending {should respond_to :work_zone}
 
   # methods
+  it {should respond_to :stage?}
   it {should respond_to :to_param}
 
   describe 'properties' do
@@ -138,6 +139,11 @@ describe Volunteer do
   end
 
   describe 'methods' do
+    describe 'stage?' do
+      it {Volunteer.new.stage?.should_not be_true}
+      it {FactoryGirl.create(:volunteer, :stage => FactoryGirl.create(:stage)).stage?.should be_true}
+    end
+
     describe 'to_param' do
       before :each do
         @vol = FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user))

@@ -6,6 +6,9 @@
     %li.nav-header Quick Links
     %li.nav-header Resources
     %li= link_to 'Site Map', pages_path
-    %li= link_to 'Everyone', users_path
-    %li= link_to 'Staff', staff_index_path
-    %li= link_to 'Volunteers', volunteers_path
+    - if can? :read, User
+      %li= link_to 'Everyone', users_path
+      %li= link_to 'Staff', staff_index_path if can? :read, Staff
+      %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
+    %li= link_to 'Admin Units', units_path if can? :read, Unit
+    %li= link_to 'Stages', stages_path if can? :read, Stage

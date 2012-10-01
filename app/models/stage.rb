@@ -8,12 +8,18 @@ class Stage < ActiveRecord::Base
 
   default_scope :order => 'arrival DESC'
 
+  after_initialize :do_after_initialize
+
+  self.per_page = 20
+
   def name
     arrival.blank? ? nil : arrival.strftime('%B %Y')
   end
 
-  after_initialize :do_after_initialize
-
+  def to_param
+    "#{id}-#{name.parameterize}"
+  end
+  
   private
 
     def do_after_initialize

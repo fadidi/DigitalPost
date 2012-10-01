@@ -1,4 +1,6 @@
 class StagesController < ApplicationController
+  authorize_resource
+
   # GET /stages
   # GET /stages.json
   def index
@@ -76,7 +78,7 @@ class StagesController < ApplicationController
     @stage.destroy
 
     respond_to do |format|
-      format.html { redirect_to stages_url }
+      format.html { redirect_to stages_path }
       format.json { head :no_content }
     end
   end

@@ -10,14 +10,14 @@ class Ability
     if user.has_role? :admin
       can :manage, :all
     elsif user.has_role?(:volunteer) || user.has_role?(:staff)
-      can :read, [ Page, Reference, Revision, User, Volunteer, Unit ]
+      can :read, [ Page, Reference, Revision, Stage, User, Volunteer, Unit ]
       can :create, [ Page, Revision ]
       can :manage, Volunteer, :user_id => user.id if user.has_role?(:volunteer)
       can :manage, Staff, :user_id => user.id if user.has_role?(:staff)
     end
 
     if user.has_role? :moderator
-      can :manage, [Page, Revision, Role, ValidEmail]
+      can :manage, [Page, Revision, Role, Stage, ValidEmail]
     end
 
     # Define abilities for the passed in user here. For example:

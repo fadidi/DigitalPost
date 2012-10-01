@@ -40,7 +40,7 @@
                 = ff.label :cos_date, 'COS Date'
                 = ff.text_field :cos_date, :class => 'span12 datepicker required'
                 = ff.label :stage_id
-                = ff.number_field :stage_id, :class => 'span12'
+                = ff.collection_select :stage_id, Stage.all, :id, :name, {}, :class => 'required span12'
                 = ff.label :sector_id
                 = ff.number_field :sector_id, :class => 'span12 required'
               .span6

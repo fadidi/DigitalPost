@@ -68,7 +68,7 @@
                     &nbsp;
                   %dt Stage
                   %dd
-                    = @user.volunteer.stage_id
+                    = link_to @user.volunteer.stage.name, @user.volunteer.stage if @user.volunteer.stage?
                     &nbsp;
                   %dt Sector
                   %dd

@@ -43,6 +43,7 @@ describe User do
   it {should respond_to :pages}
   it {should respond_to :revisions}
   it {should respond_to :staff}
+  it {should respond_to :stage}
   it {should respond_to :unit}
   it {should respond_to :volunteer}
 
@@ -477,6 +478,27 @@ describe User do
         expect {
           @user.destroy
         }.to change(Staff, :count).by(-1)
+      end
+    end
+
+    describe 'stage' do
+      before :each do
+        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :stage => @stage = FactoryGirl.create(:stage))
+      end
+
+      it 'should be a stage' do
+        @user.stage.should be_an_instance_of Stage
+      end
+
+      it 'should be the right stage' do
+        FactoryGirl.create :stage
+        @user.stage.should eq @stage
+      end
+
+      it 'should not destroy the stage on destroy' do
+        expect {
+          @user.destroy
+        }.to change(Stage, :count).by(0)
       end
     end
 

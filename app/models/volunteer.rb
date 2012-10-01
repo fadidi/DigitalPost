@@ -12,6 +12,10 @@ class Volunteer < ActiveRecord::Base
 
   before_save :do_before_save
 
+  def stage?
+    !stage.nil?
+  end
+
   def to_param
     "#{user.id}-#{user.name.parameterize}"
   end

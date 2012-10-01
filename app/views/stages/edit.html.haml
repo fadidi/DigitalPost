@@ -1,7 +1,8 @@
+- content_for :backtrack do
+  %li= link_to 'Stages', stages_path
+  %li= link_to @stage.name, @stage
+  %li.active= link_to raw('<span class="icon-pencil"></span> Edit'), edit_stage_path(@stage)
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Stage'), new_stage_path if can? :create, Stage
 %h1 Editing stage
-
 = render 'form'
-
-= link_to 'Show', @stage
-\|
-= link_to 'Back', stages_path

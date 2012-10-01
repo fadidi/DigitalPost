@@ -1,5 +1,6 @@
-%h1 New stage
-
+- content_for :backtrack do
+  %li= link_to raw('Stages &rang;'), stages_path
+  %li.active= link_to 'New Stage', new_stage_path
+.well.blue
+  %h1 Add a Stage
 = render 'form'
-
-= link_to 'Back', stages_path

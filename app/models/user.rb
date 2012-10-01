@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+
+  # elasticsearch indexing
   include Tire::Model::Search
   include Tire::Model::Callbacks
   index_name ELASTICSEARCH_INDEX
@@ -34,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :revisions, :foreign_key => :author_id
   has_one :volunteer, :dependent => :destroy
   has_one :staff, :dependent => :destroy
+  has_one :stage, :through => :volunteer
 
   accepts_nested_attributes_for :volunteer
   accepts_nested_attributes_for :staff
