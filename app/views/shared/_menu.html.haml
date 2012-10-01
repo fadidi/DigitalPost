@@ -5,7 +5,7 @@
       %li= link_to page.title, page
     %li.nav-header Quick Links
     %li.nav-header Resources
-    %li= link_to 'Site Map', pages_path
+    %li= link_to 'Pages', pages_path
     - if can? :read, User
       %li= link_to 'Everyone', users_path
       %li= link_to 'Staff', staff_index_path if can? :read, Staff

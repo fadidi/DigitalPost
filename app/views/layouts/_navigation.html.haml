@@ -49,6 +49,19 @@
                   = link_to volunteers_path do
                     %span.icon-user
                     Volunteers
+                - if user_signed_in? && (current_user.has_role?(:staff) || current_user.has_role?(:volunteer))
+                  %li.divider
+                  %li.nav-header Peace Corps
+                  - if can? :read, Unit
+                    %li
+                      = link_to units_path do
+                        %span.icon-ok
+                        Admin Units
+                  - if can? :read, Stage
+                    %li
+                      = link_to stages_path do
+                        %span.icon-ok
+                        Stages
                 %li.divider
                 %li.nav-header Create
                 - if can?(:create, Page)
