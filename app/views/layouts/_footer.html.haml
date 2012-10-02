@@ -23,6 +23,12 @@
         %li= link_to 'Email', "contact@#{ENV['DOMAIN']}"
         %li= link_to 'Facebook', ENV['FB_URL'] if ENV['FB_URL'] && !ENV['FB_URL'].blank?
         %li= link_to 'Twitter', ENV['TWITTER_URL'] if ENV['TWITTER_URL'] && !ENV['TWITTER_URL'].blank?
+    .span3
+      %ul.nav.nav-list
+        - if can? :read, WorkZone
+          %li.nav-header Work Zones
+          - for work_zone in WorkZone.all do
+            = link_to work_zone.name, work_zone
   .row-fluid
     .span12
       %hr

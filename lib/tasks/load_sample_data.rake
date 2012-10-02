@@ -116,5 +116,16 @@ namespace :db do
       :swear_in => '2011-07-10',
       :anticipated_cos => '2013-07-10'
     }])
+
+    puts 'LOADING SAMPLE WORK ZONES...'
+    WorkZone.create!([{
+      :name => 'Toubacouta',
+      :abbreviation => 'TBKTA',
+      :region_id => 1
+    },{
+      :name => 'Kaffrine',
+      :abbreviation => 'KAF',
+      :region_id => 2
+    }])
   end
 end

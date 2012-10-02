@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002152058) do
+ActiveRecord::Schema.define(:version => 20121002181748) do
 
   create_table "pages", :force => true do |t|
     t.string   "title"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(:version => 20121002152058) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end
+
+  create_table "regions", :force => true do |t|
+    t.string   "name"
+    t.string   "abbreviation"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "regions", ["abbreviation"], :name => "index_regions_on_abbreviation", :unique => true
+  add_index "regions", ["name"], :name => "index_regions_on_name", :unique => true
 
   create_table "revisions", :force => true do |t|
     t.integer  "author_id"

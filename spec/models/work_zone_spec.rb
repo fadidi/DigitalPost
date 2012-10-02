@@ -26,6 +26,7 @@ describe WorkZone do
   # methods
   it {should respond_to :leader?}
   it {should respond_to :region?}
+  it {should respond_to :to_param}
 
   describe 'properties' do
     it {WorkZone.new.abbreviation.should be_blank}
@@ -69,7 +70,7 @@ describe WorkZone do
         end
 
         it 'should not allow duplicates with duplicate region_id' do
-          FactoryGirl.build(:work_zone, :name => 'Test'.upcase, :region_id => 1).should be_valid
+          FactoryGirl.build(:work_zone, :name => 'Test'.upcase, :region_id => 1).should_not be_valid
         end
       end
     end
@@ -91,7 +92,16 @@ describe WorkZone do
       }.to change(Volunteer, :count).by(0)}
     end
 
-    pending 'region' do
+    describe 'region' do
+      before :each do
+        @work_zone = FactoryGirl.create(:work_zone, :region => @region = FactoryGirl.create(:region))
+      end
+
+      it {@work_zone.region.should be_a_kind_of Region}
+      it {@work_zone.region.should eq @region}
+      it { expect {
+        @work_zone.destroy
+      }.to change(Region, :count).by(0)}
     end
 
     describe 'users' do
@@ -133,7 +143,32 @@ describe WorkZone do
       end
     end
 
-    pending 'region?' do
+    describe 'region?' do
+      it 'should be false by default' do
+        WorkZone.new.region?.should_not be_true
+      end
+
+      it 'should be true with a region' do
+        FactoryGirl.create(:work_zone, :region => FactoryGirl.create(:region)).region?.should be_true
+      end
+    end
+
+    describe 'to_param' do
+      it 'should be id and name' do
+        work_zone = FactoryGirl.create(:work_zone)
+        work_zone.to_param.should eq "#{work_zone.id}-#{work_zone.name.parameterize}"
+      end
+    end
+  end
+
+  describe 'scopes' do
+    describe 'default' do
+      it 'should order by name' do
+        @a = FactoryGirl.create(:work_zone, :name => 'Aaa')
+        @c = FactoryGirl.create(:work_zone, :name => 'Ccc')
+        @b = FactoryGirl.create(:work_zone, :name => 'Bbb')
+        WorkZone.all.should eq [@a,@b,@c]
+      end
     end
   end
 end

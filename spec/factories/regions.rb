@@ -1,9 +1,8 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :work_zone do
-    sequence(:abbreviation) {|n| "A#{n}D"}
+  factory :region do
     name
-    region
+    sequence(:abbreviation) {|n| "A#{n}C" }
   end
 end
