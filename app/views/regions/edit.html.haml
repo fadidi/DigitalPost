@@ -4,10 +4,5 @@
   %li.active= link_to raw('<span class="icon-pencil"></span> Edit'), edit_region_path(@region)
 - content_for :top_right_menu do
   %li= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path if can? :create, @region
-%h1 Editing region
 
 = render 'form'
-
-= link_to 'Show', @region
-\|
-= link_to 'Back', regions_path

@@ -3,16 +3,18 @@
   %li.active= link_to @region.name, @region
   %li= link_to raw('<span class="icon-pencil"></span> Edit'), edit_region_path(@region) if can? :edit, @region
 - content_for :top_right_menu do
-  %li= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path if can? :create, @region
-%p#notice= notice
+  %li= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path if can? :create, Region
 
-%p
-  %b Name:
-  = @region.name
-%p
-  %b Abbreviation:
-  = @region.abbreviation
-
-= link_to 'Edit', edit_region_path(@region)
-\|
-= link_to 'Back', regions_path
+.well.green
+  %h1
+    Region of
+    = @region.name
+    %small
+      #{pluralize @region.work_zones.count, 'work zone'},
+      #{pluralize @region.volunteers.count, 'PCV'}
+%ul.thumbnails
+  - for work_zone in @region.work_zones do
+    %li.span3
+      = link_to work_zone, :class => 'thumbnail' do
+        = image_tag 'http://placehold.it/300x200'
+        %h4.center= work_zone.name
