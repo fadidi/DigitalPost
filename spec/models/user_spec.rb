@@ -549,12 +549,12 @@ describe User do
       it 'should read correctly' do
         [Page].
           each { |resource| @ability.should be_able_to :read, resource }
-        [Ability, Reference, Revision, Role, @user, ValidEmail, Volunteer, WorkZone].
+        [Ability, Reference, Region, Revision, Role, @user, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to :read, resource }
       end
 
       it 'should create, edit, destroy correctly' do
-        [Ability, Page, Reference, Revision, Role, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, Page, Reference, Region, Revision, Role, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to [:create, :edit, :destroy], resource }
       end
     end
@@ -583,7 +583,7 @@ describe User do
       it 'should read correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [Page, Reference, Revision, User, Volunteer, Unit, WorkZone].
+          [Page, Reference, Region, Revision, User, Volunteer, Unit, WorkZone].
             each { |resource| @ability.should be_able_to :read, resource }
           [Ability, Role, ValidEmail].
             each { |resource| @ability.should_not be_able_to :read, resource }
@@ -595,7 +595,7 @@ describe User do
           @ability = Ability.new(user)
           [Page, Revision].
             each { |resource| @ability.should be_able_to :create, resource }
-          [Ability, Reference, Role, User, WorkZone].
+          [Ability, Region, Reference, Role, User, WorkZone].
             each { |resource| @ability.should_not be_able_to :create, resource }
         end
       end
@@ -609,7 +609,7 @@ describe User do
       end
 
       it 'should manage correctly' do
-        [Page, Revision, Role, ValidEmail, WorkZone].
+        [Page, Region, Revision, Role, ValidEmail, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
         [Ability, Unit, User].
           each { |resource| @ability.should_not be_able_to :manage, resource }
@@ -624,7 +624,7 @@ describe User do
       end
 
       it 'should manage everything' do
-        [Ability, Page, Reference, Revision, Role, Unit, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, Page, Reference, Region, Revision, Role, Unit, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
       end
     end

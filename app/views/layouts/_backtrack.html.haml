@@ -26,6 +26,12 @@
           %ul.dropdown-menu
             - for work_zone in WorkZone.all do
               %li= link_to work_zone.name, work_zone
+      - if can? :read, Region
+        %li.dropdown-submenu
+          = link_to 'Regions', regions_path, :tabindex => '-1'
+          %ul.dropdown-menu
+            - for region in Region.all do
+              %li= link_to region.name, region
       - if can? :read, Stage
         %li.dropdown-submenu
           = link_to 'Stages', stages_path, :tabindex => '-1'

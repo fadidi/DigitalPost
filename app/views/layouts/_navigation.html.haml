@@ -35,6 +35,7 @@
                   %span.icon-list-alt
                   Pages
               %li= link_to 'Work Zones', work_zones_path if can? :read, WorkZone
+              %li= link_to 'Regions', regions_path if can? :read, Region
               - if signed_in?
                 %li.divider
                 %li.nav-header People

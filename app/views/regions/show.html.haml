@@ -1,3 +1,9 @@
+- content_for :backtrack do
+  %li= link_to raw('Regions &rang;'), regions_path
+  %li.active= link_to @region.name, @region
+  %li= link_to raw('<span class="icon-pencil"></span> Edit'), edit_region_path(@region) if can? :edit, @region
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path if can? :create, @region
 %p#notice= notice
 
 %p

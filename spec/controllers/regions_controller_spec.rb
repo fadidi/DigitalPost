@@ -24,7 +24,10 @@ describe RegionsController do
   # Region. As you add validations to Region, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {
+      :name => 'Test Region',
+      :abbreviation => 'TST'
+    }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -34,10 +37,12 @@ describe RegionsController do
     {}
   end
 
+  login_admin
+
   describe "GET index" do
     it "assigns all regions as @regions" do
       region = Region.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:regions).should eq([region])
     end
   end
@@ -45,14 +50,14 @@ describe RegionsController do
   describe "GET show" do
     it "assigns the requested region as @region" do
       region = Region.create! valid_attributes
-      get :show, {:id => region.to_param}, valid_session
+      get :show, {:id => region.to_param}
       assigns(:region).should eq(region)
     end
   end
 
   describe "GET new" do
     it "assigns a new region as @region" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:region).should be_a_new(Region)
     end
   end
@@ -60,7 +65,7 @@ describe RegionsController do
   describe "GET edit" do
     it "assigns the requested region as @region" do
       region = Region.create! valid_attributes
-      get :edit, {:id => region.to_param}, valid_session
+      get :edit, {:id => region.to_param}
       assigns(:region).should eq(region)
     end
   end
@@ -69,18 +74,18 @@ describe RegionsController do
     describe "with valid params" do
       it "creates a new Region" do
         expect {
-          post :create, {:region => valid_attributes}, valid_session
+          post :create, {:region => valid_attributes}
         }.to change(Region, :count).by(1)
       end
 
       it "assigns a newly created region as @region" do
-        post :create, {:region => valid_attributes}, valid_session
+        post :create, {:region => valid_attributes}
         assigns(:region).should be_a(Region)
         assigns(:region).should be_persisted
       end
 
       it "redirects to the created region" do
-        post :create, {:region => valid_attributes}, valid_session
+        post :create, {:region => valid_attributes}
         response.should redirect_to(Region.last)
       end
     end
@@ -89,14 +94,14 @@ describe RegionsController do
       it "assigns a newly created but unsaved region as @region" do
         # Trigger the behavior that occurs when invalid params are submitted
         Region.any_instance.stub(:save).and_return(false)
-        post :create, {:region => {}}, valid_session
+        post :create, {:region => {}}
         assigns(:region).should be_a_new(Region)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Region.any_instance.stub(:save).and_return(false)
-        post :create, {:region => {}}, valid_session
+        post :create, {:region => {}}
         response.should render_template("new")
       end
     end
@@ -111,18 +116,18 @@ describe RegionsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Region.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => region.to_param, :region => {'these' => 'params'}}, valid_session
+        put :update, {:id => region.to_param, :region => {'these' => 'params'}}
       end
 
       it "assigns the requested region as @region" do
         region = Region.create! valid_attributes
-        put :update, {:id => region.to_param, :region => valid_attributes}, valid_session
+        put :update, {:id => region.to_param, :region => valid_attributes}
         assigns(:region).should eq(region)
       end
 
       it "redirects to the region" do
         region = Region.create! valid_attributes
-        put :update, {:id => region.to_param, :region => valid_attributes}, valid_session
+        put :update, {:id => region.to_param, :region => valid_attributes}
         response.should redirect_to(region)
       end
     end
@@ -132,7 +137,7 @@ describe RegionsController do
         region = Region.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Region.any_instance.stub(:save).and_return(false)
-        put :update, {:id => region.to_param, :region => {}}, valid_session
+        put :update, {:id => region.to_param, :region => {}}
         assigns(:region).should eq(region)
       end
 
@@ -140,7 +145,7 @@ describe RegionsController do
         region = Region.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Region.any_instance.stub(:save).and_return(false)
-        put :update, {:id => region.to_param, :region => {}}, valid_session
+        put :update, {:id => region.to_param, :region => {}}
         response.should render_template("edit")
       end
     end
@@ -150,14 +155,14 @@ describe RegionsController do
     it "destroys the requested region" do
       region = Region.create! valid_attributes
       expect {
-        delete :destroy, {:id => region.to_param}, valid_session
+        delete :destroy, {:id => region.to_param}
       }.to change(Region, :count).by(-1)
     end
 
     it "redirects to the regions list" do
       region = Region.create! valid_attributes
-      delete :destroy, {:id => region.to_param}, valid_session
-      response.should redirect_to(regions_url)
+      delete :destroy, {:id => region.to_param}
+      response.should redirect_to(regions_path)
     end
   end
 

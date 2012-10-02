@@ -1,21 +1,13 @@
-%h1 Listing regions
+- content_for :backtrack do
+  %li.active= link_to 'Regions', regions_path
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path if can? :create, Region
 
-%table
-  %tr
-    %th Name
-    %th Abbreviation
-    %th
-    %th
-    %th
-
-  - @regions.each do |region|
-    %tr
-      %td= region.name
-      %td= region.abbreviation
-      %td= link_to 'Show', region
-      %td= link_to 'Edit', edit_region_path(region)
-      %td= link_to 'Destroy', region, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Region', new_region_path
+.well.blue
+  %h1 Regions
+%ul.thumbnails
+  - for region in @regions do
+    %li.span3
+      = link_to region, :class => 'thumbnail' do
+        = image_tag ''
+        %p.center= region.name

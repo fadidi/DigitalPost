@@ -1,3 +1,7 @@
+- content_for :backtrack do
+  %li= link_to raw('Regions &rang;'), regions_path
+- content_for :top_right_menu do
+  %li.active= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path
 %h1 New region
 
 = render 'form'

@@ -4,6 +4,13 @@
       %Ul.nav.nav-list
         %li.nav-header Things
         %li= link_to 'Pages', pages_path
+      %ul.nav.nav-list
+        %li.nav-header Links
+        %li= link_to 'Peace Corps', 'http://peacecorps.gov'
+        %li.nav-header Contact us
+        %li= link_to 'Email', "contact@#{ENV['DOMAIN']}"
+        %li= link_to 'Facebook', ENV['FB_URL'] if ENV['FB_URL'] && !ENV['FB_URL'].blank?
+        %li= link_to 'Twitter', ENV['TWITTER_URL'] if ENV['TWITTER_URL'] && !ENV['TWITTER_URL'].blank?
     .span3
       %ul.nav.nav-list
         - if can?(:read, User)
@@ -17,12 +24,10 @@
             %li= link_to unit.name, unit
     .span3
       %ul.nav.nav-list
-        %li.nav-header Links
-        %li= link_to 'Peace Corps', 'http://peacecorps.gov'
-        %li.nav-header Contact us
-        %li= link_to 'Email', "contact@#{ENV['DOMAIN']}"
-        %li= link_to 'Facebook', ENV['FB_URL'] if ENV['FB_URL'] && !ENV['FB_URL'].blank?
-        %li= link_to 'Twitter', ENV['TWITTER_URL'] if ENV['TWITTER_URL'] && !ENV['TWITTER_URL'].blank?
+        - if can? :read, Region
+          %li.nav-header Regions
+          - for region in Region.all do
+            = link_to region.name, region
     .span3
       %ul.nav.nav-list
         - if can? :read, WorkZone
