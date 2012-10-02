@@ -1,4 +1,17 @@
 class WorkZone < ActiveRecord::Base
+
+  # elasticsearch indexing
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :handle, :as => 'name'
+    indexes :abbreviation
+    indexes :leader_id
+    indexes :name
+    indexes :region_id
+  end
+
   attr_accessible :abbreviation, :leader_id, :name, :region_id
 
   validates :abbreviation, :length => {:minimum => 2, :maximum => 8}, :uniqueness => {:case_sensitive => false}

@@ -3,6 +3,7 @@
   %li.active= link_to @work_zone.name, @work_zone
   %li= link_to 'Edit', edit_work_zone_path(@work_zone) if can? :edit, @work_zone
 - content_for :top_right_menu do
+  %li= link_to raw("<span class='icon-arrow-up'></span> #{@work_zone.region.name}"), @work_zone.region
   %li= link_to raw('<span class="icon-plus"></span> New Work Zone'), new_work_zone_path if can? :create, WorkZone
 .well.orange
   %h1

@@ -117,15 +117,15 @@ namespace :db do
       :anticipated_cos => '2013-07-10'
     }])
 
-    puts 'LOADING SAMPLE WORK ZONES...'
-    WorkZone.create!([{
+    puts 'LOADING SAMPLE REGIONS / WORK ZONES...'
+    region = Region.create!(
+      :name => 'Kaolack',
+      :abbreviation => 'KLK'
+    )
+    region.work_zones.create!([{
       :name => 'Toubacouta',
-      :abbreviation => 'TBKTA',
-      :region_id => 1
-    },{
-      :name => 'Kaffrine',
-      :abbreviation => 'KAF',
-      :region_id => 2
+      :abbreviation => 'tbkta',
     }])
+
   end
 end

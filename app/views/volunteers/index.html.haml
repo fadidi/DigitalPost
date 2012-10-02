@@ -10,10 +10,11 @@
     %th Phone
     %th Email
     %th Local Name
+    %th Sector
     %th Site
     %th Work Zone
+    %th Region
     %th Stage
-    %th Sector
     %th COS Date
   %tbody
     - @volunteers.each do |vol|
@@ -22,8 +23,9 @@
         %td= vol.user.phone
         %td= vol.user.email
         %td= vol.local_name
-        %td= vol.site
-        %td= vol.work_zone_id
-        %td= link_to vol.stage.name, vol.stage if vol.stage?
         %th= vol.sector_id
+        %td= vol.site
+        %td= link_to vol.work_zone.name, vol.work_zone if vol.work_zone?
+        %td= link_to vol.region.abbreviation, vol.region if vol.region?
+        %td= link_to vol.stage.name, vol.stage if vol.stage?
         %th= vol.cos_date.to_date unless vol.cos_date.blank?

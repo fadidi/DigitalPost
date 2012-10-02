@@ -26,6 +26,7 @@ describe Volunteer do
   it {should respond_to :work_zone}
 
   # methods
+  it {should respond_to :region?}
   it {should respond_to :stage?}
   it {should respond_to :to_param}
   it {should respond_to :work_zone?}
@@ -161,8 +162,14 @@ describe Volunteer do
   end
 
   describe 'methods' do
+    describe 'region?' do
+      it {Volunteer.new.region?.should_not be_true}
+      it {FactoryGirl.create(:volunteer, :work_zone => FactoryGirl.create(:work_zone)).region?.should be_true}
+    end
+
     describe 'stage?' do
       it {Volunteer.new.stage?.should_not be_true}
+      it {FactoryGirl.create(:volunteer, :stage_id => 1).stage?.should_not be_true}
       it {FactoryGirl.create(:volunteer, :stage => FactoryGirl.create(:stage)).stage?.should be_true}
     end
 

@@ -24,6 +24,10 @@ class Volunteer < ActiveRecord::Base
 
   before_save :do_before_save
 
+  def region?
+    work_zone? ? (work_zone.region? ? true : false) : false
+  end
+
   def stage?
     !stage.nil?
   end
