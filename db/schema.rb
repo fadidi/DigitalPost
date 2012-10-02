@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121001105110) do
+ActiveRecord::Schema.define(:version => 20121002152058) do
 
   create_table "pages", :force => true do |t|
     t.string   "title"
@@ -160,5 +160,17 @@ ActiveRecord::Schema.define(:version => 20121001105110) do
   end
 
   add_index "volunteers", ["user_id"], :name => "index_volunteers_on_user_id", :unique => true
+
+  create_table "work_zones", :force => true do |t|
+    t.string   "abbreviation"
+    t.string   "name"
+    t.integer  "leader_id"
+    t.integer  "region_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "work_zones", ["abbreviation"], :name => "index_work_zones_on_abbreviation", :unique => true
+  add_index "work_zones", ["name", "region_id"], :name => "index_work_zones_on_name_and_region_id", :unique => true
 
 end

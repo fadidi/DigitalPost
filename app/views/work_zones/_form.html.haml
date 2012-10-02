@@ -1,0 +1,19 @@
+= form_for @work_zone do |f|
+  = render 'shared/form_errors', :item => @work_zone if @work_zone.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span6
+      = f.label :name, 'Work Zone Name'
+      = f.text_field :name, :class => 'span12 required'
+    .span6
+      = f.label :abbreviation
+      = f.text_field :abbreviation, :class => 'span12 required'
+  .row-fluid
+    .span6
+      = f.label :region_id
+      = f.number_field :region_id, :class => 'span12, required'
+    .span6
+      = f.label :leader_id, 'Work Zone Leader'
+      = f.collection_select :leader_id, User.all, :id, :name, {:include_blank => true}, :class => 'span12'
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'

@@ -1,4 +1,14 @@
 class Page < ActiveRecord::Base
+
+  # elasticsearch indexing
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :primary, :as => 'title'
+    indexes :html
+  end
+
   attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes, :user_id
 
   # user currently editing the page

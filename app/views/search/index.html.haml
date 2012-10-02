@@ -1,0 +1,18 @@
+- content_for :backtrack do
+  %li.active= link_to 'Search', search_index_path
+.well.red
+  %h1 Search Results
+- if @results.size < 1
+  %h3 Your search returned no results.
+- else
+  %ul.nav.nav-list
+    - for result in @results do
+      - if can? :read, result.type.classify
+        %li= link_to "#{result.primary}, #{result.type}", result
+      - else
+        - @restricted += 1
+- if @restricted > 0
+  - content_for :alerts do
+    .alert.alert-error.center You're not seeing all search results because you're not #{link_to 'signed in', new_user_session_path}.
+%hr
+= @results.size.inspect

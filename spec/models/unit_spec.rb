@@ -41,6 +41,7 @@ describe Unit do
     end
 
     it {Unit.new(@attr.merge(:description => '')).should be_valid}
+    it {Unit.new(@attr.merge(:description => 'a'*256)).should_not be_valid}
     it {Unit.new(@attr.merge(:head_id => '')).should be_valid}
     it {Unit.new(@attr.merge(:head_id => 'a')).should_not be_valid}
   end

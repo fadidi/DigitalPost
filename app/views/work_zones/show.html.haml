@@ -1,0 +1,31 @@
+- content_for :backtrack do
+  %li= link_to raw('Work Zones &rang;'), work_zones_path
+  %li.active= link_to @work_zone.name, @work_zone
+  %li= link_to 'Edit', edit_work_zone_path(@work_zone) if can? :edit, @work_zone
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Work Zone'), new_work_zone_path if can? :create, WorkZone
+.well.orange
+  %h1
+    = @work_zone.name
+    Volunteers
+%table.table
+  %thead
+    %th Name
+    %th Phone
+    %th Email
+    %th Local Name
+    %th Site
+    %th Stage
+    %th Sector
+    %th COS Date
+  %tbody
+    - @work_zone.volunteers.each do |vol|
+      %tr
+        %td= link_to vol.user.name, vol.user
+        %td= vol.user.phone
+        %td= vol.user.email
+        %td= vol.local_name
+        %td= vol.site
+        %td= link_to vol.stage.name, vol.stage if vol.stage?
+        %th= vol.sector_id
+        %th= vol.cos_date.to_date unless vol.cos_date.blank?

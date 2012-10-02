@@ -1,5 +1,9 @@
 DigitalPost::Application.routes.draw do
 
+  resources :work_zones
+
+  resources :search, :only => [:index]
+
   resources :stages
 
   resources :units
@@ -24,7 +28,7 @@ DigitalPost::Application.routes.draw do
     root :to => 'home#index'
   end
   
-  match '/search', :to => 'home#search', :as => :search
+  #match '/search', :to => 'home#search', :as => :search
   root :to => "home#index"
   
   #devise_for :users

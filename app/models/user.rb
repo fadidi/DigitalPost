@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   include Tire::Model::Callbacks
   index_name ELASTICSEARCH_INDEX
   mapping do
-    indexes :title, :as => 'name'
+    indexes :primary, :as => 'name'
     indexes :email
     indexes :phone
     indexes :bio
@@ -34,9 +34,10 @@ class User < ActiveRecord::Base
 
   has_many :pages
   has_many :revisions, :foreign_key => :author_id
-  has_one :volunteer, :dependent => :destroy
   has_one :staff, :dependent => :destroy
+  has_one :volunteer, :dependent => :destroy
   has_one :stage, :through => :volunteer
+  has_one :work_zone, :through => :volunteer
 
   accepts_nested_attributes_for :volunteer
   accepts_nested_attributes_for :staff

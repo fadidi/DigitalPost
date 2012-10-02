@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
       end
     end
     if current_user.staff?
-      current_user.unit? ? unit_path(current_user.unit) : units_path
+      current_user.unit? ? unit_path(current_user.unit) : work_zones_path
     elsif current_user.volunteer?
       units_path
     else

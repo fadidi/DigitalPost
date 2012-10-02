@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 puts 'SETTING UP DEFAULT UNITS'
+# warning! need to update lib/tasks/load_sample_data if you change the names of these!
 Unit.create!([{
   :name => 'Administrative',
   :description => 'The Administrative unit is responsible for the operations and management of the Post.',
@@ -26,43 +27,15 @@ Unit.create!([{
 # create default users
 puts 'SETTING UP DEFAULT USER LOGIN'
 User.create!([{
-  :name => 'Jack Brown',
+  :name => 'Fadidi Media Admin',
   :email => 'jack@brownjohnf.com',
-  :password => 'password',
-  :password_confirmation => 'password'
-},{
-  :name => 'Iffy Izeh',
-  :email => 'iezeh@peacecorps.gov',
-  :password => 'password',
-  :password_confirmation => 'password'
-},{
-  :name => 'Vanessa Dickey',
-  :email => 'vdickey@peacecorps.gov',
-  :password => 'password',
-  :password_confirmation => 'password'
-},{
-  :name => 'Mbouille Diallo',
-  :email => 'mdiallo@peacecorps.gov',
-  :password => 'password',
-  :password_confirmation => 'password'
-},{
-  :name => 'Dr. Ulle Drame',
-  :email => 'udrame@peacecorps.gov',
-  :password => 'password',
-  :password_confirmation => 'password'
-},{
-  :name => 'Etienne Senghor',
-  :email => 'esenghor@peacecorps.gov',
   :password => 'password',
   :password_confirmation => 'password'
 }])
 
 ValidEmail.create!([{
   :email => 'jack@brownjohnf.com',
-  :permissions => 'admin,volunteer'
-},{
-  :email => 'web@pcsenegal.org',
-  :permissions => 'admin,volunteer'
+  :permissions => 'admin'
 }])
 
 # create default page

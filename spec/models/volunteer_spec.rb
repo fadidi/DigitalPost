@@ -23,11 +23,12 @@ describe Volunteer do
   # associations
   it {should respond_to :stage}
   it {should respond_to :user}
-  pending {should respond_to :work_zone}
+  it {should respond_to :work_zone}
 
   # methods
   it {should respond_to :stage?}
   it {should respond_to :to_param}
+  it {should respond_to :work_zone?}
 
   describe 'properties' do
     before :each do
@@ -135,6 +136,27 @@ describe Volunteer do
         FactoryGirl.create :user
         @vol.user.should eq @user
       end
+
+      it {expect {
+        @vol.destroy
+      }.to change(User, :count).by(0)}
+    end
+
+    describe 'work_zone' do
+      before :each do
+        @vol = FactoryGirl.create(:volunteer, :work_zone => @work_zone = FactoryGirl.create(:work_zone))
+      end
+
+      it {@vol.work_zone.should be_an_instance_of WorkZone}
+
+      it 'should be the correct work_zone' do
+        FactoryGirl.create :work_zone
+        @vol.work_zone.should eq @work_zone
+      end
+
+      it {expect {
+        @vol.destroy
+      }.to change(WorkZone, :count).by(0)}
     end
   end
 
@@ -151,6 +173,14 @@ describe Volunteer do
 
       it 'should using the user id' do
         @vol.to_param.should eq "#{@vol.user.id}-#{@vol.user.name.parameterize}"
+      end
+    end
+
+    describe 'work_zone?' do
+      it {Volunteer.new.work_zone?.should_not be_true}
+
+      it 'should be true with a work zone set' do
+        FactoryGirl.create(:volunteer, :work_zone => FactoryGirl.create(:work_zone)).work_zone?.should be_true
       end
     end
   end

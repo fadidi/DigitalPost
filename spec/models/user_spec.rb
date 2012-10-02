@@ -46,6 +46,7 @@ describe User do
   it {should respond_to :stage}
   it {should respond_to :unit}
   it {should respond_to :volunteer}
+  it {should respond_to :work_zone}
 
   describe 'properties' do
     describe 'bio' do
@@ -528,6 +529,15 @@ describe User do
         }.to change(Volunteer, :count).by(-1)
       end
     end
+
+    describe 'work_zone' do
+      before :each do
+        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :work_zone => @work_zone = FactoryGirl.create(:work_zone))
+      end
+
+      it {@user.work_zone.should be_a_kind_of WorkZone}
+      it {@user.work_zone.should eq @work_zone}
+    end
   end
 
   describe 'abilities' do
@@ -539,12 +549,12 @@ describe User do
       it 'should read correctly' do
         [Page].
           each { |resource| @ability.should be_able_to :read, resource }
-        [Ability, Reference, Revision, Role, @user, ValidEmail, Volunteer].
+        [Ability, Reference, Revision, Role, @user, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to :read, resource }
       end
 
       it 'should create, edit, destroy correctly' do
-        [Ability, Page, Reference, Revision, Role, User, ValidEmail, Volunteer].
+        [Ability, Page, Reference, Revision, Role, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to [:create, :edit, :destroy], resource }
       end
     end
@@ -573,7 +583,7 @@ describe User do
       it 'should read correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [Page, Reference, Revision, User, Volunteer, Unit].
+          [Page, Reference, Revision, User, Volunteer, Unit, WorkZone].
             each { |resource| @ability.should be_able_to :read, resource }
           [Ability, Role, ValidEmail].
             each { |resource| @ability.should_not be_able_to :read, resource }
@@ -585,7 +595,7 @@ describe User do
           @ability = Ability.new(user)
           [Page, Revision].
             each { |resource| @ability.should be_able_to :create, resource }
-          [Ability, Reference, Role, User].
+          [Ability, Reference, Role, User, WorkZone].
             each { |resource| @ability.should_not be_able_to :create, resource }
         end
       end
@@ -599,7 +609,7 @@ describe User do
       end
 
       it 'should manage correctly' do
-        [Page, Revision, Role, ValidEmail].
+        [Page, Revision, Role, ValidEmail, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
         [Ability, Unit, User].
           each { |resource| @ability.should_not be_able_to :manage, resource }
@@ -614,7 +624,7 @@ describe User do
       end
 
       it 'should manage everything' do
-        [Ability, Page, Reference, Revision, Role, Unit, User, ValidEmail, Volunteer].
+        [Ability, Page, Reference, Revision, Role, Unit, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
       end
     end

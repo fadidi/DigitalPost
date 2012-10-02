@@ -36,7 +36,7 @@
                 = ff.label :local_name, 'Local Name'
                 = ff.text_field :local_name, :class => 'required span12'
                 = ff.label :work_zone_id, 'Work Zone'
-                = ff.number_field :work_zone_id, :class => 'span12 required'
+                = ff.collection_select :work_zone_id, WorkZone.all, :id, :name, {:include_blank => true}, :class => 'span12 required'
                 = ff.label :cos_date, 'COS Date'
                 = ff.text_field :cos_date, :class => 'span12 datepicker required'
                 = ff.label :stage_id

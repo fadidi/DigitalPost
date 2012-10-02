@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe HomeController do
+describe SearchController do
   describe "GET 'index'" do
     it "should be successful" do
       get 'index'

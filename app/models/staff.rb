@@ -1,4 +1,15 @@
 class Staff < ActiveRecord::Base
+
+  # elasticsearch indexing
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :primary, :as => 'job_title'
+    indexes :job_description_html
+    indexes :location
+  end
+
   attr_accessible :job_description_html, :job_description_markdown, :job_title, :location, :user_id, :unit_id
 
   belongs_to :user

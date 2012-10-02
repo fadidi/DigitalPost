@@ -1,0 +1,25 @@
+- content_for :backtrack do
+  %li.active= link_to 'Work Zones', work_zones_path
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Work Zone'), new_work_zone_path if can? :create, WorkZone
+
+.row-fluid
+  .span9
+    .well.purple
+      %h1 Work Zones
+  .span3
+    .well.orange
+      %h3 Work Zone Leaders
+.row-fluid
+  .span9
+    %ul.thumbnails
+      - for work_zone in @work_zones do
+        %li.span3
+          = link_to work_zone, :class => 'thumbnail' do
+            %h4.center= work_zone.region_id
+            = image_tag 'http://placehold.it/195x100'
+            %p.center= work_zone.name
+  .span3
+    %ul.nav.nav-tabs.nav-stacked
+      - for work_zone in @work_zones do
+        %li= link_to work_zone.leader.name, work_zone.leader if work_zone.leader?

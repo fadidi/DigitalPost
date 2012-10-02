@@ -4,6 +4,7 @@ namespace :db do
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
     Rake::Task['db:seed'].invoke
+    Rake::Task['db:load_sample_data'].invoke
     Rake::Task['db:test:prepare'].invoke
     Rails.env = ENV['RAILS_ENV'] = 'test'
     Rake::Task['db:seed'].invoke
