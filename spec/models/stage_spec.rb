@@ -58,11 +58,7 @@ describe Stage do
 
     describe 'anticipated_cos' do
       it 'should reject duplicates' do
-        stage1 = Stage.new
-        stage1.update_attributes(@set_attr)
-        stage2 = Stage.new
-        stage2.anticipated_cos = @set_attr[:anticipated_cos]
-        stage2.should_not be_valid
+        FactoryGirl.build(:stage, :anticipated_cos => FactoryGirl.create(:stage).anticipated_cos).should_not be_valid
       end
 
       it 'should reject invalid format dates' do
@@ -83,11 +79,8 @@ describe Stage do
 
     describe 'arrival' do
       it 'should reject duplicates' do
-        stage1 = Stage.new
-        stage1.update_attributes(@set_attr)
-        stage2 = Stage.new
-        stage2.arrival = @set_attr[:arrival]
-        stage2.should_not be_valid
+        arrival = FactoryGirl.create(:stage).arrival
+        FactoryGirl.build(:stage, :arrival => arrival).should_not be_valid
       end
 
       it 'should reject invalid format dates' do
@@ -108,11 +101,7 @@ describe Stage do
 
     describe 'swear_in' do
       it 'should reject duplicates' do
-        stage1 = Stage.new
-        stage1.update_attributes(@set_attr)
-        stage2 = Stage.new
-        stage2.swear_in = @set_attr[:swear_in]
-        stage2.should_not be_valid
+        FactoryGirl.build(:stage, :swear_in => FactoryGirl.create(:stage).swear_in).should_not be_valid
       end
 
       it 'should reject invalid format dates' do

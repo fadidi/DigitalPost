@@ -18,6 +18,7 @@ describe Staff do
   it {should respond_to :user_id}
 
   # associations
+  it {should respond_to :sectors}
   it {should respond_to :user}
   it {should respond_to :unit}
 
@@ -86,6 +87,19 @@ describe Staff do
   end
 
   describe 'associations' do
+    describe 'sectors' do
+      before :each do
+        @sector = FactoryGirl.create(:sector, :apcd => @staff = FactoryGirl.create(:staff))
+      end
+
+      it {@staff.sectors.first.should be_an_instance_of Sector}
+
+      it 'should be the correct sector' do
+        FactoryGirl.create :sector
+        @staff.sectors.should eq [@sector]
+      end
+    end
+
     describe 'user' do
       before :each do
         @staff = FactoryGirl.create(:staff, :user => @user = FactoryGirl.create(:user))

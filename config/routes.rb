@@ -1,5 +1,7 @@
 DigitalPost::Application.routes.draw do
 
+  resources :sectors
+
   resources :regions
 
   resources :work_zones

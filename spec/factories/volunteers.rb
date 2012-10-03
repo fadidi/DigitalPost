@@ -4,6 +4,7 @@ FactoryGirl.define do
   factory :volunteer, :aliases => [:leader] do
     user
     stage
+    sector
     work_zone
   end
 end

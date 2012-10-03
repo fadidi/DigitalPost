@@ -21,6 +21,7 @@ describe Volunteer do
   it {should respond_to :work_zone_id}
 
   # associations
+  it {should respond_to :sector}
   it {should respond_to :stage}
   it {should respond_to :user}
   it {should respond_to :work_zone}
@@ -124,6 +125,23 @@ describe Volunteer do
   end
 
   describe 'associations' do
+    describe 'sector' do
+      before :each do
+        @vol = FactoryGirl.create(:volunteer, :sector => @sector = FactoryGirl.create(:sector))
+      end
+
+      it {@vol.sector.should be_an_instance_of Sector}
+
+      it 'should be the correct sector' do
+        FactoryGirl.create :sector
+        @vol.sector.should eq @sector
+      end
+
+      it {expect {
+        @vol.destroy
+      }.to change(Sector, :count).by(0)}
+    end
+
     describe 'user' do
       before :each do
         @vol = FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user))

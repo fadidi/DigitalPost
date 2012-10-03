@@ -13,6 +13,7 @@ class Volunteer < ActiveRecord::Base
   attr_accessible :cos_date, :local_name, :sector_id, :service_info_html, 
     :service_info_markdown, :site, :stage_id, :user_id, :work_zone_id
 
+  belongs_to :sector
   belongs_to :stage
   belongs_to :user
   belongs_to :work_zone

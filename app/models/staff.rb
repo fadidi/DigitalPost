@@ -15,6 +15,8 @@ class Staff < ActiveRecord::Base
   belongs_to :user
   belongs_to :unit
 
+  has_many :sectors, :foreign_key => :apcd_id
+
   validates :user_id, :presence => true, :numericality => { :is_integer => true }, :uniqueness => true
   validates :unit_id, :numericality => { :is_integer => true }, :allow_blank => true
   validates :job_title, :length => { :maximum => 255 }, :allow_blank => true
