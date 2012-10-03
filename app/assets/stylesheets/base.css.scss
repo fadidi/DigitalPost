@@ -26,10 +26,14 @@ body {
   }
   #main {
     #left-menu-container {
-      border-right: 1px solid lightgray;
       border-top: 1px solid lightgray;
+      border-right: 1px solid lightgray;
+      border-bottom: 1px solid lightgray;
       padding-top: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
       @include border-top-right-radius(5px);
+      @include border-bottom-right-radius(5px);
     }
     table {
       background-color: $white;

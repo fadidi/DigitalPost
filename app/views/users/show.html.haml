@@ -72,11 +72,11 @@
                     &nbsp;
                   %dt Sector
                   %dd
-                    = @user.volunteer.sector_id
+                    = link_to @user.volunteer.sector.name, @user.volunteer.sector if @user.volunteer.sector?
                     &nbsp;
                   %dt COS Date
                   %dd
-                    = @user.volunteer.cos_date
+                    = @user.volunteer.cos_date.strftime('%m %B %Y') unless @user.volunteer.cos_date.blank?
                     &nbsp;
               - if @user.staff?
                 %h3 Staff Info
@@ -103,9 +103,13 @@
                 %h3 Job Description
                 %blockquote= raw(@user.staff.job_description_html)
               %h3 Permissions
-              %ul.no-bullet
-                - for role in @user.roles do
-                  %li= role.name
+              - if @user.verified?
+                %ul.no-bullet
+                  - for role in @user.roles do
+                    %li= role.name
+              - else
+                %blockquote
+                  %p User not verified.
         .tab-pane#pages
           - if @user.verified?
             .page-header

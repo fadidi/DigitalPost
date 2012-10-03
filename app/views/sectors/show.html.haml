@@ -1,12 +1,23 @@
-%p#notice= notice
+- content_for :backtrack do
+  %li= link_to raw('Sectors &rang;'), sectors_path
+  %li.active= link_to raw("#{@sector.name} &rang;"), @sector
+  %li= link_to raw('<span class="icon-pencil"></span> Edit'), edit_sector_path(@sector) if can? :edit, @sector
+- content_for :top_right_menu do
+  %li= link_to raw("<span class='icon-user'></span> #{@sector.apcd.name}, APCD"), @sector.apcd.user if @sector.apcd?
+  %li= link_to raw('<span class="icon-plus"></span> New Sector'), new_sector_path if can? :create, Sector
 
-%p
-  %b Apcd:
-  = @sector.apcd_id
-%p
-  %b Name:
-  = @sector.name
-
-= link_to 'Edit', edit_sector_path(@sector)
-\|
-= link_to 'Back', sectors_path
+.well.blue
+  %h1
+    %small= @sector.abbreviation
+    = @sector.name
+    %small= "#{@sector.apcd.name}, APCD" if @sector.apcd?
+.row-fluid
+  .span4
+    .page-header
+      %h1 Volunteers
+    %ul.nav.nav-tabs.nav-stacked
+      - for user in @sector.users
+        %li
+          = link_to user do
+            = user.name
+            = "| #{user.volunteer.region.name}" if user.volunteer.sector.name?

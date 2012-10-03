@@ -7,6 +7,8 @@
   %li= link_to raw('<span class="icon-plus"></span> New Work Zone'), new_work_zone_path if can? :create, WorkZone
 .well.orange
   %h1
+    = @work_zone.region.name
+    &rang;
     = @work_zone.name
     Volunteers
 %table.table
@@ -28,5 +30,5 @@
         %td= vol.local_name
         %td= vol.site
         %td= link_to vol.stage.name, vol.stage if vol.stage?
-        %th= vol.sector_id
-        %th= vol.cos_date.to_date unless vol.cos_date.blank?
+        %td= link_to vol.sector.abbreviation, vol.sector if vol.sector?
+        %td= vol.cos_date.strftime('%m %B %Y') unless vol.cos_date.blank?

@@ -1,7 +1,8 @@
-%h1 Editing sector
+- content_for :backtrack do
+  %li= link_to raw('Sectors &rang;'), sectors_path
+  %li= link_to raw("#{@sector.name} &rang;"), @sector
+  %li.active= link_to raw('<span class="icon-pencil"></span> Edit'), edit_sector_path(@sector)
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Sector'), new_sector_path if can? :create, Sector
 
 = render 'form'
-
-= link_to 'Show', @sector
-\|
-= link_to 'Back', sectors_path

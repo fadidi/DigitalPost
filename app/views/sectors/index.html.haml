@@ -1,21 +1,15 @@
-%h1 Listing sectors
+- content_for :backtrack do
+  %li.active= link_to 'Sectors', sectors_path
+- content_for :top_right_menu do
+  %li= link_to raw('<span class="icon-plus"></span> New Sector'), new_sector_path if can? :create, Sector
 
-%table
-  %tr
-    %th Apcd
-    %th Name
-    %th
-    %th
-    %th
-
-  - @sectors.each do |sector|
-    %tr
-      %td= sector.apcd_id
-      %td= sector.name
-      %td= link_to 'Show', sector
-      %td= link_to 'Edit', edit_sector_path(sector)
-      %td= link_to 'Destroy', sector, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Sector', new_sector_path
+.well.red
+  %h1= pluralize @sectors.count, 'Sector'
+%ul.thumbnails
+  - for sector in @sectors do
+    %li.span3
+      = link_to sector, :class => 'thumbnail' do
+        = image_tag 'http://placehold.it/300x200'
+        %h4.center= sector.name
+        - if sector.apcd?
+          %p.center= sector.apcd.name

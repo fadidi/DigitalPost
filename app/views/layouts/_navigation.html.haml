@@ -36,6 +36,8 @@
                   Pages
               %li= link_to 'Work Zones', work_zones_path if can? :read, WorkZone
               %li= link_to 'Regions', regions_path if can? :read, Region
+              %li= link_to 'Sectors', sectors_path if can? :read, Sector
+              %li= link_to 'Admin Units', units_path if can? :read, Unit
               - if signed_in?
                 %li.divider
                 %li.nav-header People

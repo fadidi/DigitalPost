@@ -16,4 +16,8 @@ FactoryGirl.define do
     "Shiny Title Number #{n}"
   end
 
+  sequence :abbreviation do |n|
+    "A#{n}C"
+  end
+
 end

@@ -30,7 +30,9 @@ User.create!([{
   :name => 'Fadidi Media Admin',
   :email => 'jack@brownjohnf.com',
   :password => 'password',
-  :password_confirmation => 'password'
+  :password_confirmation => 'password',
+  :bio_markdown => 'Founder and lead developer at Fadidi Digital Media.',
+  :website => 'http://www.fadidi.com'
 }])
 
 ValidEmail.create!([{

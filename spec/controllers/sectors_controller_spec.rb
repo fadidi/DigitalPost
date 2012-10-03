@@ -25,6 +25,7 @@ describe SectorsController do
   # update the return value of this method accordingly.
   def valid_attributes
     {
+      :abbreviation => 'TST',
       :name => 'Test Sector'
     }
   end

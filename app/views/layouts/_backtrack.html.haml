@@ -32,6 +32,12 @@
           %ul.dropdown-menu
             - for region in Region.all do
               %li= link_to region.name, region
+      - if can? :read, Sector
+        %li.dropdown-submenu
+          = link_to 'Sectors', sectors_path, :tabindex => '-1'
+          %ul.dropdown-menu
+            - for sector in Sector.all do
+              %li= link_to sector.name, sector
       - if can? :read, Stage
         %li.dropdown-submenu
           = link_to 'Stages', stages_path, :tabindex => '-1'

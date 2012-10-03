@@ -1,16 +1,14 @@
 = form_for @sector do |f|
-  -if @sector.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@sector.errors.count, "error")} prohibited this sector from being saved:"
-      %ul
-        - @sector.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :apcd_id
-    = f.number_field :apcd_id
-  .field
-    = f.label :name
-    = f.text_field :name
-  .actions
-    = f.submit 'Save'
+  .row-fluid
+    .span5
+      = f.label :name
+      = f.text_field :name, :class => 'span12 required'
+    .span2
+      = f.label :abbreviation
+      = f.text_field :abbreviation, :class => 'span12 required'
+      %span.help-block 2-7 chars
+    .span5
+      = f.label :apcd_id, 'APCD'
+      = f.collection_select :apcd_id, Staff.all, :id, :name, {:include_blank => true}, :class => 'span12'
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'

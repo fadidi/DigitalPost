@@ -3,5 +3,6 @@
 FactoryGirl.define do
   factory :sector do
     name
+    abbreviation
   end
 end

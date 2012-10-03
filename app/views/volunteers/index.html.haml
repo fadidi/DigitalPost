@@ -19,13 +19,15 @@
   %tbody
     - @volunteers.each do |vol|
       %tr
-        %td= link_to vol.user.name, vol.user
+        %td
+          = link_to raw('<span class="icon-edit"></span>'), edit_user_path(vol.user), :class => 'btn btn-mini', :rel => 'tooltip', :title => 'edit', 'data-placement' => 'left' if can? :edit, vol.user
+          = link_to vol.user.name, vol.user
         %td= vol.user.phone
         %td= vol.user.email
         %td= vol.local_name
-        %th= vol.sector_id
+        %td= link_to vol.sector.abbreviation, vol.sector if vol.sector?
         %td= vol.site
         %td= link_to vol.work_zone.name, vol.work_zone if vol.work_zone?
         %td= link_to vol.region.abbreviation, vol.region if vol.region?
         %td= link_to vol.stage.name, vol.stage if vol.stage?
-        %th= vol.cos_date.to_date unless vol.cos_date.blank?
+        %td= vol.cos_date.strftime('%m %B %Y') unless vol.cos_date.blank?

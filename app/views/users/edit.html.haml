@@ -42,7 +42,7 @@
                 = ff.label :stage_id
                 = ff.collection_select :stage_id, Stage.all, :id, :name, {}, :class => 'required span12'
                 = ff.label :sector_id
-                = ff.number_field :sector_id, :class => 'span12 required'
+                = ff.collection_select :sector_id, Sector.all, :id, :name, {}, :class => 'span12 required'
               .span6
                 = ff.label :site
                 = ff.text_field :site, :class => 'required span12'

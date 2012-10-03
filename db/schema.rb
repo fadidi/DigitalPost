@@ -66,12 +66,14 @@ ActiveRecord::Schema.define(:version => 20121003092300) do
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "sectors", :force => true do |t|
+    t.string   "abbreviation"
     t.integer  "apcd_id"
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
+  add_index "sectors", ["abbreviation"], :name => "index_sectors_on_abbreviation", :unique => true
   add_index "sectors", ["name"], :name => "index_sectors_on_name", :unique => true
 
   create_table "staff", :force => true do |t|

@@ -126,6 +126,46 @@ namespace :db do
       :name => 'Toubacouta',
       :abbreviation => 'tbkta',
     }])
+    region = Region.create!(
+      :name => 'Thies',
+      :abbreviation => 'THS'
+    )
+    region = Region.create!(
+      :name => 'Kaffrine',
+      :abbreviation => 'KAF'
+    )
+    region = Region.create!(
+      :name => 'Dakar',
+      :abbreviation => 'DKR'
+    )
+    region = Region.create!(
+      :name => 'Kolda',
+      :abbreviation => 'KLD'
+    )
+    region = Region.create!(
+      :name => 'Kedougou',
+      :abbreviation => 'KDG'
+    )
+    region = Region.create!(
+      :name => 'Tambacounda',
+      :abbreviation => 'TMB'
+    )
 
+    Sector.create!([{
+      :name => 'Agroforestry',
+      :abbreviation => 'agfo'
+    },{
+      :name => 'Sustainable Agriculture',
+      :abbreviation => 'susag'
+    },{
+      :name => 'Urban Agriculture',
+      :abbreviation => 'uag'
+    },{
+      :name => 'Health Education',
+      :abbreviation => 'he'
+    },{
+      :name => 'Community Econonomic Development',
+      :abbreviation => 'ced'
+    }])
   end
 end

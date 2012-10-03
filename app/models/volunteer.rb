@@ -17,6 +17,7 @@ class Volunteer < ActiveRecord::Base
   belongs_to :stage
   belongs_to :user
   belongs_to :work_zone
+  has_one :region, :through => :work_zone
 
   validates :user_id, :numericality => { :is_integer => true }, :uniqueness => true
   validates :stage_id, :sector_id, :work_zone_id, :numericality => { :is_integer => true }, :allow_blank => true
@@ -27,6 +28,10 @@ class Volunteer < ActiveRecord::Base
 
   def region?
     work_zone? ? (work_zone.region? ? true : false) : false
+  end
+
+  def sector?
+    !sector.nil?
   end
 
   def stage?

@@ -11,7 +11,7 @@
   .row-fluid
     .span6
       = f.label :region_id
-      = f.number_field :region_id, :class => 'span12, required'
+      = f.collection_select :region_id, Region.all, :id, :name, {}, :class => 'span12, required'
     .span6
       = f.label :leader_id, 'Work Zone Leader'
       = f.collection_select :leader_id, User.all, :id, :name, {:include_blank => true}, :class => 'span12'

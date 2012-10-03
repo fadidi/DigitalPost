@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Sector do
   before :each do
     @attr = {
+      :abbreviation => 'TST',
       :name => 'Test Sector'
     }
   end
@@ -10,6 +11,7 @@ describe Sector do
   it {Sector.create! @attr}
 
   # attributes
+  it {should respond_to :abbreviation}
   it {should respond_to :apcd_id}
   it {should respond_to :name}
 
@@ -23,11 +25,29 @@ describe Sector do
   it {should respond_to :to_param}
 
   describe 'properties' do
+    describe 'abbreviation' do
+      it {Sector.new.abbreviation.should be_blank}
+
+      it 'should upcase when saving' do
+        sector = Sector.create(@attr.merge(:abbreviation => 'up'))
+        sector.abbreviation.should eq 'UP'
+      end
+    end
     it {Sector.new.apcd_id.should be_blank}
     it {Sector.new.name.should be_blank}
   end
 
   describe 'validations' do
+    describe 'abbreviation' do
+      it {Sector.new(@attr.merge(:abbreviation => '')).should_not be_valid}
+      it {Sector.new(@attr.merge(:abbreviation => 'a'*1)).should_not be_valid}
+      it {Sector.new(@attr.merge(:abbreviation => 'a'*8)).should_not be_valid}
+
+      it 'should reject duplicates' do
+        FactoryGirl.build(:sector, :abbreviation => FactoryGirl.create(:sector).abbreviation).should_not be_valid
+      end
+    end
+
     it {Sector.new(@attr.merge(:apcd_id => '')).should be_valid}
     it {Sector.new(@attr.merge(:apcd_id => 'a')).should_not be_valid}
 

@@ -24,7 +24,15 @@ describe Region do
   it {should respond_to :work_zones?}
 
   describe 'properties' do
-    it {Region.new.abbreviation.should be_blank}
+    describe 'abbreviation' do
+      it {Region.new.abbreviation.should be_blank}
+
+      it 'should upcase when saving' do
+        workzone = Region.create(@attr.merge(:abbreviation => 'up'))
+        workzone.abbreviation.should eq 'UP'
+      end
+    end
+
     it {Region.new.name.should be_blank}
   end
 
@@ -37,11 +45,6 @@ describe Region do
       it 'should not allow duplicates up to case' do
         Region.create! @attr.merge(:abbreviation => 'Test')
         Region.new(@attr.merge(:abbreviation => 'Test'.upcase)).should_not be_valid
-      end
-
-      it 'should upcase when saving' do
-        workzone = Region.create(@attr.merge(:abbreviation => 'up'))
-        workzone.abbreviation.should eq 'UP'
       end
     end
 

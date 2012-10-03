@@ -21,6 +21,7 @@ describe Volunteer do
   it {should respond_to :work_zone_id}
 
   # associations
+  it {should respond_to :region}
   it {should respond_to :sector}
   it {should respond_to :stage}
   it {should respond_to :user}
@@ -28,6 +29,7 @@ describe Volunteer do
 
   # methods
   it {should respond_to :region?}
+  it {should respond_to :sector?}
   it {should respond_to :stage?}
   it {should respond_to :to_param}
   it {should respond_to :work_zone?}
@@ -125,6 +127,23 @@ describe Volunteer do
   end
 
   describe 'associations' do
+    describe 'region' do
+      before :each do
+        @vol = FactoryGirl.create(:volunteer, :work_zone => FactoryGirl.create(:work_zone, :region => @region = FactoryGirl.create(:region)))
+      end
+
+      it {@vol.region.should be_an_instance_of Region}
+
+      it 'should be the correct region' do
+        FactoryGirl.create :region
+        @vol.region.should eq @region
+      end
+
+      it {expect {
+        @vol.destroy
+      }.to change(Region, :count).by(0)}
+    end
+
     describe 'sector' do
       before :each do
         @vol = FactoryGirl.create(:volunteer, :sector => @sector = FactoryGirl.create(:sector))
@@ -182,7 +201,14 @@ describe Volunteer do
   describe 'methods' do
     describe 'region?' do
       it {Volunteer.new.region?.should_not be_true}
+      it {FactoryGirl.create(:volunteer, :work_zone_id => 1).region?.should_not be_true}
       it {FactoryGirl.create(:volunteer, :work_zone => FactoryGirl.create(:work_zone)).region?.should be_true}
+    end
+
+    describe 'sector?' do
+      it {Volunteer.new.stage?.should_not be_true}
+      it {FactoryGirl.create(:volunteer, :sector_id => 1).sector?.should_not be_true}
+      it {FactoryGirl.create(:volunteer, :sector => FactoryGirl.create(:sector)).sector?.should be_true}
     end
 
     describe 'stage?' do
