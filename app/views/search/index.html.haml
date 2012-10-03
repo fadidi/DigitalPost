@@ -8,7 +8,10 @@
   %ul.nav.nav-list
     - for result in @results do
       - if can? :read, result.type.classify
-        %li= link_to "#{result.primary}, #{result.type}", result
+        %li
+          = link_to result do
+            = icon_for(result.type)
+            = result.handle
       - else
         - @restricted += 1
 - if @restricted > 0

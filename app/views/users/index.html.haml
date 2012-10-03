@@ -18,7 +18,9 @@
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.name, user
+        %td
+          = link_to raw('<span class="icon-edit"></span>'), edit_user_path(user), :class => 'btn btn-mini' if can? :edit, @user
+          = link_to user.name, user
         %td= user.phone
         %td= user.email
         %td= user.created_at.to_date

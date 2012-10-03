@@ -27,11 +27,11 @@
         - if can? :read, Sector
           %li.nav-header Sectors
           - for sector in Sector.all do
-            = link_to sector.name, sector
+            %li= link_to sector.name, sector
         - if can? :read, Region
           %li.nav-header Regions
           - for region in Region.all do
-            = link_to region.name, region
+            %li= link_to region.name, region
     .span3
       %ul.nav.nav-list
         - if can? :read, WorkZone

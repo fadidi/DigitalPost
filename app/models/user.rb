@@ -5,13 +5,20 @@ class User < ActiveRecord::Base
   include Tire::Model::Callbacks
   index_name ELASTICSEARCH_INDEX
   mapping do
-    indexes :primary, :as => 'name'
+    indexes :handle, :as => 'name'
     indexes :email
+    indexes :name
     indexes :phone
     indexes :bio
     indexes :blog_title
     indexes :blog_url
     indexes :website
+    indexes :local_name, :as => proc { |u| volunteer.local_name if u.volunteer? }
+    indexes :service_info_html, :as => proc { |u| volunteer.service_info_html if u.volunteer? }
+    indexes :site, :as => proc { |u| volunteer.site if u.volunteer? }
+    indexes :job_description_html, :as => proc { |u| staff.job_description_html if u.staff? }
+    indexes :job_title, :as => proc { |u| staff.job_title if u.staff? }
+    indexes :location, :as => proc { |u| staff.location if u.staff? }
   end
 
   rolify

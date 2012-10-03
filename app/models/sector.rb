@@ -1,4 +1,15 @@
 class Sector < ActiveRecord::Base
+
+  # elasticsearch indexing
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :handle, :as => 'name'
+    indexes :abbreviation
+    indexes :name
+  end
+
   attr_accessible :abbreviation, :apcd_id, :name
 
   validates :abbreviation, :length => {:minimum => 2, :maximum => 7}, :uniqueness => {:case_sensitive => false}

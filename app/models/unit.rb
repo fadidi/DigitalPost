@@ -5,8 +5,9 @@ class Unit < ActiveRecord::Base
   include Tire::Model::Callbacks
   index_name ELASTICSEARCH_INDEX
   mapping do
-    indexes :primary, :as => 'name'
+    indexes :handle, :as => 'name'
     indexes :description
+    indexes :name
   end
 
   attr_accessible :description, :head_id, :name

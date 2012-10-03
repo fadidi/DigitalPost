@@ -1,15 +1,4 @@
 class Volunteer < ActiveRecord::Base
-
-  # elasticsearch indexing
-  include Tire::Model::Search
-  include Tire::Model::Callbacks
-  index_name ELASTICSEARCH_INDEX
-  mapping do
-    indexes :primary, :as => 'local_name'
-    indexes :service_info_html
-    indexes :site
-  end
-
   attr_accessible :cos_date, :local_name, :sector_id, :service_info_html, 
     :service_info_markdown, :site, :stage_id, :user_id, :work_zone_id
 

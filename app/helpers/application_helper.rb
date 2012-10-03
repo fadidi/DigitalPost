@@ -45,4 +45,18 @@ module ApplicationHelper
     raw('<span class="icon-ok"></span>') if state
   end
 
+  # @author John Brown
+  # Converts model name to icon
+  #
+  # @param [String] model
+  #
+  # @return [String] HTML span/icon
+  #
+  def icon_for(resource)
+    icons = {
+      'user' => 'user'
+    }
+    raw("<span class='icon-#{icons[resource].nil? ? 'certificate' : icons[resource]}'></span>")
+  end
+
 end

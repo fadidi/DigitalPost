@@ -5,8 +5,9 @@ class Page < ActiveRecord::Base
   include Tire::Model::Callbacks
   index_name ELASTICSEARCH_INDEX
   mapping do
-    indexes :primary, :as => 'title'
+    indexes :handle, :as => 'title'
     indexes :html
+    indexes :title
   end
 
   attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes, :user_id
