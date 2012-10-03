@@ -28,6 +28,15 @@ describe User do
   it {should respond_to :verified_at}
   it {should respond_to :website}
 
+  #associations
+  it {should respond_to :pages}
+  it {should respond_to :revisions}
+  it {should respond_to :staff}
+  it {should respond_to :stage}
+  it {should respond_to :unit}
+  it {should respond_to :volunteer}
+  it {should respond_to :work_zone}
+
   # methods
   it {should respond_to :fname}
   it {should respond_to :staff?}
@@ -39,14 +48,8 @@ describe User do
   it {should respond_to :remove_staff}
   it {should respond_to :remove_volunteer}
 
-  #associations
-  it {should respond_to :pages}
-  it {should respond_to :revisions}
-  it {should respond_to :staff}
-  it {should respond_to :stage}
-  it {should respond_to :unit}
-  it {should respond_to :volunteer}
-  it {should respond_to :work_zone}
+  # scopes
+  it {should respond_to :to_param}
 
   describe 'properties' do
     describe 'bio' do
@@ -90,6 +93,259 @@ describe User do
 
     it {User.new.website.should be_blank}
   end
+  
+  describe 'validations' do
+    describe 'bio' do
+      it 'should always be valid' do
+        User.new(@attr.merge(:bio => '')).should be_valid
+      end
+    end
+
+    describe 'bio_markdown' do
+      it {User.new(@attr.merge(:bio_markdown => '')).should_not be_valid}
+    end
+
+    describe 'blog_title' do
+      it {User.new(@attr.merge(:blog_title => '')).should be_valid}
+      it {User.new(@attr.merge(:blog_title => 'a'*256)).should_not be_valid}
+    end
+
+    describe 'blog_url' do
+      it {User.new(@attr.merge(:blog_url => '')).should be_valid}
+      it {User.new(@attr.merge(:blog_url => 'a'*256)).should_not be_valid}
+
+      it 'should allow valid hyperlinks' do
+        ['http://www.example.com', 'https://www.example.com', 'http://example.com', 'http://example.com/test.html', 'http://example.com/test', 'http://example.com/?q=test', 'http://example.com?q=test', 'http://example.com/test/?q=test'].
+          each { |good_url| User.new(@attr.merge(:blog_url => good_url)).should be_valid }
+      end
+
+      it 'should reject non-valid hyperlinks' do
+        ['www.example.com', 'example.com', 'http/www.example.com', 'http:/www.example.com', 'this is not a link', 'http://www.example.com/this is invalid'].
+          each { |bad_url| User.new(@attr.merge(:blog_url => bad_url)).should_not be_valid }
+      end
+    end
+
+    describe 'email' do
+      it "should require an email address" do
+        no_email_user = User.new(@attr.merge(:email => ""))
+        no_email_user.should_not be_valid
+      end
+      
+      it "should accept valid email addresses" do
+        addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
+        addresses.each do |address|
+          valid_email_user = User.new(@attr.merge(:email => address))
+          valid_email_user.should be_valid
+        end
+      end
+      
+      it "should reject invalid email addresses" do
+        addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
+        addresses.each do |address|
+          invalid_email_user = User.new(@attr.merge(:email => address))
+          invalid_email_user.should_not be_valid
+        end
+      end
+      
+      it "should reject duplicate email addresses" do
+        User.create!(@attr)
+        user_with_duplicate_email = User.new(@attr)
+        user_with_duplicate_email.should_not be_valid
+      end
+      
+      it "should reject email addresses identical up to case" do
+        upcased_email = @attr[:email].upcase
+        User.create!(@attr.merge(:email => upcased_email))
+        user_with_duplicate_email = User.new(@attr)
+        user_with_duplicate_email.should_not be_valid
+      end
+    end
+
+    describe 'name' do
+      it {User.new(@attr.merge(:name => '')).should_not be_valid}
+      it {User.new(@attr.merge(:name => 'a'*7)).should_not be_valid}
+      it {User.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
+
+      it 'should reject duplicate names up to case' do
+        @user = FactoryGirl.create :user
+        User.new(@attr.merge(:name => @user.name.upcase)).should_not be_valid
+      end
+    end
+    
+    describe "password validations" do
+      it "should require a password" do
+        User.new(@attr.merge(:password => "", :password_confirmation => "")).should_not be_valid
+      end
+
+      it "should require a matching password confirmation" do
+        User.new(@attr.merge(:password_confirmation => "invalid")).should_not be_valid
+      end
+      
+      it "should reject short passwords" do
+        User.new(@attr.merge(:password => 'a'*5, :password_confirmation => 'a'*5)).should_not be_valid
+      end
+    end
+
+    describe 'phone' do
+      it 'should reject phone numbers longer than 20 chars' do
+        User.new(@attr.merge(:phone => '1'*21)).should_not be_valid
+      end
+
+      it 'should reject phone numbers shorter than 7 chars' do
+        User.new(@attr.merge(:phone => '1'*6)).should_not be_valid
+      end
+
+      it 'should allow numbers, -, ., +, and spaces' do
+        ['+221773304831', '221 77 330 48 31', '221.77.330.4831', '221-77-330-4831'].each { |num| User.new(@attr.merge(:phone => num)).should be_valid }
+      end
+
+      it 'should reject characters other than numbers, -, ., +, and spaces' do
+        ['1509869e498', ' 345,23535654654', '57393850/38302'].each { |num| User.new(@attr.merge(:phone => num)).should_not be_valid }
+      end
+    end
+
+    describe 'website' do
+      it {User.new(@attr.merge(:website => '')).should be_valid}
+      it {User.new(@attr.merge(:website => 'a'*256)).should_not be_valid}
+
+      it 'should allow valid hyperlinks' do
+        ['http://www.example.com', 'https://www.example.com', 'http://example.com', 'http://example.com/test.html', 'http://example.com/test', 'http://example.com/?q=test', 'http://example.com?q=test', 'http://example.com/test/?q=test'].
+          each { |good_url| User.new(@attr.merge(:website => good_url)).should be_valid }
+      end
+
+      it 'should reject non-valid hyperlinks' do
+        ['www.example.com', 'example.com', 'http/www.example.com', 'http:/www.example.com', 'this is not a link', 'http://www.example.com/this is invalid'].
+          each { |bad_url| User.new(@attr.merge(:website => bad_url)).should_not be_valid }
+      end
+    end
+  end
+
+  describe 'associations' do
+    describe 'pages' do
+      before :each do
+        @page = FactoryGirl.create(:page, :user => @user = FactoryGirl.create(:user))
+      end
+
+      it { expect {
+        User.create!(@attr).pages.create!(FactoryGirl.attributes_for(:page))
+      }.to change(Page, :count).by(1)}
+
+      it 'should be a page' do
+        @user.pages.first.should be_an_instance_of Page
+      end
+
+      it 'should have the correct pages' do
+        FactoryGirl.create :page
+        @user.pages.should eq [@page]
+      end
+    end
+
+    describe 'revisions' do
+      before :each do
+        @revision = FactoryGirl.create(:revision, :author => @user = FactoryGirl.create(:user))
+      end
+
+      it 'should have the correct revisions' do
+        @user.revisions.should eq [@revision]
+      end
+    end
+
+    describe 'staff' do
+      before :each do
+        @staff = FactoryGirl.create(:staff, :user => @user = FactoryGirl.create(:user))
+        @user.reload
+      end
+
+      it { expect {
+        User.create!(@attr).create_staff!(FactoryGirl.attributes_for(:staff))
+      }.to change(Staff, :count).by(1)}
+
+      it 'should accept nested attributes' do
+        @user = FactoryGirl.create(:user)
+        @user.update_attributes(:staff_attributes => {:location => 'dakar'})
+        @staff = Staff.find_by_user_id(@user.id)
+        @staff.location.should =~ /dakar/i
+      end
+
+      it 'should be a staff' do
+        @user.staff.should be_an_instance_of Staff
+      end
+
+      it 'should be the right staff' do
+        FactoryGirl.create :staff
+        @user.staff.should eq @staff
+      end
+
+      it 'should destroy the staff on destroy' do
+        expect {
+          @user.destroy
+        }.to change(Staff, :count).by(-1)
+      end
+    end
+
+    describe 'stage' do
+      before :each do
+        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :stage => @stage = FactoryGirl.create(:stage))
+      end
+
+      it 'should be a stage' do
+        @user.stage.should be_an_instance_of Stage
+      end
+
+      it 'should be the right stage' do
+        FactoryGirl.create :stage
+        @user.stage.should eq @stage
+      end
+
+      it 'should not destroy the stage on destroy' do
+        expect {
+          @user.destroy
+        }.to change(Stage, :count).by(0)
+      end
+    end
+
+    describe 'volunteer' do
+      before :each do
+        @vol = FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user))
+        @user.reload
+      end
+
+      it { expect {
+        User.create!(@attr).create_volunteer!(FactoryGirl.attributes_for(:volunteer))
+      }.to change(Volunteer, :count).by(1)}
+
+      it 'should accept nested attributes' do
+        @user = FactoryGirl.create :user
+        @user.update_attributes(:volunteer_attributes => {:local_name => 'babakar'})
+        @vol = Volunteer.find_by_user_id(@user.id)
+        @vol.local_name.should =~ /babakar/i
+      end
+
+      it 'should be a volunteer' do
+        @user.volunteer.should be_an_instance_of Volunteer
+      end
+
+      it 'should be the right volunteer' do
+        FactoryGirl.create :volunteer
+        @user.volunteer.should eq @vol
+      end
+
+      it 'should destroy the volunteer on destroy' do
+        expect {
+          @user.destroy
+        }.to change(Volunteer, :count).by(-1)
+      end
+    end
+
+    describe 'work_zone' do
+      before :each do
+        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :work_zone => @work_zone = FactoryGirl.create(:work_zone))
+      end
+
+      it {@user.work_zone.should be_a_kind_of WorkZone}
+      it {@user.work_zone.should eq @work_zone}
+    end
+  end
 
   describe 'methods' do
     before :each do
@@ -111,6 +367,7 @@ describe User do
     describe 'remove_staff' do
       it 'should destroy an associated volunteer' do
         FactoryGirl.create(:staff, :user => @user)
+        @user.reload
         expect {
           @user.remove_staff
         }.to change(Staff, :count).by(-1)
@@ -120,6 +377,7 @@ describe User do
     describe 'remove_volunteer' do
       it 'should destroy an associated volunteer' do
         FactoryGirl.create(:volunteer, :user => @user)
+        @user.reload
         expect {
           @user.remove_volunteer
         }.to change(Volunteer, :count).by(-1)
@@ -129,6 +387,7 @@ describe User do
     describe 'staff?' do
       it 'should be true if there is a staff record' do
         FactoryGirl.create(:staff, :user => @user)
+        @user.reload
         @user.staff?.should be_true
       end
 
@@ -290,253 +549,13 @@ describe User do
     describe 'volunteer?' do
       it 'should be true if there is a volunteer record' do
         FactoryGirl.create(:volunteer, :user => @user)
+        @user.reload
         @user.volunteer?.should be_true
       end
 
       it 'should be false without a volunteer' do
         @user.volunteer?.should_not be_true
       end
-    end
-  end
-  
-  describe 'validations' do
-    describe 'bio' do
-      it 'should always be valid' do
-        User.new(@attr.merge(:bio => '')).should be_valid
-      end
-    end
-
-    describe 'bio_markdown' do
-      it {User.new(@attr.merge(:bio_markdown => '')).should_not be_valid}
-    end
-
-    describe 'blog_title' do
-      it {User.new(@attr.merge(:blog_title => '')).should be_valid}
-      it {User.new(@attr.merge(:blog_title => 'a'*256)).should_not be_valid}
-    end
-
-    describe 'blog_url' do
-      it {User.new(@attr.merge(:blog_url => '')).should be_valid}
-      it {User.new(@attr.merge(:blog_url => 'a'*256)).should_not be_valid}
-
-      it 'should allow valid hyperlinks' do
-        ['http://www.example.com', 'https://www.example.com', 'http://example.com', 'http://example.com/test.html', 'http://example.com/test', 'http://example.com/?q=test', 'http://example.com?q=test', 'http://example.com/test/?q=test'].
-          each { |good_url| User.new(@attr.merge(:blog_url => good_url)).should be_valid }
-      end
-
-      it 'should reject non-valid hyperlinks' do
-        ['www.example.com', 'example.com', 'http/www.example.com', 'http:/www.example.com', 'this is not a link', 'http://www.example.com/this is invalid'].
-          each { |bad_url| User.new(@attr.merge(:blog_url => bad_url)).should_not be_valid }
-      end
-    end
-
-    describe 'email' do
-      it "should require an email address" do
-        no_email_user = User.new(@attr.merge(:email => ""))
-        no_email_user.should_not be_valid
-      end
-      
-      it "should accept valid email addresses" do
-        addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
-        addresses.each do |address|
-          valid_email_user = User.new(@attr.merge(:email => address))
-          valid_email_user.should be_valid
-        end
-      end
-      
-      it "should reject invalid email addresses" do
-        addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
-        addresses.each do |address|
-          invalid_email_user = User.new(@attr.merge(:email => address))
-          invalid_email_user.should_not be_valid
-        end
-      end
-      
-      it "should reject duplicate email addresses" do
-        User.create!(@attr)
-        user_with_duplicate_email = User.new(@attr)
-        user_with_duplicate_email.should_not be_valid
-      end
-      
-      it "should reject email addresses identical up to case" do
-        upcased_email = @attr[:email].upcase
-        User.create!(@attr.merge(:email => upcased_email))
-        user_with_duplicate_email = User.new(@attr)
-        user_with_duplicate_email.should_not be_valid
-      end
-    end
-
-    describe 'name' do
-      it {User.new(@attr.merge(:name => '')).should_not be_valid}
-      it {User.new(@attr.merge(:name => 'a'*7)).should_not be_valid}
-      it {User.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
-
-      it 'should reject duplicate names up to case' do
-        @user = FactoryGirl.create :user
-        User.new(@attr.merge(:name => @user.name.upcase)).should_not be_valid
-      end
-    end
-    
-    describe "password validations" do
-      it "should require a password" do
-        User.new(@attr.merge(:password => "", :password_confirmation => "")).should_not be_valid
-      end
-
-      it "should require a matching password confirmation" do
-        User.new(@attr.merge(:password_confirmation => "invalid")).should_not be_valid
-      end
-      
-      it "should reject short passwords" do
-        User.new(@attr.merge(:password => 'a'*5, :password_confirmation => 'a'*5)).should_not be_valid
-      end
-    end
-
-    describe 'phone' do
-      it 'should reject phone numbers longer than 20 chars' do
-        User.new(@attr.merge(:phone => '1'*21)).should_not be_valid
-      end
-
-      it 'should reject phone numbers shorter than 7 chars' do
-        User.new(@attr.merge(:phone => '1'*6)).should_not be_valid
-      end
-
-      it 'should allow numbers, -, ., +, and spaces' do
-        ['+221773304831', '221 77 330 48 31', '221.77.330.4831', '221-77-330-4831'].each { |num| User.new(@attr.merge(:phone => num)).should be_valid }
-      end
-
-      it 'should reject characters other than numbers, -, ., +, and spaces' do
-        ['1509869e498', ' 345,23535654654', '57393850/38302'].each { |num| User.new(@attr.merge(:phone => num)).should_not be_valid }
-      end
-    end
-
-    describe 'website' do
-      it {User.new(@attr.merge(:website => '')).should be_valid}
-      it {User.new(@attr.merge(:website => 'a'*256)).should_not be_valid}
-
-      it 'should allow valid hyperlinks' do
-        ['http://www.example.com', 'https://www.example.com', 'http://example.com', 'http://example.com/test.html', 'http://example.com/test', 'http://example.com/?q=test', 'http://example.com?q=test', 'http://example.com/test/?q=test'].
-          each { |good_url| User.new(@attr.merge(:website => good_url)).should be_valid }
-      end
-
-      it 'should reject non-valid hyperlinks' do
-        ['www.example.com', 'example.com', 'http/www.example.com', 'http:/www.example.com', 'this is not a link', 'http://www.example.com/this is invalid'].
-          each { |bad_url| User.new(@attr.merge(:website => bad_url)).should_not be_valid }
-      end
-    end
-  end
-
-  describe 'associations' do
-    before :each do
-      @user = FactoryGirl.create :user
-    end
-
-    describe 'pages' do
-      before :each do
-        @page = FactoryGirl.create(:page, :user => @user)
-      end
-
-      it 'should be a page' do
-        @user.pages.first.should be_an_instance_of Page
-      end
-
-      it 'should have the correct pages' do
-        FactoryGirl.create :page
-        @user.pages.should eq [@page]
-      end
-    end
-
-    describe 'revisions' do
-      before :each do
-        @revision = FactoryGirl.create(:revision, :author => @user)
-      end
-
-      it 'should have the correct revisions' do
-        @user.revisions.should eq [@revision]
-      end
-    end
-
-    describe 'staff' do
-      before :each do
-        @staff = FactoryGirl.create(:staff, :user => @user)
-      end
-
-      it 'should accept nested attributes' do
-        @user.update_attributes(:staff_attributes => {:location => 'dakar'})
-        @staff = Staff.find_by_user_id(@user.id)
-        @staff.location.should =~ /dakar/i
-      end
-
-      it 'should be a staff' do
-        @user.staff.should be_an_instance_of Staff
-      end
-
-      it 'should be the right staff' do
-        FactoryGirl.create :staff
-        @user.staff.should eq @staff
-      end
-
-      it 'should destroy the staff on destroy' do
-        expect {
-          @user.destroy
-        }.to change(Staff, :count).by(-1)
-      end
-    end
-
-    describe 'stage' do
-      before :each do
-        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :stage => @stage = FactoryGirl.create(:stage))
-      end
-
-      it 'should be a stage' do
-        @user.stage.should be_an_instance_of Stage
-      end
-
-      it 'should be the right stage' do
-        FactoryGirl.create :stage
-        @user.stage.should eq @stage
-      end
-
-      it 'should not destroy the stage on destroy' do
-        expect {
-          @user.destroy
-        }.to change(Stage, :count).by(0)
-      end
-    end
-
-    describe 'volunteer' do
-      before :each do
-        @vol = FactoryGirl.create(:volunteer, :user => @user)
-      end
-
-      it 'should accept nested attributes' do
-        @user.update_attributes(:volunteer_attributes => {:local_name => 'babakar'})
-        @vol = Volunteer.find_by_user_id(@user.id)
-        @vol.local_name.should =~ /babakar/i
-      end
-
-      it 'should be a volunteer' do
-        @user.volunteer.should be_an_instance_of Volunteer
-      end
-
-      it 'should be the right volunteer' do
-        FactoryGirl.create :volunteer
-        @user.volunteer.should eq @vol
-      end
-
-      it 'should destroy the volunteer on destroy' do
-        expect {
-          @user.destroy
-        }.to change(Volunteer, :count).by(-1)
-      end
-    end
-
-    describe 'work_zone' do
-      before :each do
-        FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user), :work_zone => @work_zone = FactoryGirl.create(:work_zone))
-      end
-
-      it {@user.work_zone.should be_a_kind_of WorkZone}
-      it {@user.work_zone.should eq @work_zone}
     end
   end
 
