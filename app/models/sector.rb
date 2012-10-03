@@ -18,7 +18,7 @@ class Sector < ActiveRecord::Base
 
   belongs_to :apcd, :class_name => 'Staff'
 
-  has_many :volunteers
+  has_many :volunteers, :dependent => :nullify
   has_many :users, :through => :volunteers
 
   before_validation :do_before_validation

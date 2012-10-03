@@ -4,7 +4,7 @@ class Staff < ActiveRecord::Base
   belongs_to :user
   belongs_to :unit
 
-  has_many :sectors, :foreign_key => :apcd_id
+  has_many :sectors, :foreign_key => :apcd_id, :dependent => :nullify
 
   validates :user_id, :presence => true, :numericality => { :is_integer => true }, :uniqueness => true
   validates :unit_id, :numericality => { :is_integer => true }, :allow_blank => true

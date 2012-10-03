@@ -224,6 +224,8 @@ describe User do
     describe 'pages' do
       before :each do
         @page = FactoryGirl.create(:page, :user => @user = FactoryGirl.create(:user))
+        @admin = FactoryGirl.create :user
+        @admin.add_role :admin
       end
 
       it { expect {
@@ -237,6 +239,16 @@ describe User do
       it 'should have the correct pages' do
         FactoryGirl.create :page
         @user.pages.should eq [@page]
+      end
+
+      it { expect {
+        @user.destroy
+      }.to change(Page, :count).by(0)}
+
+      it 'should reset page ownership to admin' do
+        @user.destroy
+        @page.reload
+        @page.user.should eq @admin
       end
     end
 

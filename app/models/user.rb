@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :staff
 
   before_save :do_before_save
+  before_destroy :do_before_destroy
 
   def fname
     name[/^([^ ]+)/i,1]
@@ -132,6 +133,13 @@ class User < ActiveRecord::Base
 
     def do_before_save
       self.bio = Markdown.render(bio_markdown)
+    end
+
+    def do_before_destroy
+      if pages.any?
+        admin = Role.unscoped.order('id DESC').find_by_name('admin').users.first
+        pages.all.each { |page| page.update_attribute(:user_id, admin.id) }
+      end
     end
 
 end

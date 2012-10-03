@@ -6,6 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts 'SETTING UP LANGUAGES...'
+Language.create!(:code => 'EN', :name => 'English')
+
 puts 'SETTING UP DEFAULT UNITS'
 # warning! need to update lib/tasks/load_sample_data if you change the names of these!
 Unit.create!([{

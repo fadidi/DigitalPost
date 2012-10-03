@@ -1,5 +1,36 @@
 namespace :db do
   task :load_sample_data => :environment do
+
+    puts 'SETTING UP SAMPLE LANGUAGES...'
+    Language.create!([{
+      :code => 'FR',
+      :name => 'French'
+    },{
+      :code => 'SR',
+      :name => 'Sereer'
+    },{
+      :code => 'PU',
+      :name => 'Pulaar'
+    },{
+      :code => 'PN',
+      :name => 'Pulaar du Nord'
+    },{
+      :code => 'WO',
+      :name => 'Wolof'
+    },{
+      :code => 'MN',
+      :name => 'Mandinka'
+    },{
+      :code => 'JA',
+      :name => 'Jahonke'
+    },{
+      :code => 'PF',
+      :name => 'Pulafuuta'
+    },{
+      :code => 'FU',
+      :name => 'Fulakuunda'
+    }])
+
     puts 'SETTING UP SAMPLE USERS...'
     User.create!([{
       :name => 'Iffy Izeh',

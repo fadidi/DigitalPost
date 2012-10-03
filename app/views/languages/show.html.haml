@@ -1,15 +1,22 @@
-%p#notice= notice
+- content_for :backtrack do
+  %li= link_to raw('Languages &rang;'), languages_path
+  %li.active= link_to @language.name, @language
+  %li= link_to action_icon(:edit, 'Edit'), edit_language_path(@language) if can? :edit, @language
+- content_for :top_right_menu do
+  %li= link_to action_icon(:create, 'New Language'), new_language_path if can? :create, Language
 
-%p
-  %b Code:
-  = @language.code
-%p
-  %b Name:
-  = @language.name
-%p
-  %b Description:
-  = @language.description
-
-= link_to 'Edit', edit_language_path(@language)
-\|
-= link_to 'Back', languages_path
+.well.red
+  %h1
+    = @language.name
+    %small= @language.code
+.row-fluid
+  .span4
+    .page-header
+      %h1 Description
+    = raw markdown(@language.description) unless @language.description.blank?
+  .span4
+    .page-header
+      %h1= pluralize @language.pages.count, 'Page'
+    %ul.nav.nav-tabs.nav-stacked
+      - for page in @language.pages do
+        %li= link_to page.title, page

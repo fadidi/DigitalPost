@@ -49,17 +49,21 @@ describe Unit do
   describe 'associations' do
     describe 'head' do
       before :each do
-        @unit = FactoryGirl.create(:unit, :head => @user = FactoryGirl.create(:user))
+        @unit = FactoryGirl.create(:unit, :head => @staff = FactoryGirl.create(:staff))
       end
 
       it 'should be a User' do
-        @unit.head.should be_a_kind_of User
+        @unit.head.should be_a_kind_of Staff
       end
 
       it 'should be the correct user' do
-        FactoryGirl.create :user
-        @unit.head.should eq @user
+        FactoryGirl.create :staff
+        @unit.head.should eq @staff
       end
+
+      it { expect {
+        @unit.destroy
+      }.to change(Staff, :count).by(0)}
     end
 
     describe 'staff' do
@@ -74,6 +78,16 @@ describe Unit do
       it 'should be the correct staff' do
         FactoryGirl.create :staff
         @unit.staff.should eq [@staff]
+      end
+
+      it { expect {
+        @unit.destroy
+      }.to change(Staff, :count).by(0)}
+
+      it 'should nullify staff' do
+        @unit.destroy
+        @staff.reload
+        @staff.unit_id.should be_blank
       end
     end
 
@@ -90,6 +104,10 @@ describe Unit do
         FactoryGirl.create :staff
         @unit.users.should eq [@user]
       end
+
+      it { expect {
+        @unit.destroy
+      }.to change(User, :count).by(0)}
     end
   end
 
@@ -98,7 +116,7 @@ describe Unit do
       it {Unit.new.head?.should_not be_true}
 
       it 'should be true with a unit assigned' do
-        FactoryGirl.create(:unit, :head => FactoryGirl.create(:user)).head?.should be_true
+        FactoryGirl.create(:unit, :head => FactoryGirl.create(:staff)).head?.should be_true
       end
     end
 

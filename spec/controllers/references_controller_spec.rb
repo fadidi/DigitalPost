@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe ReferencesController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Reference. As you add validations to Reference, be sure to
@@ -42,7 +43,7 @@ describe ReferencesController do
 
   describe "GET index" do
     it "assigns all references as @references" do
-      reference = Reference.create! valid_attributes
+      reference = FactoryGirl.create :reference
       get :index, {}
       assigns(:references).should eq([reference])
     end
@@ -50,7 +51,7 @@ describe ReferencesController do
 
   describe "GET show" do
     it "assigns the requested reference as @reference" do
-      reference = Reference.create! valid_attributes
+      reference = FactoryGirl.create :reference
       get :show, {:id => reference.to_param}
       assigns(:reference).should eq(reference)
     end

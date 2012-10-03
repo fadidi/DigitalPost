@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe HomeController do
+  render_views
+
   describe "GET 'index'" do
     it "should be successful" do
       get 'index'

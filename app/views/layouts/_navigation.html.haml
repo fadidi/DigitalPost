@@ -34,25 +34,18 @@
                 = link_to pages_path do
                   %span.icon-list-alt
                   Pages
-              %li= link_to 'Work Zones', work_zones_path if can? :read, WorkZone
+              %li.nav-header= ENV['COUNTRY']
+              %li= link_to 'Admin Units', units_path if can? :read, Unit
+              %li= link_to icon_for('language', 'Languages'), languages_path if can? :read, Language
               %li= link_to 'Regions', regions_path if can? :read, Region
               %li= link_to 'Sectors', sectors_path if can? :read, Sector
-              %li= link_to 'Admin Units', units_path if can? :read, Unit
+              %li= link_to 'Work Zones', work_zones_path if can? :read, WorkZone
               - if signed_in?
                 %li.divider
                 %li.nav-header People
-                %li
-                  = link_to users_path do
-                    %span.icon-user
-                    Everyone
-                %li
-                  = link_to staff_index_path do
-                    %span.icon-user
-                    Staff
-                %li
-                  = link_to volunteers_path do
-                    %span.icon-user
-                    Volunteers
+                %li= link_to icon_for('user', 'Everyone'), users_path
+                %li= link_to icon_for('staff', 'Staff'), staff_index_path
+                %li= link_to icon_for('volunteer', 'Volunteers'), volunteers_path
                 - if user_signed_in? && (current_user.has_role?(:staff) || current_user.has_role?(:volunteer))
                   %li.divider
                   %li.nav-header Peace Corps

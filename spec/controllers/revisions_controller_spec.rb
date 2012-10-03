@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe RevisionsController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Revision. As you add validations to Revision, be sure to
@@ -64,7 +65,7 @@ describe RevisionsController do
     end
 
     it "assigns the requested revision as @revision" do
-      get :show, :page_id => @page, :id => @revision.to_param
+      get :show, :page_id => @page.to_param, :id => @revision.to_param
       assigns(:revision).should eq(@revision)
     end
   end

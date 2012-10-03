@@ -111,6 +111,12 @@ describe Sector do
       it { expect {
         @sector.destroy
       }.to change(Volunteer, :count).by(0)}
+
+      it 'should nullify volunteers pointing to it' do
+        @sector.destroy
+        @volunteer.reload
+        @volunteer.sector_id.should be_blank
+      end
     end
   end
 

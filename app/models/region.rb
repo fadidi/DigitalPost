@@ -15,7 +15,7 @@ class Region < ActiveRecord::Base
   validates :abbreviation, :length => {:minimum => 2, :maximum => 8}, :uniqueness => {:case_sensitive => false}
   validates :name, :length => {:maximum => 255}, :presence => true, :uniqueness => {:case_sensitive => false}
 
-  has_many :work_zones
+  has_many :work_zones, :dependent => :destroy
   has_many :volunteers, :through => :work_zones
   has_many :users, :through => :volunteers
 

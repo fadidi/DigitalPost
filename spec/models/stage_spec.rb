@@ -139,6 +139,13 @@ describe Stage do
           @stage.destroy
         }.to change(Volunteer, :count).by(0)
       end
+
+      it 'should nullify volunteers' do
+        @stage.destroy
+        @volunteer.reload
+        @volunteer.stage.should be_blank
+        @volunteer.should be_valid
+      end
     end
 
     describe 'users' do

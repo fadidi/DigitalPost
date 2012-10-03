@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe WorkZonesController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # WorkZone. As you add validations to WorkZone, be sure to
@@ -42,7 +43,7 @@ describe WorkZonesController do
 
   describe "GET index" do
     it "assigns all work_zones as @work_zones" do
-      work_zone = WorkZone.create! valid_attributes
+      work_zone = FactoryGirl.create(:work_zone)
       get :index, {}
       assigns(:work_zones).should eq([work_zone])
     end
@@ -50,7 +51,7 @@ describe WorkZonesController do
 
   describe "GET show" do
     it "assigns the requested work_zone as @work_zone" do
-      work_zone = WorkZone.create! valid_attributes
+      work_zone = FactoryGirl.create :work_zone
       get :show, {:id => work_zone.to_param}
       assigns(:work_zone).should eq(work_zone)
     end
@@ -65,7 +66,7 @@ describe WorkZonesController do
 
   describe "GET edit" do
     it "assigns the requested work_zone as @work_zone" do
-      work_zone = WorkZone.create! valid_attributes
+      work_zone = FactoryGirl.create :work_zone
       get :edit, {:id => work_zone.to_param}
       assigns(:work_zone).should eq(work_zone)
     end
@@ -73,20 +74,24 @@ describe WorkZonesController do
 
   describe "POST create" do
     describe "with valid params" do
+      before :each do
+        @attrs = FactoryGirl.attributes_for(:work_zone).merge(:region_id => FactoryGirl.create(:region).id)
+      end
+
       it "creates a new WorkZone" do
         expect {
-          post :create, {:work_zone => valid_attributes}
+          post :create, :work_zone => @attrs
         }.to change(WorkZone, :count).by(1)
       end
 
       it "assigns a newly created work_zone as @work_zone" do
-        post :create, {:work_zone => valid_attributes}
+        post :create, {:work_zone => @attrs}
         assigns(:work_zone).should be_a(WorkZone)
         assigns(:work_zone).should be_persisted
       end
 
       it "redirects to the created work_zone" do
-        post :create, {:work_zone => valid_attributes}
+        post :create, {:work_zone => @attrs}
         response.should redirect_to(WorkZone.last)
       end
     end
@@ -109,60 +114,59 @@ describe WorkZonesController do
   end
 
   describe "PUT update" do
+    before :each do
+      @attrs = FactoryGirl.attributes_for(:work_zone).merge(:region_id => FactoryGirl.create(:region).id)
+      @work_zone = WorkZone.create! @attrs
+    end
+
     describe "with valid params" do
       it "updates the requested work_zone" do
-        work_zone = WorkZone.create! valid_attributes
         # Assuming there are no other work_zones in the database, this
         # specifies that the WorkZone created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        WorkZone.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => work_zone.to_param, :work_zone => {'these' => 'params'}}
+        #WorkZone.any_instance.should_receive(:update_attributes).with(@attrs.merge(:name => 'Spiffy New Zone'))
+        put :update, {:id => @work_zone.to_param, :work_zone => @attrs.merge(:name => 'New TEST Name')}
+        @work_zone.reload.name.should eq 'New TEST Name'
       end
 
       it "assigns the requested work_zone as @work_zone" do
-        work_zone = WorkZone.create! valid_attributes
-        put :update, {:id => work_zone.to_param, :work_zone => valid_attributes}
-        assigns(:work_zone).should eq(work_zone)
+        put :update, {:id => @work_zone.to_param, :work_zone => @attrs}
+        assigns(:work_zone).should eq(@work_zone)
       end
 
       it "redirects to the work_zone" do
-        work_zone = WorkZone.create! valid_attributes
-        put :update, {:id => work_zone.to_param, :work_zone => valid_attributes}
-        response.should redirect_to(work_zone)
+        put :update, {:id => @work_zone.to_param, :work_zone => @attrs}
+        response.should redirect_to(@work_zone)
       end
     end
 
     describe "with invalid params" do
       it "assigns the work_zone as @work_zone" do
-        work_zone = WorkZone.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        WorkZone.any_instance.stub(:save).and_return(false)
-        put :update, {:id => work_zone.to_param, :work_zone => {}}
-        assigns(:work_zone).should eq(work_zone)
+        put :update, {:id => @work_zone.to_param, :work_zone => {:name => ''}}
+        assigns(:work_zone).should eq(@work_zone)
       end
 
       it "re-renders the 'edit' template" do
-        work_zone = WorkZone.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        WorkZone.any_instance.stub(:save).and_return(false)
-        put :update, {:id => work_zone.to_param, :work_zone => {}}
+        put :update, {:id => @work_zone.to_param, :work_zone => {:name => ''}}
         response.should render_template("edit")
       end
     end
   end
 
   describe "DELETE destroy" do
+    before :each do
+      @work_zone = FactoryGirl.create :work_zone
+    end
+
     it "destroys the requested work_zone" do
-      work_zone = WorkZone.create! valid_attributes
       expect {
-        delete :destroy, {:id => work_zone.to_param}
+        delete :destroy, {:id => @work_zone.to_param}
       }.to change(WorkZone, :count).by(-1)
     end
 
     it "redirects to the work_zones list" do
-      work_zone = WorkZone.create! valid_attributes
-      delete :destroy, {:id => work_zone.to_param}
+      delete :destroy, {:id => @work_zone.to_param}
       response.should redirect_to(work_zones_path)
     end
   end

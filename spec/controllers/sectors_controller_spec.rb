@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe SectorsController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Sector. As you add validations to Sector, be sure to

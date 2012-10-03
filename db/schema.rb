@@ -11,16 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003092300) do
+ActiveRecord::Schema.define(:version => 20121003162014) do
+
+  create_table "languages", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "languages", ["code"], :name => "index_languages_on_code", :unique => true
+  add_index "languages", ["name"], :name => "index_languages_on_name", :unique => true
 
   create_table "pages", :force => true do |t|
+    t.integer  "language_id", :default => 1
     t.string   "title"
-    t.text     "html",       :default => "<p>No content.</p>"
+    t.text     "html",        :default => "<p>No content.</p>"
     t.integer  "locked_by"
     t.datetime "locked_at"
     t.integer  "user_id"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
   end
 
   add_index "pages", ["title"], :name => "index_pages_on_title"

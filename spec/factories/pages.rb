@@ -2,6 +2,7 @@
 
 FactoryGirl.define do
   factory :page, :aliases => [:link_target, :link_source] do
+    language
     title
     user
   end

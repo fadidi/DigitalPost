@@ -11,29 +11,26 @@ describe Revision do
     }
   end
   
-  it 'should create a valid instance given valid attributes' do
-    Revision.create! @attr
-  end
+  it {Revision.create! @attr}
+
+  # attributes
+  it {should respond_to :author_id}
+  it {should respond_to :content}
+  it {should respond_to :html}
+  it {should respond_to :page_id}
+
+  # associations
+  it {should respond_to :author}
+  it {should respond_to :page}
+
+  # methods
+  it {should respond_to :next}
+  it {should respond_to :prev}
+  it {should respond_to :prev?}
 
   describe 'properties' do
     before :each do
       @revision = FactoryGirl.create :revision
-    end
-
-    it 'should respond to author_id' do
-      @revision.should respond_to :author_id
-    end
-
-    it 'should respond to content' do
-      @revision.should respond_to :content
-    end
-
-    it 'should respond to html' do
-      @revision.should respond_to :html
-    end
-
-    it 'should respond to page_id' do
-      @revision.should respond_to :page_id
     end
 
     describe 'html' do
@@ -121,14 +118,6 @@ describe Revision do
     before :each do
       @revision = FactoryGirl.create :revision
     end
-    
-    it 'should respond to page' do
-      Revision.new(@attr).should respond_to :page
-    end
-
-    it 'should respond to author' do
-      Revision.new(@attr).should respond_to :author
-    end
 
     describe 'page' do
       before :each do
@@ -170,40 +159,43 @@ describe Revision do
   end
 
   describe 'methods' do
-    before :each do
-      @revision1 = FactoryGirl.create(:revision, :page => @page = FactoryGirl.create(:page))
-      FactoryGirl.create(:revision)
-      @revision2 = FactoryGirl.create(:revision, :page => @page)
-      FactoryGirl.create(:revision)
-      @revision3 = FactoryGirl.create(:revision, :page => @page)
-    end
-
-    it 'should respond to next' do
-      @revision2.should respond_to :next
-    end
-
-    it 'should respond to prev' do
-      @revision2.should respond_to :prev
-    end
-
-
     describe 'next' do
+      before :each do
+        @revision1 = FactoryGirl.create(:revision, :page => @page = FactoryGirl.create(:page))
+        FactoryGirl.create(:revision)
+        @revision2 = FactoryGirl.create(:revision, :page => @page)
+      end
+
       it 'should return a revision' do
-        @revision2.next.should be_an_instance_of Revision
+        @revision1.next.should be_an_instance_of Revision
       end
 
       it 'should return the correct revision' do
-        @revision2.next.should eq @revision3
+        @revision1.next.should eq @revision2
       end
     end
 
     describe 'prev' do
+      before :each do
+        @revision1 = FactoryGirl.create(:revision, :page => @page = FactoryGirl.create(:page))
+        FactoryGirl.create(:revision)
+        @revision2 = FactoryGirl.create(:revision, :page => @page)
+      end
+
       it 'should return a revision' do
         @revision2.prev.should be_an_instance_of Revision
       end
 
       it 'should return the correct revision' do
         @revision2.prev.should eq @revision1
+      end
+    end
+
+    describe 'prev?' do
+      it {FactoryGirl.create(:revision).prev?.should_not be_true}
+      it 'should be true with multiple revisions' do
+        FactoryGirl.create(:revision, :page => @page = FactoryGirl.create(:page))
+        FactoryGirl.create(:revision, :page => @page).prev?.should be_true
       end
     end
   end

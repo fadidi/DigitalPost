@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe UnitsController do
+  render_views
 
   login_admin
 

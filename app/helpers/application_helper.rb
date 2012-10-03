@@ -52,11 +52,34 @@ module ApplicationHelper
   #
   # @return [String] HTML span/icon
   #
-  def icon_for(resource)
+  def icon_for(resource, text = nil)
     icons = {
-      'user' => 'user'
+      'user' => 'user',
+      'language' => 'bullhorn',
+      'volunteer' => 'user',
+      'staff' => 'user'
     }
-    raw("<span class='icon-#{icons[resource].nil? ? 'certificate' : icons[resource]}'></span>")
+    text = text.nil? ? '' : "&nbsp;#{text}"
+    icons[resource] ||= 'certificate'
+    raw("<span class='icon-#{icons[resource]}'></span>#{text}")
+  end
+
+  # @author John Brown
+  # Converts action verb and options text to icon.
+  #
+  # @param [String] verb
+  # @param [String] text
+  #
+  # @return [String] HTML span/icon
+  #
+  def action_icon(verb, text)
+    icons = {
+      :create => 'plus',
+      :edit => 'pencil',
+      :destroy => 'minus',
+    }
+    icons[verb] ||= 'certificate'
+    raw("<span class='icon-#{icons[verb]}'></span> #{text}")
   end
 
 end

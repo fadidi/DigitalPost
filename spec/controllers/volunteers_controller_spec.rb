@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe VolunteersController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Volunteer. As you add validations to Volunteer, be sure to
@@ -40,7 +41,7 @@ describe VolunteersController do
 
   describe "GET index" do
     it "assigns all volunteers as @volunteers" do
-      volunteer = Volunteer.create! valid_attributes
+      volunteer = FactoryGirl.create :volunteer
       get :index, {}
       assigns(:volunteers).should eq([volunteer])
     end

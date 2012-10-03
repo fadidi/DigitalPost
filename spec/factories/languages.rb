@@ -2,8 +2,7 @@
 
 FactoryGirl.define do
   factory :language do
-    code "MyString"
-    name "MyString"
-    description "MyText"
+    code { FactoryGirl.generate :abbreviation }
+    name
   end
 end

@@ -16,8 +16,8 @@ class Unit < ActiveRecord::Base
   validates :head_id, :numericality => { :is_integer => true }, :allow_blank => true
   validates :description, :length => { :maximum => 255 }, :allow_blank => true
 
-  belongs_to :head, :class_name => 'User', :foreign_key => :head_id
-  has_many :staff
+  belongs_to :head, :class_name => 'Staff', :foreign_key => :head_id
+  has_many :staff, :dependent => :nullify
   has_many :users, :through => :staff
 
   default_scope :order => 'name ASC'

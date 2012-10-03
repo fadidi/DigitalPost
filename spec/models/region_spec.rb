@@ -28,8 +28,8 @@ describe Region do
       it {Region.new.abbreviation.should be_blank}
 
       it 'should upcase when saving' do
-        workzone = Region.create(@attr.merge(:abbreviation => 'up'))
-        workzone.abbreviation.should eq 'UP'
+        region = Region.create(@attr.merge(:abbreviation => 'up'))
+        region.abbreviation.should eq 'UP'
       end
     end
 
@@ -110,7 +110,7 @@ describe Region do
       end
       it { expect {
         @region.destroy
-      }.to change(WorkZone, :count).by(0)}
+      }.to change(WorkZone, :count).by(-1)}
     end
   end
 

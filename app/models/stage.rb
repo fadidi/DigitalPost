@@ -3,7 +3,7 @@ class Stage < ActiveRecord::Base
 
   validates :anticipated_cos, :arrival, :swear_in, :date => true, :uniqueness => true
 
-  has_many :volunteers
+  has_many :volunteers, :dependent => :nullify
   has_many :users, :through => :volunteers
 
   default_scope :order => 'arrival DESC'

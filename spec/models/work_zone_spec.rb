@@ -5,7 +5,7 @@ describe WorkZone do
     @attr = {
       :name => 'New Work Zone',
       :abbreviation => 'NWZ',
-      :region_id => 1
+      :region_id => FactoryGirl.create(:region).id
     }
   end
 
@@ -25,7 +25,6 @@ describe WorkZone do
 
   # methods
   it {should respond_to :leader?}
-  it {should respond_to :region?}
   it {should respond_to :to_param}
 
   describe 'properties' do
@@ -61,16 +60,15 @@ describe WorkZone do
 
       describe 'validate uniqueness' do
         before :each do
-          WorkZone.create! @attr.merge(:name => 'Test', :region_id => 1)
+          @work_zone = FactoryGirl.create(:work_zone)
         end
 
         it 'should allow duplicates with unique region_id' do
-          puts WorkZone.all.inspect
-          FactoryGirl.build(:work_zone, :name => 'Test'.upcase, :region_id => 2).should be_valid
+          FactoryGirl.build(:work_zone, :name => @work_zone.name.upcase).should be_valid
         end
 
         it 'should not allow duplicates with duplicate region_id' do
-          FactoryGirl.build(:work_zone, :name => 'Test'.upcase, :region_id => 1).should_not be_valid
+          FactoryGirl.build(:work_zone, :name => @work_zone.name.upcase, :region_id => @work_zone.region_id).should_not be_valid
         end
       end
     end
@@ -82,11 +80,11 @@ describe WorkZone do
   describe 'associations' do
     describe 'leader' do
       before :each do
-        @work_zone = FactoryGirl.create(:work_zone, :leader => @user = FactoryGirl.create(:user))
+        @work_zone = FactoryGirl.create(:work_zone, :leader => @vol = FactoryGirl.create(:volunteer))
       end
 
-      it {@work_zone.leader.should be_a_kind_of User}
-      it {@work_zone.leader.should eq @user}
+      it {@work_zone.leader.should be_a_kind_of Volunteer}
+      it {@work_zone.leader.should eq @vol}
       it { expect {
         @work_zone.destroy
       }.to change(Volunteer, :count).by(0)}
@@ -126,9 +124,15 @@ describe WorkZone do
 
       it {@work_zone.volunteers.first.should be_a_kind_of Volunteer}
       it {@work_zone.volunteers.should eq [@volunteer]}
+
       it { expect {
         @work_zone.destroy
       }.to change(Volunteer, :count).by(0)}
+
+      it 'should nullify volunteer' do
+        @work_zone.destroy
+        @volunteer.reload.work_zone.should be_nil
+      end
     end
   end
 
@@ -139,17 +143,7 @@ describe WorkZone do
       end
 
       it 'should be true with a leader' do
-        FactoryGirl.create(:work_zone, :leader => FactoryGirl.create(:user)).leader?.should be_true
-      end
-    end
-
-    describe 'region?' do
-      it 'should be false by default' do
-        WorkZone.new.region?.should_not be_true
-      end
-
-      it 'should be true with a region' do
-        FactoryGirl.create(:work_zone, :region => FactoryGirl.create(:region)).region?.should be_true
+        FactoryGirl.create(:work_zone, :leader => FactoryGirl.create(:volunteer)).leader?.should be_true
       end
     end
 

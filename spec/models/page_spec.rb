@@ -12,6 +12,7 @@ describe Page do
 
   # properties
   it {should respond_to(:html)}
+  it {should respond_to :language_id}
   it {should respond_to(:locked_at)}
   it {should respond_to(:locked_by)}
   it {should respond_to(:title)}
@@ -22,6 +23,7 @@ describe Page do
   it {should respond_to :current_author}
   it {should respond_to :current_revision}
   it {should respond_to :editor}
+  it {should respond_to :language}
   it {should respond_to :links_in}
   it {should respond_to :links_out}
   it {should respond_to :revisions}
@@ -38,6 +40,14 @@ describe Page do
     before :each do
       @page = FactoryGirl.create :page
     end
+
+    it {Page.new.html.should_not be_blank}
+    it {Page.new.language_id.should_not be_blank}
+    it {Page.new.language_id.should eq 1}
+    it {Page.new.locked_at.should be_blank}
+    it {Page.new.locked_by.should be_blank}
+    it {Page.new.title.should be_blank}
+    it {Page.new.user_id.should be_blank}
 
     describe 'to_param' do
       it 'should include the page title in to_param' do
@@ -63,11 +73,12 @@ describe Page do
     end
   end
 
-
-
   describe 'validations' do
     it {Page.new(@attr.merge(:html => '')).should be_valid}
     it {Page.new(@attr.merge(:locked_at => '')).should be_valid}
+
+    it {Page.new(@attr.merge(:language_id => '')).should_not be_valid}
+    it {Page.new(@attr.merge(:language_id => 'a')).should_not be_valid}
 
     describe 'locked_by' do
       it {Page.new(@attr.merge(:locked_by => '')).should be_valid}
@@ -152,6 +163,22 @@ describe Page do
       end
     end
 
+    describe 'language' do
+      before :each do
+        @page = FactoryGirl.create(:page, :language => @language = FactoryGirl.create(:language))
+      end
+
+      it {@page.language.should be_a_kind_of Language}
+      it 'should be the correct language' do
+        FactoryGirl.create :language
+        @page.language.should eq @language
+      end
+      
+      it { expect {
+        @page.destroy
+      }.to change(Language, :count).by(0)}
+    end
+
     describe 'links_in' do
       before :each do
         @page = FactoryGirl.create :page
@@ -162,6 +189,9 @@ describe Page do
         @page.links_in.first.should be_an_instance_of Reference
       end
 
+      it { expect {
+        @page.destroy
+      }.to change(Reference, :count).by(0)}
     end
 
     describe 'links_out' do
@@ -175,6 +205,10 @@ describe Page do
       it 'should be an instance of Reference' do
         @page.links_out.first.should be_an_instance_of Reference
       end
+
+      it { expect {
+        @page.destroy
+      }.to change(Reference, :count).by(-1)}
     end
 
     describe 'revisions' do

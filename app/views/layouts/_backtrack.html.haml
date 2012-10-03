@@ -44,6 +44,11 @@
           %ul.dropdown-menu
             - for stage in Stage.limit(6) do
               %li= link_to stage.name, stage
+      %li.dropdown-submenu
+        = link_to 'Languages', languages_path, :tabindex => '-1'
+        %ul.dropdown-menu
+          - for language in Language.all do
+            %li= link_to language.name, language
   = yield :backtrack
 %ul.nav.nav-pills.pull-right
   = yield :top_right_menu

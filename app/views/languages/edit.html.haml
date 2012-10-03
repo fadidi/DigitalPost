@@ -1,7 +1,8 @@
-%h1 Editing language
+- content_for :backtrack do
+  %li= link_to raw('Languages &rang;'), languages_path
+  %li= link_to raw("#{@language.name} &rang;"), @language
+  %li.active= link_to action_icon(:edit, 'Edit'), edit_language_path(@language) if can? :edit, @language
+- content_for :top_right_menu do
+  %li= link_to action_icon(:create, 'New Language'), new_language_path if can? :create, Language
 
 = render 'form'
-
-= link_to 'Show', @language
-\|
-= link_to 'Back', languages_path

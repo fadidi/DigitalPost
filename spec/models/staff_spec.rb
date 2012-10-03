@@ -98,6 +98,16 @@ describe Staff do
         FactoryGirl.create :sector
         @staff.sectors.should eq [@sector]
       end
+
+      it { expect {
+        @staff.destroy
+      }.to change(Sector, :count).by(0)}
+
+      it 'sholud nullify sectors' do
+        @staff.destroy
+        @sector.reload
+        @sector.apcd_id.should be_blank
+      end
     end
 
     describe 'user' do
@@ -113,9 +123,13 @@ describe Staff do
         FactoryGirl.create :user
         @staff.user.should eq @user
       end
+
+      it { expect {
+        @staff.destroy
+      }.to change(User, :count).by(0)}
     end
 
-    describe 'user' do
+    describe 'unit' do
       before :each do
         @staff = FactoryGirl.create(:staff, :unit => @unit = FactoryGirl.create(:unit))
       end
@@ -128,6 +142,10 @@ describe Staff do
         FactoryGirl.create :unit
         @staff.unit.should eq @unit
       end
+
+      it { expect {
+        @staff.destroy
+      }.to change(Unit, :count).by(0)}
     end
   end
 

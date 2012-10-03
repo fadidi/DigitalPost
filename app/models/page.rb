@@ -10,16 +10,19 @@ class Page < ActiveRecord::Base
     indexes :title
   end
 
-  attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes, :user_id
+  attr_accessible :html, :locked_at, :locked_by, :title, :revisions_attributes, :user_id, :language_id
 
   # user currently editing the page
   belongs_to :editor, :class_name => User, :foreign_key => :locked_by
+
+  # language in which the page is written
+  belongs_to :language
 
   # user who created the page originally
   belongs_to :user
 
   # links in the page
-  has_many :links_out, :class_name => Reference, :as => :link_source
+  has_many :links_out, :class_name => Reference, :as => :link_source, :dependent => :destroy
 
   # links in other content pointing to this page
   has_many :links_in, :class_name => Reference, :as => :link_target
@@ -38,6 +41,7 @@ class Page < ActiveRecord::Base
 
   accepts_nested_attributes_for :revisions, :reject_if => Proc.new { |a| a.blank? }
   
+  validates :language_id, :numericality => { :is_integer => true }
   validates :locked_by, :numericality => { :is_integer => true }, :allow_blank => true
   validates :title, :presence => true, :length => { :maximum => 255 }
   validates :user_id, :presence => true, :numericality => { :is_integer => true }

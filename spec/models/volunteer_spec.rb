@@ -26,12 +26,14 @@ describe Volunteer do
   it {should respond_to :stage}
   it {should respond_to :user}
   it {should respond_to :work_zone}
+  it {should respond_to :lead_work_zone}
 
   # methods
   it {should respond_to :region?}
   it {should respond_to :sector?}
   it {should respond_to :stage?}
   it {should respond_to :to_param}
+  it {should respond_to :user_name}
   it {should respond_to :work_zone?}
 
   describe 'properties' do
@@ -196,6 +198,29 @@ describe Volunteer do
         @vol.destroy
       }.to change(WorkZone, :count).by(0)}
     end
+
+    describe 'lead_work_zone' do
+      before :each do
+        @work_zone = FactoryGirl.create(:work_zone, :leader => @vol = FactoryGirl.create(:volunteer))
+      end
+
+      it {@vol.lead_work_zone.should be_an_instance_of WorkZone}
+
+      it 'should be the correct work_zone' do
+        FactoryGirl.create :work_zone
+        @vol.lead_work_zone.should eq @work_zone
+      end
+
+      it {expect {
+        @vol.destroy
+      }.to change(WorkZone, :count).by(0)}
+
+      it 'should nullify lead_work_zone' do
+        @vol.destroy
+        @work_zone.reload
+        @work_zone.leader_id.should be_blank
+      end
+    end
   end
 
   describe 'methods' do
@@ -225,6 +250,10 @@ describe Volunteer do
       it 'should using the user id' do
         @vol.to_param.should eq "#{@vol.user.id}-#{@vol.user.name.parameterize}"
       end
+    end
+
+    describe 'user_name' do
+      it {FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user)).user_name.should eq @user.name}
     end
 
     describe 'work_zone?' do

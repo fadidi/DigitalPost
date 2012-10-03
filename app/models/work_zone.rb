@@ -7,9 +7,9 @@ class WorkZone < ActiveRecord::Base
   mapping do
     indexes :handle, :as => 'name'
     indexes :abbreviation
-    indexes :leader_id
+    indexes :leader, :as => proc { |w| w.leader.user.name if w.leader? }
     indexes :name
-    indexes :region_id
+    indexes :region_id, :as => proc { |w| w.region.name }
   end
 
   attr_accessible :abbreviation, :leader_id, :name, :region_id
@@ -23,8 +23,8 @@ class WorkZone < ActiveRecord::Base
   before_validation :do_before_validation
 
   belongs_to :region
-  belongs_to :leader, :class_name => 'User'
-  has_many :volunteers
+  belongs_to :leader, :class_name => 'Volunteer'
+  has_many :volunteers, :dependent => :nullify
   has_many :users, :through => :volunteers
 
   default_scope :order => 'name ASC'

@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe StaffController do
+  render_views
 
   # This should return the minimal set of attributes required to create a valid
   # Staff. As you add validations to Staff, be sure to
@@ -40,7 +41,7 @@ describe StaffController do
 
   describe "GET index" do
     it "assigns all staff as @staff" do
-      staff = Staff.create! valid_attributes
+      staff = FactoryGirl.create :staff
       get :index, {}
       assigns(:staff).should eq([staff])
     end

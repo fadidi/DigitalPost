@@ -7,11 +7,17 @@
           %li= msg
 
   .field
-    = f.label :link_id
-    = f.number_field :link_id
+    = f.label :link_source_id
+    = f.number_field :link_source_id
   .field
-    = f.label :link_type
-    = f.text_field :link_type
+    = f.label :link_source_type
+    = f.text_field :link_source_type
+  .field
+    = f.label :link_target_id
+    = f.number_field :link_target_id
+  .field
+    = f.label :link_target_type
+    = f.text_field :link_target_type
   .field
     = f.label :link_text
     = f.text_field :link_text
