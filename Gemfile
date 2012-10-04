@@ -20,6 +20,7 @@ gem 'redcarpet'
 
 gem 'differ'
 gem 'tire'
+gem 'fog'
 gem 'mini_magick'
 gem 'carrierwave'
 
