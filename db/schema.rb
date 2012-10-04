@@ -115,11 +115,13 @@ ActiveRecord::Schema.define(:version => 20121003162014) do
 
   create_table "units", :force => true do |t|
     t.string   "avatar"
+    t.string   "avatar_content_type"
+    t.string   "avatar_file_size"
     t.string   "name"
     t.integer  "head_id"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -11,6 +11,8 @@ describe Unit do
 
   # properties
   it {should respond_to :avatar}
+  it {should respond_to :avatar_content_type}
+  it {should respond_to :avatar_file_size}
   it {should respond_to :name}
   it {should respond_to :description}
   it {should respond_to :head_id}
@@ -30,12 +32,20 @@ describe Unit do
   it {should respond_to :remove_avatar!}
 
   describe 'properties' do
+    it {Unit.new.avatar.should be_blank}
+    it {Unit.new.avatar_content_type.should be_blank}
+    it {Unit.new.avatar_file_size.should be_blank}
     it {Unit.new.name.should be_blank}
     it {Unit.new.description.should be_blank}
     it {Unit.new.head_id.should be_blank}
   end
 
   describe 'validations' do
+    it {Unit.new(@attr.merge(:avatar => '')).should be_valid}
+    it {Unit.new(@attr.merge(:avatar_content_type => '')).should be_valid}
+    it {Unit.new(@attr.merge(:avatar_file_size => '')).should be_valid}
+    it {Unit.new(@attr.merge(:avatar_file_size => 'a')).should_not be_valid}
+
     describe 'name' do
       it {Unit.new(@attr.merge(:name => '')).should_not be_valid}
       it {Unit.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
