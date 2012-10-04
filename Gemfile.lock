@@ -138,6 +138,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.19)
+    mini_magick (3.4)
+      subexec (~> 0.2.1)
     multi_json (1.3.6)
     multipart-post (1.1.5)
     nested_form (0.2.3)
@@ -230,6 +232,7 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    subexec (0.2.2)
     thin (1.4.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -283,6 +286,7 @@ DEPENDENCIES
   jquery-rails
   launchy (>= 2.1.2)
   libnotify
+  mini_magick
   nested_form
   omniauth-facebook
   pg

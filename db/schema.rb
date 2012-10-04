@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20121003162014) do
   add_index "stages", ["swear_in"], :name => "index_stages_on_swear_in", :unique => true
 
   create_table "units", :force => true do |t|
+    t.string   "avatar"
     t.string   "name"
     t.integer  "head_id"
     t.text     "description"

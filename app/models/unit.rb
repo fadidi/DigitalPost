@@ -10,7 +10,9 @@ class Unit < ActiveRecord::Base
     indexes :name
   end
 
-  attr_accessible :description, :head_id, :name
+  attr_accessible :avatar, :description, :head_id, :name, :remove_avatar
+  
+  mount_uploader :avatar, AvatarUploader
 
   validates :name, :presence => true, :length => { :maximum => 255 }, :uniqueness => { :case_sensitive => false }
   validates :head_id, :numericality => { :is_integer => true }, :allow_blank => true

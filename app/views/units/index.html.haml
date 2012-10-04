@@ -6,9 +6,10 @@
   .span8
     %ul.thumbnails
       - for unit in @units do
-        %li.span6
+        %li.span4
           = link_to unit, :class => 'thumbnail', :rel => 'popover', 'data-trigger' => 'hover', 'title' => unit.name, 'data-content' => unit.description, 'data-placement' => 'bottom' do
-            = image_tag 'http://placehold.it/450x200'
+            -#= image_tag 'http://placehold.it/450x200'
+            = image_tag unit.avatar.span3.url
             %h3.center #{unit.name} Unit
   .span4
     .well.green

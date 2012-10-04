@@ -6,22 +6,26 @@
   - for unit in Unit.where("id != ?", @unit.id) do
     %li= link_to unit.name, unit
   %li= link_to raw('<span class="icon-plus"></span> New Unit'), new_unit_path if can? :create, Unit
-.well.blue
-  %h1
-    = "#{@unit.head.name} and the" if @unit.head?
-    = @unit.name
-    Team
+
 .row-fluid
   .span4
+    = image_tag @unit.avatar.span6.url
     %h1 What We Do
     %blockquote= @unit.description
-  .span4
-    %h1 Libraries
-  .span4
-    %h1 Staff
-    %ul.nav.nav-list
-      - for staff in @unit.staff do
-        %li
-          = link_to staff.user do
-            = "#{staff.name},"
-            = "#{staff.job_title}" unless staff.job_title.blank?
+  .span8
+    .well.blue
+      %h1
+        = "#{@unit.head.name} and the" if @unit.head?
+        = @unit.name
+        Team
+    .row-fluid
+      .span6
+        %h1 Libraries
+      .span6
+        %h1 Staff
+        %ul.nav.nav-tabs.nav-stacked
+          - for staff in @unit.staff do
+            %li
+              = link_to staff.user do
+                = "#{staff.name},"
+                = "#{staff.job_title}" unless staff.job_title.blank?

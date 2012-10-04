@@ -7,12 +7,15 @@
     .span4
       = f.label :arrival, 'Arrival Date'
       = f.text_field :arrival, :class => 'required datepicker span12'
+      %span.help-block date the training group arrived in country
     .span4
       = f.label :swear_in, 'Swear-in Date'
       = f.text_field :swear_in, :class => 'required datepicker span12'
+      %span.help-block date the training group swore-in to become Volunteers
     .span4
       = f.label :anticipated_cos, 'Anticipated COS Date'
       = f.text_field :anticipated_cos, :class => 'required datepicker span12'
+      %span.help-block projected date of COS for the training group
   .row-fluid
     .span12
       .form-actions

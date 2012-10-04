@@ -7,13 +7,20 @@
         .span6
           = f.label :name, 'Unit Name'
           = f.text_field :name, :class => 'required span12'
-        .span6
           = f.label :head_id, 'Head of Unit'
           = f.collection_select :head_id, Staff.all, :user_id, :name, {:include_blank => true}, :class => 'required span12'
-      .row-fluid
-        .span12
+          %span.help-block staff member responsible for the unit
           = f.label :description, 'Duties & Jurisdiction'
           = f.text_area :description, :rows => 7, :class => 'span12'
+        .span6
+          = f.label :avatar
+          = f.file_field :avatar, :class => 'span12'
+          - if @unit.avatar?
+            %label.checkbox
+              = f.check_box :remove_avatar
+              Remove
+          %span.help-block the avatar will be used to visually identify this unit
+          = image_tag(@unit.avatar_url)
       .form-actions
         = f.submit 'Save', :class => 'btn btn-primary'
   .span4

@@ -8,12 +8,15 @@
     .span6
       = f.label :abbreviation
       = f.text_field :abbreviation, :class => 'span12 required'
+      %span.help-block 2-7 character short-form notation for the work zone
   .row-fluid
     .span6
       = f.label :region_id
       = f.collection_select :region_id, Region.all, :id, :name, {}, :class => 'span12, required'
+      %span.help-block primary region in which the work zone lies
     .span6
       = f.label :leader_id, 'Work Zone Leader'
       = f.collection_select :leader_id, User.all, :id, :name, {:include_blank => true}, :class => 'span12'
+      %span.help-block PCV responsible for the work zone
   .form-actions
     = f.submit 'Save', :class => 'btn btn-primary'

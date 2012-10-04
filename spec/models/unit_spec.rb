@@ -10,6 +10,7 @@ describe Unit do
   it {Unit.create! @attr}
 
   # properties
+  it {should respond_to :avatar}
   it {should respond_to :name}
   it {should respond_to :description}
   it {should respond_to :head_id}
@@ -22,6 +23,11 @@ describe Unit do
   # methods
   it {should respond_to :head?}
   it {should respond_to :to_param}
+
+  # carrierwave
+  it {should respond_to :avatar?}
+  it {should respond_to :remove_avatar}
+  it {should respond_to :remove_avatar!}
 
   describe 'properties' do
     it {Unit.new.name.should be_blank}

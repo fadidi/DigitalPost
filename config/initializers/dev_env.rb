@@ -10,4 +10,7 @@ unless Rails.env.production?
   ENV['FB_KEY'] = ''
   ENV['FB_URL'] = ''
   ENV['TWITTER_URL'] = ''
+  ENV['AWS_ACCESS_KEY_ID'] = ''
+  ENV['AWS_SECRET_ACCESS_KEY'] = ''
+  ENV['AWS_BUCKET_NAME'] = ''
 end

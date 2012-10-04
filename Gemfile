@@ -20,6 +20,7 @@ gem 'redcarpet'
 
 gem 'differ'
 gem 'tire'
+gem 'mini_magick'
 gem 'carrierwave'
 
 group :assets do

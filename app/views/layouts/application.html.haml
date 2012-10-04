@@ -28,8 +28,28 @@
         = yield :body
       - else
         = yield
-      .container-fluid
-        - if Rails.env.development?
+      - if Rails.env.development?
+        .container-fluid
+          .row-fluid
+            .span6 &nbsp;
+            .span6 &nbsp;
+          .row-fluid
+            .span7 &nbsp;
+            .span5 &nbsp;
+          .row-fluid
+            .span8 &nbsp;
+            .span4 &nbsp;
+          .row-fluid
+            .span9 &nbsp;
+            .span3 &nbsp;
+          .row-fluid
+            .span10 &nbsp;
+            .span2 &nbsp;
+          .row-fluid
+            .span11 &nbsp;
+            .span1 &nbsp;
+          .row-fluid
+            .span12 &nbsp;
           .row-fluid
             .span12= debug(params)
     %footer
