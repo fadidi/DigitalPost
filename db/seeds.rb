@@ -6,27 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-puts 'SETTING UP LANGUAGES...'
-Language.create!(:code => 'EN', :name => 'English')
-
-puts 'SETTING UP DEFAULT UNITS'
-# warning! need to update lib/tasks/load_sample_data if you change the names of these!
-Unit.create!([{
-  :name => 'Administrative',
-  :description => 'The Administrative unit is responsible for the operations and management of the Post.',
-},{
-  :name => 'Programming',
-  :description => 'The programming unit is responsible for directing the actions and goals of the Post.',
-},{
-  :name => 'Training',
-  :description => 'The training unit is responsible for PST, IST, and the ongoing education of Volunteers.',
-},{
-  :name => 'Safety & Security',
-  :description => 'The safety & security unit is responsible for educating Volunteers about staying safe, and dealing with crises if they occur.',
-},{
-  :name => 'Medical',
-  :description => 'The medical unit is responsible for preventative and treatment healthcare for PCVs throughout their training and service.',
+ValidEmail.create!([{
+  :email => 'jack@brownjohnf.com',
+  :permissions => 'admin'
 }])
+
 # create default users
 puts 'SETTING UP DEFAULT USER LOGIN'
 User.create!([{
@@ -38,9 +22,26 @@ User.create!([{
   :website => 'http://www.fadidi.com'
 }])
 
-ValidEmail.create!([{
-  :email => 'jack@brownjohnf.com',
-  :permissions => 'admin'
+puts 'SETTING UP LANGUAGES...'
+Language.create!(:code => 'EN', :name => 'English')
+
+puts 'SETTING UP DEFAULT UNITS'
+# warning! need to update lib/tasks/load_sample_data if you change the names of these!
+Unit.create!([{
+  :name => 'Administrative',
+  :description => 'The Administrative unit is responsible for the operations and management of the Post.'
+},{
+  :name => 'Programming',
+  :description => 'The programming unit is responsible for directing the actions and goals of the Post.'
+},{
+  :name => 'Training',
+  :description => 'The training unit is responsible for PST, IST, and the ongoing education of Volunteers.'
+},{
+  :name => 'Safety & Security',
+  :description => 'The safety & security unit is responsible for educating Volunteers about staying safe, and dealing with crises if they occur.'
+},{
+  :name => 'Medical',
+  :description => 'The medical unit is responsible for preventative and treatment healthcare for PCVs throughout their training and service.'
 }])
 
 # create default page

@@ -1,5 +1,6 @@
 class Unit < ActiveRecord::Base
-
+  attr_accessible :avatar, :description, :head_id, :name, :remove_avatar
+  
   # elasticsearch indexing
   include Tire::Model::Search
   include Tire::Model::Callbacks
@@ -10,8 +11,6 @@ class Unit < ActiveRecord::Base
     indexes :name
   end
 
-  attr_accessible :avatar, :description, :head_id, :name, :remove_avatar
-  
   mount_uploader :avatar, AvatarUploader
 
   validates :name, :presence => true, :length => { :maximum => 255 }, :uniqueness => { :case_sensitive => false }
