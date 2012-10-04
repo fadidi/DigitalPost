@@ -73,4 +73,15 @@ describe Language do
       end
     end
   end
+
+  describe 'scopes' do
+    describe 'default' do
+      it 'should sort alphabetically' do
+        @a = FactoryGirl.create(:language, :name => 'Aaa')
+        @c = FactoryGirl.create(:language, :name => 'Ccc')
+        @b = FactoryGirl.create(:language, :name => 'Bbb')
+        Language.all.should eq [@a,@b,@c]
+      end
+    end
+  end
 end

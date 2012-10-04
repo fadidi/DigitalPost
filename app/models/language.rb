@@ -9,6 +9,8 @@ class Language < ActiveRecord::Base
   before_validation :do_before_validation
   before_destroy :do_before_destroy
 
+  default_scope :order => 'name ASC'
+
   private
 
     def do_before_validation
