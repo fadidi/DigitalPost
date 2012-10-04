@@ -6,6 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# this has a lot of sleeps because of the searchbox api query limit.
+
 ValidEmail.create!([{
   :email => 'jack@brownjohnf.com',
   :permissions => 'admin'
@@ -22,12 +24,18 @@ User.create!([{
   :website => 'http://www.fadidi.com'
 }])
 
+puts 'pausing...'
+sleep 1
+
 puts 'SETTING UP LANGUAGES...'
 Language.create!(:code => 'EN', :name => 'English')
 
-puts 'SETTING UP DEFAULT UNITS'
+puts 'pausing...'
+sleep 1
+
+puts 'SETTING UP DEFAULT UNITS...'
 # warning! need to update lib/tasks/load_sample_data if you change the names of these!
-Unit.create!([{
+[{
   :name => 'Administrative',
   :description => 'The Administrative unit is responsible for the operations and management of the Post.'
 },{
@@ -42,7 +50,11 @@ Unit.create!([{
 },{
   :name => 'Medical',
   :description => 'The medical unit is responsible for preventative and treatment healthcare for PCVs throughout their training and service.'
-}])
+}].each do |unit|
+  Unit.create! unit
+  puts 'pausing...'
+  sleep 1
+end
 
 # create default page
 puts 'CREATING DEFAULT PAGES'
