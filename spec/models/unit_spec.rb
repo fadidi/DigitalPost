@@ -33,8 +33,29 @@ describe Unit do
 
   describe 'properties' do
     it {Unit.new.avatar.should be_blank}
-    it {Unit.new.avatar_content_type.should be_blank}
-    it {Unit.new.avatar_file_size.should be_blank}
+
+    describe 'avatar_content_type' do
+      it {Unit.new.avatar_content_type.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @unit = FactoryGirl.create :unit
+        @unit.avatar = (File.open('spec/support/images/10x10.gif'))
+        @unit.save!
+        @unit.avatar_content_type.should_not be_blank
+      end
+    end
+
+    describe 'avatar_file_size' do
+      it {Unit.new.avatar_file_size.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @unit = FactoryGirl.create :unit
+        @unit.avatar = (File.open('spec/support/images/10x10.gif'))
+        @unit.save!
+        @unit.avatar_file_size.should_not be_blank
+      end
+    end
+
     it {Unit.new.name.should be_blank}
     it {Unit.new.description.should be_blank}
     it {Unit.new.head_id.should be_blank}

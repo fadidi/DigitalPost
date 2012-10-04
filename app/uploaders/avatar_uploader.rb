@@ -1,6 +1,8 @@
 # encoding: utf-8
+require 'carrierwave/processing/mime_types'
 
 class AvatarUploader < CarrierWave::Uploader::Base
+  include CarrierWave::MimeTypes
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -17,7 +19,13 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    if Rails.env.production?
+      "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    elsif Rails.env.development?
+      "uploads/development/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    else
+      "uploads/test/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -30,7 +38,9 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   # process :scale => [200, 300]
-  #
+
+  process :set_content_type
+
   # def scale(width, height)
   #   # do something
   # end

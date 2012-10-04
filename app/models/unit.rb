@@ -51,8 +51,8 @@ class Unit < ActiveRecord::Base
 
     def do_before_save
       if avatar.present? && avatar_changed?
-        self.content_type = avatar.file.content_type
-        self.file_size = avatar.file.size
+        self.avatar_content_type = avatar.file.content_type
+        self.avatar_file_size = avatar.file.size
       end
     end
 
