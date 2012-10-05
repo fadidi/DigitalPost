@@ -5,8 +5,8 @@ describe AvatarUploader do
 
   before do
     AvatarUploader.enable_processing = true
-    @unit = FactoryGirl.create :unit
-    @uploader = AvatarUploader.new(@unit, :avatar)
+    @user = FactoryGirl.create :user
+    @uploader = AvatarUploader.new(@user, :avatar)
     @uploader.store!(File.open('spec/support/images/10x10.gif'))
   end
 
@@ -23,15 +23,9 @@ describe AvatarUploader do
     @uploader.should have_permissions(0600)
   end
 
-  describe 'span3' do
-    it "should scale down to 374x231" do
-      @uploader.span3.should have_dimensions(374, 231)
-    end
-  end
-
-  describe 'span6' do
-    it "should scale down to 791x489" do
-      @uploader.span6.should have_dimensions(791, 489)
+  describe 'square250' do
+    it "should scale down to 250x250" do
+      @uploader.square250.should have_dimensions(250, 250)
     end
   end
 end

@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  attr_accessible :avatar, :avatar_content_type, :avatar_file_size, :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes, :staff_attributes, :blog_title, :blog_url, :website, :remve_avatar
 
   # elasticsearch indexing
   include Tire::Model::Search
@@ -23,6 +24,8 @@ class User < ActiveRecord::Base
 
   rolify
 
+  mount_uploader :avatar, AvatarUploader
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -30,8 +33,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :verified_at, :provider, :uid, :phone, :bio, :bio_markdown, :volunteer_attributes, :staff_attributes, :blog_title, :blog_url, :website
 
   validates :name, :bio_markdown, :presence => true
   validates :phone, :length => { :minimum => 7, :maximum => 20 }, :phone => true, :allow_blank => true
@@ -133,6 +134,11 @@ class User < ActiveRecord::Base
 
     def do_before_save
       self.bio = Markdown.render(bio_markdown)
+
+      if avatar.present? && avatar_changed?
+        self.avatar_content_type = avatar.file.content_type
+        self.avatar_file_size = avatar.file.size
+      end
     end
 
     def do_before_destroy

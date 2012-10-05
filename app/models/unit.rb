@@ -1,5 +1,5 @@
 class Unit < ActiveRecord::Base
-  attr_accessible :avatar, :avatar_content_type, :avatar_file_size, :description, :head_id, :name, :remove_avatar
+  attr_accessible :description, :head_id, :name, :photo, :photo_content_type, :photo_file_size, :remove_photo
   
   # elasticsearch indexing
   include Tire::Model::Search
@@ -11,13 +11,13 @@ class Unit < ActiveRecord::Base
     indexes :name
   end
 
-  mount_uploader :avatar, AvatarUploader
+  mount_uploader :photo, PhotoUploader
 
-  validates :avatar,
+  validates :photo,
     :file_size => {
       :maximum => 10.megabytes.to_i
     }
-  validates :avatar_file_size,
+  validates :photo_file_size,
     :numericality => { :is_integer => true },
     :allow_blank => true
   validates :name,
@@ -50,9 +50,9 @@ class Unit < ActiveRecord::Base
   private
 
     def do_before_save
-      if avatar.present? && avatar_changed?
-        self.avatar_content_type = avatar.file.content_type
-        self.avatar_file_size = avatar.file.size
+      if photo.present? && photo_changed?
+        self.photo_content_type = photo.file.content_type
+        self.photo_file_size = photo.file.size
       end
     end
 

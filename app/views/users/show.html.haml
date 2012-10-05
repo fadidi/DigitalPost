@@ -24,7 +24,8 @@
     %small= @user.email
 .row-fluid
   .span2
-    = image_tag 'http://placehold.it/250x250', :class => 'img-circle'
+    = image_tag @user.avatar.square250.url, :class => 'img-circle'
+    %h2.center= @user.fname
   .span10
     .tabbable.tabs-right
       %ul.nav.nav-tabs
@@ -116,7 +117,7 @@
               %h1 Pages
             %p #{@user.name} has created #{pluralize(@user.pages.count, 'page')}.
           - else
-            .hero-unit.blue
+            .well.blue
               %h1 This user is not verified.
 
         .tab-pane#revisions
@@ -125,6 +126,6 @@
               %h1 Revisions
             %p #{@user.name} has made #{pluralize(@user.revisions.count, 'revision')} on the site.
           - else
-            .hero-unit.blue
+            .well.blue
               %h1 This user is not verified.
 

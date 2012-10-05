@@ -10,9 +10,9 @@ describe Unit do
   it {Unit.create! @attr}
 
   # properties
-  it {should respond_to :avatar}
-  it {should respond_to :avatar_content_type}
-  it {should respond_to :avatar_file_size}
+  it {should respond_to :photo}
+  it {should respond_to :photo_content_type}
+  it {should respond_to :photo_file_size}
   it {should respond_to :name}
   it {should respond_to :description}
   it {should respond_to :head_id}
@@ -27,46 +27,40 @@ describe Unit do
   it {should respond_to :to_param}
 
   # carrierwave
-  it {should respond_to :avatar?}
-  it {should respond_to :remove_avatar}
-  it {should respond_to :remove_avatar!}
+  it {should respond_to :photo?}
+  it {should respond_to :remove_photo}
+  it {should respond_to :remove_photo!}
 
   describe 'properties' do
-    it {Unit.new.avatar.should be_blank}
-
-    describe 'avatar_content_type' do
-      it {Unit.new.avatar_content_type.should be_blank}
-
-      it 'should populate on successful attachment' do
-        @unit = FactoryGirl.create :unit
-        @unit.avatar = (File.open('spec/support/images/10x10.gif'))
-        @unit.save!
-        @unit.avatar_content_type.should_not be_blank
-      end
-    end
-
-    describe 'avatar_file_size' do
-      it {Unit.new.avatar_file_size.should be_blank}
-
-      it 'should populate on successful attachment' do
-        @unit = FactoryGirl.create :unit
-        @unit.avatar = (File.open('spec/support/images/10x10.gif'))
-        @unit.save!
-        @unit.avatar_file_size.should_not be_blank
-      end
-    end
-
     it {Unit.new.name.should be_blank}
     it {Unit.new.description.should be_blank}
     it {Unit.new.head_id.should be_blank}
+    it {Unit.new.photo.should be_blank}
+
+    describe 'photo_content_type' do
+      it {Unit.new.photo_content_type.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @unit = FactoryGirl.create :unit
+        @unit.photo = (File.open('spec/support/images/10x10.gif'))
+        @unit.save!
+        @unit.photo_content_type.should_not be_blank
+      end
+    end
+
+    describe 'photo_file_size' do
+      it {Unit.new.photo_file_size.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @unit = FactoryGirl.create :unit
+        @unit.photo = (File.open('spec/support/images/10x10.gif'))
+        @unit.save!
+        @unit.photo_file_size.should_not be_blank
+      end
+    end
   end
 
   describe 'validations' do
-    it {Unit.new(@attr.merge(:avatar => '')).should be_valid}
-    it {Unit.new(@attr.merge(:avatar_content_type => '')).should be_valid}
-    it {Unit.new(@attr.merge(:avatar_file_size => '')).should be_valid}
-    it {Unit.new(@attr.merge(:avatar_file_size => 'a')).should_not be_valid}
-
     describe 'name' do
       it {Unit.new(@attr.merge(:name => '')).should_not be_valid}
       it {Unit.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
@@ -81,6 +75,10 @@ describe Unit do
     it {Unit.new(@attr.merge(:description => 'a'*256)).should_not be_valid}
     it {Unit.new(@attr.merge(:head_id => '')).should be_valid}
     it {Unit.new(@attr.merge(:head_id => 'a')).should_not be_valid}
+    it {Unit.new(@attr.merge(:photo => '')).should be_valid}
+    it {Unit.new(@attr.merge(:photo_content_type => '')).should be_valid}
+    it {Unit.new(@attr.merge(:photo_file_size => '')).should be_valid}
+    it {Unit.new(@attr.merge(:photo_file_size => 'a')).should_not be_valid}
   end
 
   describe 'associations' do

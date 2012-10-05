@@ -114,14 +114,14 @@ ActiveRecord::Schema.define(:version => 20121003162014) do
   add_index "stages", ["swear_in"], :name => "index_stages_on_swear_in", :unique => true
 
   create_table "units", :force => true do |t|
-    t.string   "avatar"
-    t.string   "avatar_content_type"
-    t.string   "avatar_file_size"
-    t.string   "name"
-    t.integer  "head_id"
     t.text     "description"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.integer  "head_id"
+    t.string   "name"
+    t.string   "photo"
+    t.string   "photo_content_type"
+    t.string   "photo_file_size"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -151,11 +151,14 @@ ActiveRecord::Schema.define(:version => 20121003162014) do
     t.string   "invited_by_type"
     t.string   "provider"
     t.string   "uid"
+    t.string   "avatar"
+    t.string   "avatar_content_type"
+    t.string   "avatar_file_size"
     t.text     "bio"
     t.text     "bio_markdown",                         :default => "This user has no bio."
-    t.string   "phone"
     t.string   "blog_title"
     t.string   "blog_url"
+    t.string   "phone"
     t.string   "website"
   end
 

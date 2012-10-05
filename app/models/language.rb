@@ -1,5 +1,16 @@
 class Language < ActiveRecord::Base
   attr_accessible :code, :description, :name
+  
+  # elasticsearch indexing
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :handle, :as => 'name'
+    indexes :code
+    indexes :description
+  end
+
 
   validates :code, :length => { :in => 2..7 }, :uniqueness => { :case_sensitive => false }
   validates :name, :length => { :maximum => 255 }, :presence => true, :uniqueness => { :case_sensitive => false }

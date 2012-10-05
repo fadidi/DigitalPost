@@ -3,31 +3,31 @@
 
 fr:
   word:
-    browse: "voire"
-    create: "addition"
-    everyone: "tous le monde"
+    browse: "naviguer"
+    create: "creer"
+    everyone: "tout le monde"
     for: "pour"
-    links: "hyperlink"
-    manage: "manage"
-    people: "Persons"
+    links: "lien hypertexte"
+    manage: "gerer"
+    people: "les gens"
     profile: "profile"
-    resource: "material"
-    resource: "materials"
-    search: "cherche"
-    things: "quelque choses"
+    resource: "ressource"
+    resource: "ressources"
+    search: "chercher"
+    things: "quelques choses"
   phrase:
     contact_us: "contactez nous"
-    edit_resource: "modifier %{resource}"
+    edit_resource: "modifiez ce %ressource"
     for_staff: "pour staff"
-    new_resource: "nouveau %{resource}"
-    quick_link: "vite"
-    quick_links: "vites"
-    sign_out: "exeunt"
-    site_map: "carte site"
+    new_resource: "créer une nouvelle %{resource}"
+    quick_link: "lien rapide"
+    quick_links: "liens rapides"
+    sign_out: "déconnecter"
+    site_map: "plan du site"
   proper_noun:
     peace_corps: "Corps de la Paix"
   footer:
-    credit: "energizee par %{app_link} sur %{host_link}"
+    credit: "%{app_link} développé par %{host_link}"
   activerecord:
     models:
       language:
@@ -37,20 +37,20 @@ fr:
         one: "Page"
         other: "Pages"
       reference: 
-        one: "Reference"
-        other: "References"
+        one: "Référence"
+        other: "Références"
       region: 
         one: "Région"
         other: "Régions"
       revision: 
-        one: "Revision"
-        other: "Revisions"
+        one: "Révision"
+        other: "Révisions"
       role:
-        one: "Role"
-        other: "Roles"
+        one: "Rôle"
+        other: "Rôles"
       sector:
-        one: "Sector"
-        other: "Sectors"
+        one: "Secteur"
+        other: "Secteurs"
       staff:
         one: "Staff"
         other: "Staff"
@@ -61,11 +61,11 @@ fr:
         one: "Unit d'Administration"
         other: "Units d'Administration"
       user:
-        one: "User"
-        other: "Users"
+        one: "Utilisateur"
+        other: "Utilisateurs"
       valid_email: 
-        one: "Bon Email"
-        other: "Bon Emails"
+        one: "Email Valide"
+        other: "Emails Valides"
       volunteer:
         one: "Voluntaire"
         other: "Voluntaires"

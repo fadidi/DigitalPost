@@ -14,7 +14,9 @@ describe User do
   it {User.create! @attr}
 
   # properties
-  it {should respond_to :bio}
+  it {should respond_to :avatar}
+  it {should respond_to :avatar_content_type}
+  it {should respond_to :avatar_file_size}
   it {should respond_to :bio_markdown}
   it {should respond_to :blog_title}
   it {should respond_to :blog_url}
@@ -50,8 +52,46 @@ describe User do
 
   # scopes
   it {should respond_to :to_param}
+  
+  # carrierwave
+  it {should respond_to :avatar?}
+  it {should respond_to :remove_avatar}
+  it {should respond_to :remove_avatar?}
 
   describe 'properties' do
+    describe 'avatar' do
+      it {User.new.avatar.should be_blank}
+
+      it 'should not be blank after attaching' do
+        @user = FactoryGirl.create(:user)
+        @user.avatar = (File.open('spec/support/images/10x10.gif'))
+        @user.save!
+        @user.avatar.should_not be_blank
+      end
+    end
+
+    describe 'avatar_content_type' do
+      it {User.new.avatar_content_type.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @user = FactoryGirl.create(:user)
+        @user.avatar = (File.open('spec/support/images/10x10.gif'))
+        @user.save!
+        @user.avatar_content_type.should_not be_blank
+      end
+    end
+
+    describe 'avatar_file_size' do
+      it {Unit.new.photo_file_size.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @user = FactoryGirl.create(:user)
+        @user.avatar = (File.open('spec/support/images/10x10.gif'))
+        @user.save!
+        @user.avatar_file_size.should_not be_blank
+      end
+    end
+
     describe 'bio' do
       it {User.new(@attr).bio.should be_blank}
 
