@@ -2,7 +2,32 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  everyone: "Everyone"
+  word:
+    browse: "browse"
+    create: "create"
+    everyone: "everyone"
+    for: "for"
+    links: "link"
+    manage: "manage"
+    people: "people"
+    profile: "profile"
+    resource: "resource"
+    resource: "resources"
+    search: "search"
+    things: "things"
+  phrase:
+    contact_us: "contact us"
+    edit_resource: "edit %{resource}"
+    for_staff: "for staff"
+    new_resource: "new %{resource}"
+    quick_link: "quick link"
+    quick_links: "quick links"
+    sign_out: "sign out"
+    site_map: "site map"
+  proper_noun:
+    peace_corps: "Peace Corps"
+  footer:
+    credit: "powered by %{app_link} on the %{host_link}"
   activerecord:
     models:
       stage:

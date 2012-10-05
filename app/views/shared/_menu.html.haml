@@ -5,7 +5,7 @@
       %li= link_to page.title, page
     %li.nav-header= t('phrase.quick_links')
     %li.nav-header= t('word.resources')
-    %li= link_to Page.model_name.human(:count => :plural), pages_path
+    %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
     - if can? :read, User
       %li= link_to icon_for('user', t('word.everyone')), users_path
       %li= link_to icon_for('staff', Staff.model_name.human(:count => :plural)), staff_index_path if can? :read, Staff

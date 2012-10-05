@@ -18,12 +18,12 @@
     %header
       = render 'layouts/navigation'
     #main{:role => "main"}
-      = render 'layouts/developer_messages'
+      -#= render 'layouts/developer_messages'
       = render 'layouts/messages' if flash.any?
-      .container
+      -#.container
         .row-fluid
           .span12
-            = yield :alerts
+      = yield :alerts
       - if content_for?(:body)
         = yield :body
       - else
