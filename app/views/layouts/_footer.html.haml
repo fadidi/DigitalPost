@@ -2,22 +2,22 @@
   .row-fluid
     .span3
       %Ul.nav.nav-list
-        %li.nav-header Things
-        %li= link_to 'Pages', pages_path
+        %li.nav-header= t 'word.things'
+        %li= link_to Page.model_name.human(:count => :plural), pages_path
       %ul.nav.nav-list
-        %li.nav-header Links
-        %li= link_to 'Peace Corps', 'http://peacecorps.gov'
-        %li.nav-header Contact us
+        %li.nav-header= t 'word.links'
+        %li= link_to t('proper_noun.peace_corps'), 'http://peacecorps.gov'
+        %li.nav-header= t 'phrase.contact_us'
         %li= link_to 'Email', "contact@#{ENV['DOMAIN']}"
         %li= link_to 'Facebook', ENV['FB_URL'] if ENV['FB_URL'] && !ENV['FB_URL'].blank?
         %li= link_to 'Twitter', ENV['TWITTER_URL'] if ENV['TWITTER_URL'] && !ENV['TWITTER_URL'].blank?
     .span3
       %ul.nav.nav-list
         - if can?(:read, User)
-          %li.nav-header People
-          %li= link_to 'Everyone', users_path
-          %li= link_to 'Staff', staff_index_path if can? :read, Staff
-          %li= link_to 'Volunteers', volunteers_path if can? :read, Volunteer
+          %li.nav-header= t 'word.people'
+          %li= link_to t('word.everyone'), users_path
+          %li= link_to Staff.model_name.human(:count => :plural), staff_index_path if can? :read, Staff
+          %li= link_to Volunteer.model_name.human(:count => :plural), volunteers_path if can? :read, Volunteer
         - if can? :read, Unit
           %li.nav-header Units
           - for unit in Unit.all do
@@ -25,17 +25,17 @@
     .span3
       %ul.nav.nav-list
         - if can? :read, Sector
-          %li.nav-header Sectors
+          %li.nav-header= Sector.model_name.human(:count => :plural)
           - for sector in Sector.all do
             %li= link_to sector.name, sector
         - if can? :read, Region
-          %li.nav-header Regions
+          %li.nav-header= Region.model_name.human(:count => :plural)
           - for region in Region.all do
             %li= link_to region.name, region
     .span3
       %ul.nav.nav-list
         - if can? :read, WorkZone
-          %li.nav-header Work Zones
+          %li.nav-header= WorkZone.model_name.human(:count => :plural)
           - for work_zone in WorkZone.all do
             = link_to work_zone.name, work_zone
   .row-fluid
@@ -43,6 +43,6 @@
       %hr
   .row-fluid
     .span6
-      %p #{link_to "Peace Corps|#{ENV['COUNTRY']}", root_path} &copy; 2011-2012
+      %p #{link_to "#{t 'proper_noun.peace_corps'}|#{ENV['COUNTRY']}", root_path} &copy; 2011-2012
     .span6.right
-      %p Powered by DigitalPost on Fadidi Media Network
+      %p= raw t('footer.credit', :app_link => link_to('DigitalPCPost', ''), :host_link => link_to('Fadidi Digital Media Network', ''))

@@ -1,0 +1,74 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+fr:
+  word:
+    browse: "voire"
+    create: "addition"
+    everyone: "tous le monde"
+    for: "pour"
+    links: "hyperlink"
+    manage: "manage"
+    people: "Persons"
+    profile: "profile"
+    resource: "material"
+    resource: "materials"
+    search: "cherche"
+    things: "quelque choses"
+  phrase:
+    contact_us: "contactez nous"
+    edit_resource: "modifier %{resource}"
+    for_staff: "pour staff"
+    new_resource: "nouveau %{resource}"
+    quick_link: "vite"
+    quick_links: "vites"
+    sign_out: "exeunt"
+    site_map: "carte site"
+  proper_noun:
+    peace_corps: "Corps de la Paix"
+  footer:
+    credit: "energizee par %{app_link} sur %{host_link}"
+  activerecord:
+    models:
+      language:
+        one: "Langue"
+        other: "Langues"
+      page: 
+        one: "Page"
+        other: "Pages"
+      reference: 
+        one: "Reference"
+        other: "References"
+      region: 
+        one: "Région"
+        other: "Régions"
+      revision: 
+        one: "Revision"
+        other: "Revisions"
+      role:
+        one: "Role"
+        other: "Roles"
+      sector:
+        one: "Sector"
+        other: "Sectors"
+      staff:
+        one: "Staff"
+        other: "Staff"
+      stage:
+        one: "Stage"
+        other: "Stages"
+      unit: 
+        one: "Unit d'Administration"
+        other: "Units d'Administration"
+      user:
+        one: "User"
+        other: "Users"
+      valid_email: 
+        one: "Bon Email"
+        other: "Bon Emails"
+      volunteer:
+        one: "Voluntaire"
+        other: "Voluntaires"
+      work_zone: 
+        one: "Zone de Travaille"
+        other: "Zones de Travaille"

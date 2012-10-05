@@ -6,7 +6,7 @@
         %span.icon-bar
         %span.icon-bar
       = link_to root_path, :class => 'brand' do
-        %span#peacecorps Peace Corps
+        %span#peacecorps= t 'proper_noun.peace_corps'
         %span#brand-divider= '|'
         %span#brand-locale= ENV['COUNTRY']
       .nav-collapse
@@ -14,58 +14,59 @@
           %li
             = link_to pages_path do
               %span.icon-list-alt.icon-white
-              Site Map
+              = t('phrase.site_map').titleize
           %li
             = link_to units_path do
               %span.icon-user.icon-white
-              For PCVs
+              = t('word.for').titleize
+              PCVs
           %li
             = link_to work_zones_path do
               %span.icon-user.icon-white
-              For Staff
+              = t('phrase.for_staff').titleize
           %li.divider-vertical
           %li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-              Resources
+              = t 'word.resources'
               %b.caret
             %ul.dropdown-menu
-              %li.nav-header Things
+              %li.nav-header= t 'word.things'
               %li
                 = link_to pages_path do
                   %span.icon-list-alt
-                  Pages
+                  = Page.model_name.human(:count => :plural)
               %li.nav-header= ENV['COUNTRY']
-              %li= link_to 'Admin Units', units_path if can? :read, Unit
-              %li= link_to icon_for('language', 'Languages'), languages_path if can? :read, Language
-              %li= link_to 'Regions', regions_path if can? :read, Region
-              %li= link_to 'Sectors', sectors_path if can? :read, Sector
-              %li= link_to 'Work Zones', work_zones_path if can? :read, WorkZone
+              %li= link_to icon_for('unit', Unit.model_name.human(:count => :plural)), units_path if can? :read, Unit
+              %li= link_to icon_for('language', Language.model_name.human(:count => :plural)), languages_path if can? :read, Language
+              %li= link_to icon_for('region', Region.model_name.human(:count => :plural)), regions_path if can? :read, Region
+              %li= link_to icon_for('sector', Sector.model_name.human(:count => :plural)), sectors_path if can? :read, Sector
+              %li= link_to icon_for('work_zone', WorkZone.model_name.human(:count => :plural)), work_zones_path if can? :read, WorkZone
               - if signed_in?
                 %li.divider
-                %li.nav-header People
-                %li= link_to icon_for('user', 'Everyone'), users_path
-                %li= link_to icon_for('staff', 'Staff'), staff_index_path
-                %li= link_to icon_for('volunteer', 'Volunteers'), volunteers_path
+                %li.nav-header= t 'word.people'
+                %li= link_to icon_for('user', t('word.everyone')), users_path
+                %li= link_to icon_for('staff', Staff.model_name.human(:count => :plural)), staff_index_path
+                %li= link_to icon_for('volunteer', Volunteer.model_name.human(:count => :plural)), volunteers_path
                 - if user_signed_in? && (current_user.has_role?(:staff) || current_user.has_role?(:volunteer))
                   %li.divider
-                  %li.nav-header Peace Corps
+                  %li.nav-header= t 'proper_noun.peace_corps'
                   - if can? :read, Unit
                     %li
                       = link_to units_path do
                         %span.icon-ok
-                        Admin Units
+                        = Unit.model_name.human(:count => :plural)
                   - if can? :read, Stage
                     %li
                       = link_to stages_path do
                         %span.icon-ok
-                        Stages
+                        = Stage.model_name.human(:count => :plural)
                 %li.divider
-                %li.nav-header Create
+                %li.nav-header= t 'word.create'
                 - if can?(:create, Page)
                   %li
                     = link_to new_page_path do
                       %span.icon-plus
-                      New Page
+                      = t('phrase.new_resource', :resource => Page.model_name.human).titleize
           -# initiatives
           -#%li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
@@ -91,17 +92,18 @@
             - if current_user.has_role?(:moderator) || current_user.has_role?(:admin)
               %li.dropdown
                 %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-                  Manage
+                  = t('word.manage').titleize
                   %b.caret
                 %ul.dropdown-menu.pull-right
                   %li
                     = link_to valid_emails_path do
                       %span.icon-envelope
-                      Valid Emails
+                      = ValidEmail.model_name.human(:count => :plural)
                   %li
                     = link_to new_valid_email_path do
                       %span.icon-plus
-                      Add Valid Emails
+                      = t 'word.add'
+                      = ValidEmail.model_name.human(:count => :plural)
             %li.dropdown
               %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
                 = current_user.name
@@ -110,16 +112,16 @@
                 %li
                   = link_to current_user do
                     %span.icon-user
-                    Profile
+                    = t('word.profile')
                 %li.divider
                 %li
                   = link_to edit_user_registration_path do
                     %span.icon-wrench
-                    Edit account
+                    = t('phrase.edit_resource', :resource => t('word.profile')).titleize
                 %li
                   = link_to destroy_user_session_path, :method=>'delete' do
                     %span.icon-remove
-                    Sign out
+                    = t('phrase.sign_out').titleize
           - else
             %li.dropdown
               %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
@@ -152,4 +154,4 @@
           %li.divider-vertical
         -# search form
         = form_tag search_index_path, :method => :get, :class => 'navbar-search pull-right' do
-          = text_field_tag 'q', nil, :class => 'search-query', 'placeholder' => 'search'
+          = text_field_tag 'q', nil, :class => 'search-query', 'placeholder' => t('word.search')
