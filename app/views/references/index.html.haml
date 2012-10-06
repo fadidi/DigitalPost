@@ -1,17 +1,19 @@
 %h1 Listing references
 
-%table
+%table.table
   %tr
-    %th Link source
-    %th Link target
+    %th Link Source
+    %th Link Target Type
+    %th Link Target
     %th
     %th
     %th
 
   - @references.each do |reference|
     %tr
-      %td= reference.link_source.title
-      %td= reference.link_target.title
+      %td= link_to reference.link_source.to_param, reference.link_source if reference.link_source
+      %td= reference.link_target_type
+      %td= link_to reference.link_target.to_param, reference.link_target if reference.link_target
       %td= link_to 'Show', reference
       %td= link_to 'Edit', edit_reference_path(reference)
       %td= link_to 'Destroy', reference, :confirm => 'Are you sure?', :method => :delete

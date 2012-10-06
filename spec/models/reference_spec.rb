@@ -256,24 +256,29 @@ describe Reference do
           end
         end
 
-        context 'user-scoped' do
-          describe 'with one matching user' do
-            before :each do
-              @user = FactoryGirl.create :user
-            end
+        context 'name handle' do
+          [Language, Region, Sector, Unit, User, WorkZone].each do |item|
+            context item do
+              describe 'with one match' do
+                before :each do
+                  @sitem = item.to_s.underscore
+                  @item = FactoryGirl.create @sitem.to_sym
+                end
 
-            it 'should set the correct path to the user' do
-              Reference.process_string("this is text containing [user[#{@user.name}]] for testing.", Page, 1).should =~ /"\/users\/#{@user.to_param}"/i
-            end
+                it "should set the correct path to the #{item}" do
+                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", item, 1).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                end
 
-            it 'should be case-insensitive' do
-              Reference.process_string("this is text containing [user[#{@user.name.downcase}]] for testing.", Page, 1).should =~ /"\/users\/#{@user.to_param}"/i
-            end
+                it 'should be case-insensitive' do
+                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name.downcase}]] for testing.", item, 1).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                end
 
-            it 'should change the Reference count' do
-              expect {
-                Reference.process_string("this is text containing [user[#{@user.name}]] for testing.", Page, 1)
-              }.to change(Reference, :count).by(1)
+                it 'should change the Reference count' do
+                  expect {
+                    Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", item, 1)
+                  }.to change(Reference, :count).by(1)
+                end
+              end
             end
           end
         end

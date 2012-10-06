@@ -11,11 +11,26 @@ class Reference < ActiveRecord::Base
   scope :to_pages, where(:link_target_type => 'Page')
 
   def self.process_string(original, source_class, source_id)
-    original.gsub(/(\[([a-z]*)\[((https*:\/\/)*[^\[]+)\]\])/) do |match|
+    original.gsub(/(\[([a-z_]*)\[((https*:\/\/)*[^\[]+)\]\])/) do |match|
       if $4.blank?
         if $2 == 'user'
           target = 'User'
           results = User.where("UPPER(name) LIKE UPPER(?)", "%#{$3}%")
+        elsif $2 == 'unit'
+          target = 'Unit'
+          results = Unit.where("UPPER(name) LIKE UPPER(?)", "%#{$3}%")
+        elsif $2 == 'language'
+          target = 'Language'
+          results = Language.where("UPPER(name) LIKE UPPER(?)", "%#{$3}%")
+        elsif $2 == 'region'
+          target = 'Region'
+          results = Region.where("UPPER(name) LIKE UPPER(?)", "%#{$3}%")
+        elsif $2 == 'sector'
+          target = 'Sector'
+          results = Sector.where("UPPER(name) LIKE UPPER(?)", "%#{$3}%")
+        elsif $2 == 'work_zone'
+          target = 'WorkZone'
+          results = WorkZone.where("UPPER(name) LIKE UPPER(?)", "%#{$3}%")
         else
           target = 'Page'
           results = Page.where("UPPER(title) LIKE UPPER(?)", "%#{$3}%")
@@ -31,13 +46,13 @@ class Reference < ActiveRecord::Base
 
         # if there are no results, set the missing link
         if results.count < 1
-          "<a class=\"missing\" href=\"/#{target.parameterize.pluralize}\">#{$3}<span class=\"icon-remove-circle\"></span></a>"
+          "<a class=\"missing\" href=\"/#{target.underscore.pluralize}\">#{$3}<span class=\"icon-remove-circle\"></span></a>"
         # if there are more than 1 result, link to disambiguation
         elsif results.count > 1
-          "<a class=\"disambiguation\" href=\"/#{target.parameterize.pluralize}\">#{$3}<span class=\"icon-random\"></span></a>"
+          "<a class=\"disambiguation\" href=\"/#{target.underscore.pluralize}\">#{$3}<span class=\"icon-random\"></span></a>"
         # if there is only one result, link there
         else
-          "<a href=\"/#{target.parameterize.pluralize}/#{results.first.to_param}\">#{$3}</a>"
+          "<a href=\"/#{target.underscore.pluralize}/#{results.first.to_param}\">#{$3}</a>"
         end
       else
         Reference.create!(
