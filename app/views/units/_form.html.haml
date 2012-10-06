@@ -8,7 +8,7 @@
           = f.label :name, 'Unit Name'
           = f.text_field :name, :class => 'required span12'
           = f.label :head_id, 'Head of Unit'
-          = f.collection_select :head_id, Staff.all, :user_id, :name, {:include_blank => true}, :class => 'required span12'
+          = f.collection_select :head_id, Staff.all, :id, :name, {:include_blank => true}, :class => 'required span12'
           %span.help-block staff member responsible for the unit
           = f.label :description, 'Duties & Jurisdiction'
           = f.text_area :description, :rows => 7, :class => 'span12'

@@ -1,0 +1,74 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+wo:
+  word:
+    browse: "séétal"
+    create: "defar"
+    everyone: "ñëpp"
+    for: "pur"
+    links: "lien hypertexte"
+    manage: "tóopatóo"
+    people: "nit ñi"
+    profile: "profile"
+    resource: "ndimbal"
+    resource: "ay ndimbal"
+    search: "wuutal"
+    things: "ay mbir"
+  phrase:
+    contact_us: "wàaxale nun"
+    edit_resource: "defaraat %{resource} bi"
+    for_staff: "pur staff yi"
+    new_resource: "defar %{resource} bu bees"
+    quick_link: "lien rapide"
+    quick_links: "liens rapides"
+    sign_out: "géen site bi"
+    site_map: "plan du site"
+  proper_noun:
+    peace_corps: "Corps de la Paix"
+  footer:
+    credit: "%{app_link} moo defar site web bi, ci %{host_link}"
+  activerecord:
+    models:
+      language:
+        one: "Lakk bi"
+        other: "Lakk yi"
+      page: 
+        one: "Këyit bi"
+        other: "Këyit yi"
+      reference: 
+        one: "Référence bi"
+        other: "Références yi"
+      region: 
+        one: "Région"
+        other: "Régions"
+      revision: 
+        one: "Def ci Révision"
+        other: "Def ci ay Révisions"
+      role:
+        one: "Njëriñ bi"
+        other: "Njëriñ yi"
+      sector:
+        one: "Wàll bi"
+        other: "Wàll yi"
+      staff:
+        one: "Staff"
+        other: "Staff"
+      stage:
+        one: "Mbooloo bi"
+        other: "Mbooloo yi"
+      unit: 
+        one: "Unit d'Administration"
+        other: "Units d'Administration"
+      user:
+        one: "Liggéeykat bi"
+        other: "Liggéeykat yi"
+      valid_email: 
+        one: "Email baax na"
+        other: "Emails baax nañu"
+      volunteer:
+        one: "Voluntaire"
+        other: "Voluntaires"
+      work_zone: 
+        one: "Dëkk u Liggéey"
+        other: "Dëkk yu Liggéey"

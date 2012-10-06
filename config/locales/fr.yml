@@ -17,7 +17,7 @@ fr:
     things: "quelques choses"
   phrase:
     contact_us: "contactez nous"
-    edit_resource: "modifiez ce %ressource"
+    edit_resource: "modifiez ce %{resource}"
     for_staff: "pour staff"
     new_resource: "créer une nouvelle %{resource}"
     quick_link: "lien rapide"

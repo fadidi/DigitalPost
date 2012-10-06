@@ -44,7 +44,7 @@
               - if signed_in?
                 %li.divider
                 %li.nav-header= t 'word.people'
-                %li= link_to icon_for('user', t('word.everyone')), users_path
+                %li= link_to icon_for('user', t('word.everyone').titleize), users_path
                 %li= link_to icon_for('staff', Staff.model_name.human(:count => :plural)), staff_index_path
                 %li= link_to icon_for('volunteer', Volunteer.model_name.human(:count => :plural)), volunteers_path
                 - if user_signed_in? && (current_user.has_role?(:staff) || current_user.has_role?(:volunteer))
@@ -112,7 +112,7 @@
                 %li
                   = link_to current_user do
                     %span.icon-user
-                    = t('word.profile')
+                    = t('word.profile').titleize
                 %li.divider
                 %li
                   = link_to edit_user_registration_path do

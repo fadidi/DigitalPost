@@ -15,7 +15,7 @@
   .span8
     .well.blue
       %h1
-        = "#{@unit.head.name} and the" if @unit.head?
+        = "#{@unit.head.user.fname} and the" if @unit.head?
         = @unit.name
         Team
     .row-fluid
@@ -27,5 +27,5 @@
           - for staff in @unit.staff do
             %li
               = link_to staff.user do
-                = "#{staff.name},"
-                = "#{staff.job_title}" unless staff.job_title.blank?
+                = "#{staff.name}"
+                = "| #{staff.job_title}" unless staff.job_title.blank?

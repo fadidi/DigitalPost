@@ -44,7 +44,7 @@ module DigitalPost
     # config.i18n.default_locale = :en
 
     # hack around the default_locale fail
-    config.i18n.locale = :fr
+    config.i18n.locale = :wo
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"

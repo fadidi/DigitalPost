@@ -19,5 +19,5 @@
         %td= staff.user.phone
         %td= staff.user.email
         %td= staff.job_title
-        %td= staff.unit.name if staff.unit?
+        %td= link_to staff.unit.name, staff.unit if staff.unit?
         %td= staff.location

@@ -7,7 +7,7 @@
     %li.nav-header= t('word.resources')
     %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
     - if can? :read, User
-      %li= link_to icon_for('user', t('word.everyone')), users_path
+      %li= link_to icon_for('user', t('word.everyone').titleize), users_path
       %li= link_to icon_for('staff', Staff.model_name.human(:count => :plural)), staff_index_path if can? :read, Staff
       %li= link_to icon_for('volunteer', Volunteer.model_name.human(:count => :plural)), volunteers_path if can? :read, Volunteer
     %li= link_to icon_for('unit', Unit.model_name.human(:count => :plural)), units_path if can? :read, Unit
