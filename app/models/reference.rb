@@ -14,6 +14,14 @@ class Reference < ActiveRecord::Base
   scope :missing, where('target_count < 1')
   scope :ambiguous, where('target_count > 1')
 
+  def is_ambiguous?
+    target_count > 1 && !new_record?
+  end
+
+  def is_missing?
+    target_count < 1 && !new_record?
+  end
+
   def self.process_string(original, source)
     source.references.clear
     original.gsub(/(\[([a-z_]*)\[((https*:\/\/)*[^\[]+)\]\])/) do |match|
@@ -26,10 +34,31 @@ class Reference < ActiveRecord::Base
       if $4.blank?
         # if there is no resource set
         if $2.blank?
-          source.references.create!(
-            :link_text => $3
-          )
-          "<a class=\"disambiguation\" href=\"\">#{$3}<span class=\"icon-random\"></span></a>"
+          search = Tire.search ELASTICSEARCH_INDEX do |search|
+            search.query do |query|
+              query.string $3
+            end
+          end
+          if search.results.count > 1
+            ref = source.references.create!(
+              :link_text => $3,
+              :target_count => search.results.count
+            )
+            "<a class=\"disambiguation\" href=\"/references/#{ref.id}\">#{$3}<span class=\"icon-random\"></span></a>"
+          elsif search.results.count == 1
+            source.references.create!(
+              :link_text => $3,
+              :target_count => 1,
+              :link_target_type => search.results.first.type.camelize,
+              :link_target_id => search.results.first.id
+            )
+            "<a href=\"/#{search.results.first.type.pluralize}/#{search.results.first.id}-#{search.results.first.handle}\">#{$3}</a>"
+          else
+            ref = source.references.create!(
+              :link_text => $3
+            )
+            "<a class=\"missing\" href=\"/references/#{ref.id}\">#{$3}<span class=\"icon-remove-circle\"></span></a>"
+          end
         # else use the resource, ending in page in case there's a typo
         else
           if $2 == 'user'
@@ -55,7 +84,7 @@ class Reference < ActiveRecord::Base
             results = Page.where("UPPER(title) LIKE UPPER(?)", "%#{$3}%")
           end
             
-          source.references.create!(
+          ref = source.references.create!(
             :link_text => $3,
             :link_target_type => target,
             :link_target_id => (results.any? ? results.first.id : nil),
@@ -64,10 +93,10 @@ class Reference < ActiveRecord::Base
 
           # if there are no results, set the missing link
           if results.count < 1
-            "<a class=\"missing\" href=\"/#{target.underscore.pluralize}\">#{$3}<span class=\"icon-remove-circle\"></span></a>"
+            "<a class=\"missing\" href=\"/references/#{ref.id}\">#{$3}<span class=\"icon-remove-circle\"></span></a>"
           # if there are more than 1 result, link to disambiguation
           elsif results.count > 1
-            "<a class=\"disambiguation\" href=\"/#{target.underscore.pluralize}\">#{$3}<span class=\"icon-random\"></span></a>"
+            "<a class=\"disambiguation\" href=\"/references/#{ref.id}\">#{$3}<span class=\"icon-random\"></span></a>"
           # if there is only one result, link there
           else
             "<a href=\"/#{target.underscore.pluralize}/#{results.first.to_param}\">#{$3}</a>"
@@ -75,11 +104,16 @@ class Reference < ActiveRecord::Base
         end
       else
         source.references.create!(
-          :link_text => $3
+          :link_text => $3,
+          :target_count => 1
         )
         "<a href=\"#{$3}\">#{$3}</a>"
       end
     end
+  end
+
+  def is_valid?
+    target_count == 1 && !new_record?
   end
 
 end

@@ -54,10 +54,11 @@ module ApplicationHelper
   #
   def icon_for(resource, text = nil)
     icons = {
-      'user' => 'user',
       'language' => 'bullhorn',
-      'volunteer' => 'user',
-      'staff' => 'user'
+      'page' => 'list-alt',
+      'staff' => 'user',
+      'user' => 'user',
+      'volunteer' => 'user'
     }
     text = text.nil? ? '' : "&nbsp;#{text}"
     icons[resource] ||= 'certificate'

@@ -26,7 +26,10 @@ describe Reference do
   it {should respond_to :link_target}
 
   # methods
+  it {should respond_to :is_ambiguous?}
+  it {should respond_to :is_missing?}
   it {Reference.should respond_to(:process_string).with(2).arguments}
+  it {should respond_to :is_valid?}
 
   # scopes
   it {Reference.should respond_to :ambiguous}
@@ -173,6 +176,34 @@ describe Reference do
   end
   
   describe 'methods' do
+    describe 'is_ambiguous?' do
+      it {Reference.new(@attr).is_ambiguous?.should_not be_true}
+
+      it 'should be true with target_count > 0' do
+        @ref = FactoryGirl.create(:reference, :target_count => 2)
+        @ref.is_ambiguous?.should be_true
+      end
+    end
+
+    describe 'is_missing?' do
+      it {Reference.new(@attr).is_missing?.should_not be_true}
+      it {Reference.create!(@attr).is_missing?.should be_true}
+
+      it 'should be true with target_count < 1' do
+        @ref = FactoryGirl.create(:reference, :target_count => 0)
+        @ref.is_missing?.should be_true
+      end
+    end
+
+    describe 'is_valid?' do
+      it {Reference.new(@attr).is_valid?.should_not be_true}
+
+      it 'should be true with target_count == 1' do
+        @ref = FactoryGirl.create(:reference, :target_count => 1)
+        @ref.is_valid?.should be_true
+      end
+    end
+    
     describe 'process_string' do
       it 'should ignore markdown links' do
         Reference.process_string('this is text containing [a markdown link](http://test.com)', FactoryGirl.create(:page)).should =~ /\[a markdown link\]\(http:\/\/test\.com\)/

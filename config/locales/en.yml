@@ -30,6 +30,9 @@ en:
     credit: "powered by %{app_link} on the %{host_link}"
   activerecord:
     models:
+      reference:
+        one: "Reference"
+        other: "References"
       stage:
         one: "Training Group"
         other: "Training Groups"

@@ -18,6 +18,12 @@ class ReferencesController < ApplicationController
   # GET /references/1.json
   def show
     @reference = Reference.find(params[:id])
+    search = Tire.search ELASTICSEARCH_INDEX do |search|
+      search.query do |query|
+        query.string @reference.link_text
+      end
+    end
+    @results = search.results
 
     respond_to do |format|
       format.html # show.html.erb

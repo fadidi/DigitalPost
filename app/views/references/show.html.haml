@@ -1,21 +1,37 @@
-%p#notice= notice
+- content_for :backtrack do
+  %li= link_to raw("#{Reference.model_name.human(:count => :plural)} &rang;"), references_path
+  %li.active= link_to @reference.link_text, @reference
 
-%p
-  %b Link Target:
-  = @reference.link_target_id
-%p
-  %b Link Target Type:
-  = @reference.link_target_type
-%p
-  %b Link Source:
-  = @reference.link_source_id
-%p
-  %b Link Source Type:
-  = @reference.link_source_type
-%p
-  %b Link text:
-  = @reference.link_text
+- if @reference.is_valid?
+  .well.green
+    %h1
+      = @reference.link_text
+      %small valid
+  %p= raw t('.paragraph.valid', :source_link => link_to(@reference.link_source.to_param, @reference.link_source), :source_type => @reference.link_source_type.downcase)
+- elsif @reference.is_ambiguous?
+  .well.orange
+    %h1
+      = @reference.link_text
+      %small ambiguous
+  %p= raw t('.paragraph.ambiguous', :source_link => link_to(@reference.link_source.to_param, @reference.link_source), :source_type => @reference.link_source_type.downcase)
+- else
+  .well.red
+    %h1
+      = @reference.link_text
+      %small missing
+  %p= raw t('.paragraph.missing', :source_link => link_to(@reference.link_source.to_param, @reference.link_source), :source_type => @reference.link_source_type.downcase)
 
-= link_to 'Edit', edit_reference_path(@reference)
-\|
-= link_to 'Back', references_path
+
+- if @results.size > 0
+  .page-header
+    %h1= t '.results.present'
+  %ul.nav.nav-list
+    - for result in @results do
+      - if can? :read, result.type.classify
+        %li
+          = link_to result do
+            = icon_for(result.type)
+            = result.handle
+- else
+  .page-header
+    %h1= t '.results.none'

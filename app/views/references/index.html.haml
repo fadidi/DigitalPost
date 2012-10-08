@@ -1,10 +1,31 @@
+.row-fluid
+  .span4
+    .page-header
+      %h1 Valid Links
+    %ul.nav.nav-tabs.nav-stacked
+      - for reference in Reference.valid do
+        %li= link_to reference.link_text, reference.link_target
+  .span4
+    .page-header
+      %h1 Ambiguous Links
+    %ul.nav.nav-tabs.nav-stacked
+      - for reference in Reference.ambiguous do
+        %li= link_to reference.link_text, reference.link_target
+  .span4
+    .page-header
+      %h1 Missing Links
+    %ul.nav.nav-tabs.nav-stacked
+      - for reference in Reference.missing do
+        %li= link_to reference.link_text, reference.link_target
 %h1 Listing references
 
 %table.table
   %tr
     %th Link Source
+    %th Link Text
     %th Link Target Type
     %th Link Target
+    %th Target Count
     %th
     %th
     %th
@@ -12,8 +33,10 @@
   - @references.each do |reference|
     %tr
       %td= link_to reference.link_source.to_param, reference.link_source if reference.link_source
+      %td= reference.link_text
       %td= reference.link_target_type
       %td= link_to reference.link_target.to_param, reference.link_target if reference.link_target
+      %td= reference.target_count
       %td= link_to 'Show', reference
       %td= link_to 'Edit', edit_reference_path(reference)
       %td= link_to 'Destroy', reference, :confirm => 'Are you sure?', :method => :delete

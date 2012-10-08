@@ -1,0 +1,10 @@
+en:
+  references:
+    show:
+      paragraph:
+        ambiguous: "This is an ambiguous link, found in the %{source_link} %{source_type}."
+        missing: "This is a missing link, found in the %{source_link} %{source_type}."
+        valid: "This is a valid link, found in the %{source_link} %{source_type}."
+      results:
+        none: "Sorry, but we're not sure what you're looking for."
+        present: "Are you looking for one of these?"
