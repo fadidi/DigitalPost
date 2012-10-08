@@ -31,7 +31,7 @@ class Revision < ActiveRecord::Base
     end
 
     def do_before_save
-      self.html = Markdown.render(Reference.process_string(content, 'Page', page.id))
+      self.html = Markdown.render(Reference.process_string(content, page))
     end
 
     def do_after_save

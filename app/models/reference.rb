@@ -10,7 +10,8 @@ class Reference < ActiveRecord::Base
   default_scope :order => 'link_text ASC'
   scope :to_pages, where(:link_target_type => 'Page')
 
-  def self.process_string(original, source_class, source_id)
+  def self.process_string(original, source)
+    source.references.clear
     original.gsub(/(\[([a-z_]*)\[((https*:\/\/)*[^\[]+)\]\])/) do |match|
       if $4.blank?
         if $2 == 'user'
@@ -36,9 +37,7 @@ class Reference < ActiveRecord::Base
           results = Page.where("UPPER(title) LIKE UPPER(?)", "%#{$3}%")
         end
           
-        Reference.create!(
-          :link_source_id => source_id, 
-          :link_source_type => source_class,
+        source.references.create!(
           :link_text => $3,
           :link_target_type => target,
           :link_target_id => (results.any? ? results.first.id : nil)
@@ -55,9 +54,7 @@ class Reference < ActiveRecord::Base
           "<a href=\"/#{target.underscore.pluralize}/#{results.first.to_param}\">#{$3}</a>"
         end
       else
-        Reference.create!(
-          :link_source_id => source_id, 
-          :link_source_type => source_class,
+        source.references.create!(
           :link_text => $3
         )
         "<a href=\"#{$3}\">#{$3}</a>"

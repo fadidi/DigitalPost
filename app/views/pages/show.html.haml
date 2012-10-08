@@ -21,9 +21,9 @@
         %li.nav-header Inbound
         - for ref in @page.links_in.to_pages do
           %li= link_to ref.link_source.title, ref.link_source
-      - if @page.links_out.any?
+      - if @page.references.any?
         %li.nav-header Outbound
-        - for ref in @page.links_out do
+        - for ref in @page.references do
           %li= link_to ref.link_text, ref.link_target
 .row-fluid
   .span12

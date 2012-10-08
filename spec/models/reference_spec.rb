@@ -166,49 +166,71 @@ describe Reference do
   describe 'methods' do
     describe 'process_string' do
       it 'should ignore markdown links' do
-        Reference.process_string('this is text containing [a markdown link](http://test.com)', Page, 1).should =~ /\[a markdown link\]\(http:\/\/test\.com\)/
+        Reference.process_string('this is text containing [a markdown link](http://test.com)', FactoryGirl.create(:page)).should =~ /\[a markdown link\]\(http:\/\/test\.com\)/
       end
 
       describe 'external' do
+        before :each do
+          @page = FactoryGirl.create(:page)
+        end
+
         it 'should find and replace external pca links' do
-          Reference.process_string('this is text containing [[http://an.external.link]]', Page, 1).should =~ /<a href="http:\/\/an\.external\.link">http:\/\/an\.external\.link<\/a>/
+          Reference.process_string('this is text containing [[http://an.external.link]]', @page).should =~ /<a href="http:\/\/an\.external\.link">http:\/\/an\.external\.link<\/a>/
+        end
+
+        it 'should create a new reference' do
+          expect {
+            Reference.process_string('this is text containing [[http://an.external.link]]', @page)
+          }.to change(Reference, :count).by(1)
+        end
+
+        it 'should not create a new reference for the same link' do
+          Reference.process_string('this is text containing [[http://an.external.link]]', @page)
+          expect {
+            Reference.process_string('this is text containing [[http://an.external.link]]', @page)
+          }.to change(Reference, :count).by(0)
         end
       end
 
       describe 'unscoped' do
+        before :each do
+          @page = FactoryGirl.create :page
+        end
+
         it 'should find and replace non-scoped pca links' do
-          Reference.process_string('this is text containing [[a pca link]]', Page, 1).should =~ />a pca link.*<\/a>/
+          Reference.process_string('this is text containing [[a pca link]]', @page).should =~ />a pca link.*<\/a>/
         end
 
         it 'should create link entries in references' do
           expect {
-            Reference.process_string('a [[test link]] should work', Page, 1)
+            Reference.process_string('a [[test link]] should work', @page)
           }.to change(Reference, :count).by(1)
         end
       end
 
       describe 'scoped' do
         it 'should find and replace scoped pca links' do
-          Reference.process_string('this is text containing [blarg[a pca link]]', Page, 1).should =~ />a pca link.*<\/a>/
+          Reference.process_string('this is text containing [blarg[a pca link]]', FactoryGirl.create(:page)).should =~ />a pca link.*<\/a>/
         end
 
         context 'page-scoped' do
           describe 'with one matching page' do
             before :each do
+              @source = FactoryGirl.create :page
               @page = FactoryGirl.create :page
             end
 
             it 'should be case-insensitive' do
-              Reference.process_string("this is text containing [page[#{@page.title.downcase}]] for testing.", Page, 1).should =~ /"\/pages\/#{@page.to_param}"/i
+              Reference.process_string("this is text containing [page[#{@page.title.downcase}]] for testing.", @source).should =~ /"\/pages\/#{@page.to_param}"/i
             end
 
             it 'should set the correct path to the page' do
-              Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", Page, 1).should =~ /"\/pages\/#{@page.to_param}"/i
+              Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source).should =~ /"\/pages\/#{@page.to_param}"/i
             end
 
             it 'should change the Reference count' do
               expect {
-                Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", Page, 1)
+                Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source)
               }.to change(Reference, :count).by(1)
             end
           end
@@ -217,8 +239,12 @@ describe Reference do
             before :each do
               @page = FactoryGirl.create(:page, :title => 'Fancy Title')
               @page2 = FactoryGirl.create(:page, :title => 'Fancy Title')
+              @result = Reference.process_string("this is text containing [page[fancy title]] for testing.", FactoryGirl.create(:page))
+            end
+
+            it 'should add a reference' do
               expect {
-                @result = Reference.process_string("this is text containing [page[fancy title]] for testing.", Page, 1)
+                Reference.process_string("this is text containing [page[fancy title]] for testing.", FactoryGirl.create(:page))
               }.to change(Reference, :count).by(1)
             end
 
@@ -237,8 +263,12 @@ describe Reference do
 
           describe 'with no matching pages' do
             before :each do
+              @result = Reference.process_string('new [page[link text such an absurd then]]', FactoryGirl.create(:page))
+            end
+
+            it 'should add a reference' do
               expect {
-                @result = Reference.process_string('new [page[link text such an absurd then]]', Page, 1)
+                Reference.process_string('new [page[link text such an absurd then]]', FactoryGirl.create(:page))
               }.to change(Reference, :count).by(1)
             end
 
@@ -261,21 +291,22 @@ describe Reference do
             context item do
               describe 'with one match' do
                 before :each do
+                  @source = FactoryGirl.create(:page)
                   @sitem = item.to_s.underscore
                   @item = FactoryGirl.create @sitem.to_sym
                 end
 
                 it "should set the correct path to the #{item}" do
-                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", item, 1).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", @source).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
                 end
 
                 it 'should be case-insensitive' do
-                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name.downcase}]] for testing.", item, 1).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name.downcase}]] for testing.", @source).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
                 end
 
                 it 'should change the Reference count' do
                   expect {
-                    Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", item, 1)
+                    Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", @source)
                   }.to change(Reference, :count).by(1)
                 end
               end

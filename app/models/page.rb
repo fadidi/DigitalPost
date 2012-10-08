@@ -22,7 +22,7 @@ class Page < ActiveRecord::Base
   belongs_to :user
 
   # links in the page
-  has_many :links_out, :class_name => Reference, :as => :link_source, :dependent => :destroy
+  has_many :references, :as => :link_source, :dependent => :destroy
 
   # links in other content pointing to this page
   has_many :links_in, :class_name => Reference, :as => :link_target
@@ -48,6 +48,9 @@ class Page < ActiveRecord::Base
 
   default_scope :order => 'title ASC'
 
+  after_destroy :reset_links_in
+  after_save :reset_links_in
+
   def lock(user)
     self.locked_at = Time.now
     self.editor = user
@@ -62,6 +65,16 @@ class Page < ActiveRecord::Base
 
   def locked?
     !locked_at.blank? && locked_at > Time.now - 15.minutes
+  end
+
+  def reset_links_in
+    links_in.each do |link_in|
+      if link_in.link_source.class == Page
+        link_in.link_source.current_revision.save!
+      else
+        link_in.link_source.save!
+      end
+    end
   end
 
   def set_html(content)

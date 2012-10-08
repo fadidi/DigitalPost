@@ -25,7 +25,7 @@ describe Page do
   it {should respond_to :editor}
   it {should respond_to :language}
   it {should respond_to :links_in}
-  it {should respond_to :links_out}
+  it {should respond_to :references}
   it {should respond_to :revisions}
   it {should respond_to :user}
 
@@ -182,7 +182,8 @@ describe Page do
     describe 'links_in' do
       before :each do
         @page = FactoryGirl.create :page
-        @revision = FactoryGirl.create(:revision, :content => "content with [page[#{@page.title}]].")
+        @revision = FactoryGirl.create(:revision, :page => @source = FactoryGirl.create(:page), :content => "content with [page[#{@page.title}]].")
+        @page.reload
       end
 
       it 'should be an instance of Reference' do
@@ -192,23 +193,54 @@ describe Page do
       it { expect {
         @page.destroy
       }.to change(Reference, :count).by(0)}
+
+      it 'should reset items linking in on destroy' do
+        @page.destroy
+        Reference.where("link_target_type = ? AND link_target_id = ?", 'Page', @page.id).count.should eq 0
+      end
+
+      it 'should reset items linking in on update' do
+        @page.update_attributes(:title => 'Weird new title')
+        Reference.where("link_target_type = ? AND link_target_id = ?", 'Page', @page.id).count.should eq 0
+      end
     end
 
-    describe 'links_out' do
-      before :each do
-        @revision = FactoryGirl.create(:revision, :content => 'content with [page[a link]]', :page => @page = FactoryGirl.create(:page))
-        puts @revision.inspect
-        puts @page.inspect
-        puts Reference.all.inspect
+    describe 'references' do
+      context 'directly' do
+        before :each do 
+          @page = FactoryGirl.create :page
+          @reference = @page.references.create(:link_text => 'test text')
+        end
+
+        it 'should be a reference' do
+          @page.references.first.should be_a_kind_of Reference
+        end
+
+        it 'should be the right reference' do
+          @page.references.should eq [@reference]
+        end
+
+        it 'should destroy associated references' do
+          FactoryGirl.create(:reference)
+          expect {
+            @page.destroy
+          }.to change(Reference, :count).by(-1)
+        end
       end
 
-      it 'should be an instance of Reference' do
-        @page.links_out.first.should be_an_instance_of Reference
-      end
+      context 'through revision/link parsing' do
+        before :each do
+          @revision = FactoryGirl.create(:revision, :content => 'content with [page[a link]]', :page => @page = FactoryGirl.create(:page))
+        end
 
-      it { expect {
-        @page.destroy
-      }.to change(Reference, :count).by(-1)}
+        it 'should be an instance of Reference' do
+          @page.references.first.should be_an_instance_of Reference
+        end
+
+        it { expect {
+          @page.destroy
+        }.to change(Reference, :count).by(-1)}
+      end
     end
 
     describe 'revisions' do
