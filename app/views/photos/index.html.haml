@@ -1,0 +1,39 @@
+%h1 Listing photos
+
+%table
+  %tr
+    %th Attribution
+    %th Description
+    %th Height
+    %th Imageable
+    %th Imageable type
+    %th Photo
+    %th Photo content type
+    %th Photo file size
+    %th Title
+    %th User
+    %th Width
+    %th
+    %th
+    %th
+
+  - @photos.each do |photo|
+    %tr
+      %td= photo.attribution
+      %td= photo.description
+      %td= photo.height
+      %td= photo.imageable_id
+      %td= photo.imageable_type
+      %td= photo.photo
+      %td= photo.photo_content_type
+      %td= photo.photo_file_size
+      %td= photo.title
+      %td= photo.user_id
+      %td= photo.width
+      %td= link_to 'Show', photo
+      %td= link_to 'Edit', edit_photo_path(photo)
+      %td= link_to 'Destroy', photo, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Photo', new_photo_path

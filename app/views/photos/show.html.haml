@@ -1,0 +1,39 @@
+%p#notice= notice
+
+%p
+  %b Attribution:
+  = @photo.attribution
+%p
+  %b Description:
+  = @photo.description
+%p
+  %b Height:
+  = @photo.height
+%p
+  %b Imageable:
+  = @photo.imageable_id
+%p
+  %b Imageable type:
+  = @photo.imageable_type
+%p
+  %b Photo:
+  = @photo.photo
+%p
+  %b Photo content type:
+  = @photo.photo_content_type
+%p
+  %b Photo file size:
+  = @photo.photo_file_size
+%p
+  %b Title:
+  = @photo.title
+%p
+  %b User:
+  = @photo.user_id
+%p
+  %b Width:
+  = @photo.width
+
+= link_to 'Edit', edit_photo_path(@photo)
+\|
+= link_to 'Back', photos_path

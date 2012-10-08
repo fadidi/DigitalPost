@@ -1,5 +1,7 @@
 DigitalPost::Application.routes.draw do
 
+  resources :photos
+
   resources :languages
 
   resources :sectors
