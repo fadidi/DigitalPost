@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003162014) do
+ActiveRecord::Schema.define(:version => 20121008182753) do
 
   create_table "languages", :force => true do |t|
     t.string   "code"
@@ -36,6 +36,25 @@ ActiveRecord::Schema.define(:version => 20121003162014) do
   end
 
   add_index "pages", ["title"], :name => "index_pages_on_title"
+
+  create_table "photos", :force => true do |t|
+    t.string   "attribution"
+    t.text     "description"
+    t.integer  "height"
+    t.integer  "imageable_id"
+    t.string   "imageable_type"
+    t.string   "photo"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.string   "photo_hash"
+    t.string   "title"
+    t.integer  "user_id"
+    t.integer  "width"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "photos", ["photo_hash"], :name => "index_photos_on_photo_hash", :unique => true
 
   create_table "references", :force => true do |t|
     t.string   "link_text"

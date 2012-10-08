@@ -4,16 +4,18 @@ class CreatePhotos < ActiveRecord::Migration
       t.string :attribution
       t.text :description
       t.integer :height
-      t.integer :imageable_id
-      t.string :imageable_type
+      t.references :imageable, :polymorphic => true
       t.string :photo
       t.string :photo_content_type
       t.integer :photo_file_size
+      t.string :photo_hash
       t.string :title
-      t.integer :user_id
+      t.references :user
       t.integer :width
 
       t.timestamps
     end
+
+    add_index :photos, :photo_hash, :unique => true
   end
 end
