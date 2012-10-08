@@ -11,35 +11,30 @@ describe Reference do
     }
   end
 
-  it 'should create a valid instance given valid attributes' do
-    Reference.new(@attr).should be_valid
-  end
+  it {Reference.create! @attr}
+
+  # properties
+  it {should respond_to :link_source_id}
+  it {should respond_to :link_source_type}
+  it {should respond_to :link_target_id}
+  it {should respond_to :link_target_type}
+  it {should respond_to :link_text}
+  it {should respond_to :target_count}
+
+  # associations
+  it {should respond_to :link_source}
+  it {should respond_to :link_target}
+
+  # methods
+  it {Reference.should respond_to(:process_string).with(2).arguments}
+
+  # scopes
+  it {Reference.should respond_to :ambiguous}
+  it {Reference.should respond_to :missing}
+  it {Reference.should respond_to :to_pages}
+  it {Reference.should respond_to :valid}
 
   describe 'properties' do
-    before :each do
-      @reference = Reference.new(@attr)
-    end
-
-    it 'should respond to link_source_id' do
-      @reference.should respond_to :link_source_id
-    end
-
-    it 'should respond to link_source_type' do
-      @reference.should respond_to :link_source_type
-    end
-
-    it 'should respond to link_target_id' do
-      @reference.should respond_to :link_target_id
-    end
-
-    it 'should respond to link_target_type' do
-      @reference.should respond_to :link_target_type
-    end
-
-    it 'should respond to link_text' do
-      @reference.should respond_to :link_text
-    end
-
     describe 'link_text' do
       it 'should be blank by default' do
         Reference.new.link_text.should be_blank
@@ -88,13 +83,12 @@ describe Reference do
         Reference.create(@attr).should_not be_valid
       end
     end
+
+    it {Reference.new(@attr.merge(:target_count => '')).should_not be_valid}
+    it {Reference.new(@attr.merge(:target_count => 'a')).should_not be_valid}
   end
 
   describe 'scopes' do
-    it 'should respond to pages' do
-      Reference.should respond_to :to_pages
-    end
-
     describe 'default' do
       before :each do
         @reference1 = Reference.create(@attr.merge(:link_text => 'Zzzzz link'))
@@ -104,6 +98,24 @@ describe Reference do
       it 'should sort by link_text' do
         Reference.all.should start_with @reference2
         Reference.all.should end_with @reference1
+      end
+    end
+
+    describe 'ambiguous' do
+      it 'should include references with target_counts higher than 1' do
+        @reference = FactoryGirl.create(:reference, :target_count => 2)
+        FactoryGirl.create(:reference, :target_count => 0)
+        FactoryGirl.create(:reference, :target_count => 1)
+        Reference.ambiguous.should include @reference
+      end
+    end
+
+    describe 'missing' do
+      it 'should include references with target_counts less than 1' do
+        FactoryGirl.create(:reference, :target_count => 2)
+        @reference = FactoryGirl.create(:reference, :target_count => 0)
+        FactoryGirl.create(:reference, :target_count => 1)
+        Reference.missing.should include @reference
       end
     end
 
@@ -119,21 +131,18 @@ describe Reference do
         end
       end
     end
+
+    describe 'valid' do
+      it 'should include references with target_counts higher equal to 1' do
+        FactoryGirl.create(:reference, :target_count => 2)
+        FactoryGirl.create(:reference, :target_count => 0)
+        @reference = FactoryGirl.create(:reference, :target_count => 1)
+        Reference.valid.should include @reference
+      end
+    end
   end
 
   describe 'associations' do
-    before :each do
-      @reference = Reference.new @attr
-    end
-
-    it 'should respond to link_source' do
-      @reference.should respond_to :link_source
-    end
-
-    it 'should respond to link_target' do
-      @reference.should respond_to :link_target
-    end
-
     describe 'link_source' do
       before :each do
         @reference = FactoryGirl.create(:reference, :link_source => @page = FactoryGirl.create(:page))
@@ -192,60 +201,20 @@ describe Reference do
         end
       end
 
-      describe 'unscoped' do
-        before :each do
-          @page = FactoryGirl.create :page
-        end
-
-        it 'should find and replace non-scoped pca links' do
-          Reference.process_string('this is text containing [[a pca link]]', @page).should =~ />a pca link.*<\/a>/
-        end
-
-        it 'should create link entries in references' do
-          expect {
-            Reference.process_string('a [[test link]] should work', @page)
-          }.to change(Reference, :count).by(1)
-        end
-      end
-
-      describe 'scoped' do
-        it 'should find and replace scoped pca links' do
-          Reference.process_string('this is text containing [blarg[a pca link]]', FactoryGirl.create(:page)).should =~ />a pca link.*<\/a>/
-        end
-
-        context 'page-scoped' do
-          describe 'with one matching page' do
-            before :each do
-              @source = FactoryGirl.create :page
-              @page = FactoryGirl.create :page
-            end
-
-            it 'should be case-insensitive' do
-              Reference.process_string("this is text containing [page[#{@page.title.downcase}]] for testing.", @source).should =~ /"\/pages\/#{@page.to_param}"/i
-            end
-
-            it 'should set the correct path to the page' do
-              Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source).should =~ /"\/pages\/#{@page.to_param}"/i
-            end
-
-            it 'should change the Reference count' do
-              expect {
-                Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source)
-              }.to change(Reference, :count).by(1)
-            end
+      describe 'internal' do
+        describe 'unscoped' do
+          before :each do
+            @page = FactoryGirl.create :page
           end
 
-          describe 'with multiple matching pages' do
+          context 'with 0 matches' do
             before :each do
-              @page = FactoryGirl.create(:page, :title => 'Fancy Title')
-              @page2 = FactoryGirl.create(:page, :title => 'Fancy Title')
-              @result = Reference.process_string("this is text containing [page[fancy title]] for testing.", FactoryGirl.create(:page))
+              @result = Reference.process_string('some test [[link crazy content]].', @page)
             end
 
-            it 'should add a reference' do
-              expect {
-                Reference.process_string("this is text containing [page[fancy title]] for testing.", FactoryGirl.create(:page))
-              }.to change(Reference, :count).by(1)
+            it 'should set target_count to 0' do
+              @page.references.count.should eq 1
+              @page.references.first.target_count.should eq 0
             end
 
             pending 'should set the path to disambiguation' do
@@ -261,53 +230,189 @@ describe Reference do
             end
           end
 
-          describe 'with no matching pages' do
-            before :each do
-              @result = Reference.process_string('new [page[link text such an absurd then]]', FactoryGirl.create(:page))
-            end
+          it 'should create a new reference' do
+            expect {
+              Reference.process_string('this is text containing [page[an internal link]]', FactoryGirl.create(:page))
+            }.to change(Reference, :count).by(1)
+          end
 
-            it 'should add a reference' do
-              expect {
-                Reference.process_string('new [page[link text such an absurd then]]', FactoryGirl.create(:page))
-              }.to change(Reference, :count).by(1)
-            end
+          it 'should not create a new reference for the same link' do
+            Reference.process_string('this is text containing [page[an internal link]]', @page = FactoryGirl.create(:page))
+            expect {
+              Reference.process_string('this is text containing [page[an internal link]]', @page)
+            }.to change(Reference, :count).by(0)
+          end
 
-            pending 'should set the path to missing' do
-              @result.should =~ /"\/pages\/#{@page.to_param}"/i
-            end
+          it 'should find and replace non-scoped pca links' do
+            Reference.process_string('this is text containing [[a pca link]]', @page).should =~ />a pca link.*<\/a>/
+          end
 
-            it 'should append missing icon to link text' do
-              @result.should =~ /<span class="icon-remove-circle"><\/span><\/a>/i
-            end
-
-            it 'should add missing class' do
-              @result.should =~ /class="missing"/i
-            end
+          it 'should create link entries in references' do
+            expect {
+              Reference.process_string('a [[test link]] should work', @page)
+            }.to change(Reference, :count).by(1)
           end
         end
 
-        context 'name handle' do
-          [Language, Region, Sector, Unit, User, WorkZone].each do |item|
-            context item do
-              describe 'with one match' do
-                before :each do
-                  @source = FactoryGirl.create(:page)
-                  @sitem = item.to_s.underscore
-                  @item = FactoryGirl.create @sitem.to_sym
-                end
+        describe 'scoped' do
+          it 'should find and replace scoped pca links' do
+            Reference.process_string('this is text containing [blarg[a pca link]]', FactoryGirl.create(:page)).should =~ />a pca link.*<\/a>/
+          end
 
-                it "should set the correct path to the #{item}" do
-                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", @source).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
-                end
+          context 'page-scoped' do
+            describe 'with one matching page' do
+              before :each do
+                @source = FactoryGirl.create :page
+                @page = FactoryGirl.create :page
+              end
 
-                it 'should be case-insensitive' do
-                  Reference.process_string("this is text containing [#{@sitem}[#{@item.name.downcase}]] for testing.", @source).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
-                end
+              it 'should be case-insensitive' do
+                Reference.process_string("this is text containing [page[#{@page.title.downcase}]] for testing.", @source).should =~ /"\/pages\/#{@page.to_param}"/i
+              end
 
-                it 'should change the Reference count' do
-                  expect {
+              it 'should set the correct path to the page' do
+                Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source).should =~ /"\/pages\/#{@page.to_param}"/i
+              end
+
+              it 'should change the Reference count' do
+                expect {
+                  Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source)
+                }.to change(Reference, :count).by(1)
+              end
+
+              it 'should set target_count to 1' do
+                Reference.process_string("this is text containing [page[#{@page.title}]] for testing.", @source)
+                @source.references.count.should eq 1
+                @source.references.first.target_count.should eq 1
+              end
+            end
+
+            describe 'with multiple matching pages' do
+              before :each do
+                @page = FactoryGirl.create(:page, :title => 'Fancy Title')
+                @page2 = FactoryGirl.create(:page, :title => 'Fancy Title')
+                @result = Reference.process_string("this is text containing [page[fancy title]] for testing.", @source = FactoryGirl.create(:page))
+              end
+
+              it 'should add a reference' do
+                expect {
+                  Reference.process_string("this is text containing [page[fancy title]] for testing.", FactoryGirl.create(:page))
+                }.to change(Reference, :count).by(1)
+              end
+
+              pending 'should set the path to disambiguation' do
+                @result.should =~ /"\/pages\/#{@page.to_param}"/i
+              end
+
+              it 'should append disambiguation icon to link text' do
+                @result.should =~ /<span class="icon-random"><\/span><\/a>/i
+              end
+
+              it 'should add disambiguation class' do
+                @result.should =~ /class="disambiguation"/i
+              end
+
+              it 'should set target_count to > 1' do
+                @source.references.count.should eq 1
+                @source.references.first.target_count.should be > 1
+              end
+            end
+
+            describe 'with no matching pages' do
+              before :each do
+                @result = Reference.process_string('new [page[link text such an absurd then]]', @source = FactoryGirl.create(:page))
+              end
+
+              it 'should add a reference' do
+                expect {
+                  Reference.process_string('new [page[link text such an absurd then]]', FactoryGirl.create(:page))
+                }.to change(Reference, :count).by(1)
+              end
+
+              pending 'should set the path to missing' do
+                @result.should =~ /"\/pages\/#{@page.to_param}"/i
+              end
+
+              it 'should append missing icon to link text' do
+                @result.should =~ /<span class="icon-remove-circle"><\/span><\/a>/i
+              end
+
+              it 'should add missing class' do
+                @result.should =~ /class="missing"/i
+              end
+
+              it 'should set target_count to < 1' do
+                @source.references.count.should eq 1
+                @source.references.first.target_count.should be < 1
+              end
+            end
+          end
+
+          context 'name handle' do
+            [Language, Region, Sector, Unit, User, WorkZone].each do |item|
+              context item do
+                describe 'with one match' do
+                  before :each do
+                    @source = FactoryGirl.create(:page)
+                    @sitem = item.to_s.underscore
+                    @item = FactoryGirl.create @sitem.to_sym
+                  end
+
+                  it "should set the correct path to the #{item}" do
+                    Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", @source).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                  end
+
+                  it 'should be case-insensitive' do
+                    Reference.process_string("this is text containing [#{@sitem}[#{@item.name.downcase}]] for testing.", @source).should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                  end
+
+                  it 'should change the Reference count' do
+                    expect {
+                      Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", @source)
+                    }.to change(Reference, :count).by(1)
+                  end
+
+                  it 'should set target_count to 1' do
                     Reference.process_string("this is text containing [#{@sitem}[#{@item.name}]] for testing.", @source)
-                  }.to change(Reference, :count).by(1)
+                    @source.references.count.should eq 1
+                    @source.references.first.target_count.should eq 1
+                  end
+                end
+
+                describe 'with no match' do
+                  before :each do
+                    @source = FactoryGirl.create(:page)
+                    @sitem = item.to_s.underscore
+                    @item = FactoryGirl.create @sitem.to_sym
+                    @result = Reference.process_string("this is text containing [#{@sitem}[gibberish]] for testing.", @source)
+                  end
+
+                  pending "should set the correct path to disambiguation" do
+                    @result.should =~ /"\/#{@sitem.pluralize}\/#{@item.to_param}"/i
+                  end
+
+                  it 'should change the Reference count' do
+                    expect {
+                      Reference.process_string("this is text containing [#{@sitem}[gibberish]] for testing.", FactoryGirl.create(:page))
+                    }.to change(Reference, :count).by(1)
+                  end
+
+                  it 'should set target_count to 1' do
+                    @source.references.count.should eq 1
+                    @source.references.first.target_count.should eq 0
+                  end
+
+                  pending 'should set the path to missing' do
+                    @result.should =~ /"\/pages\/#{@page.to_param}"/i
+                  end
+
+                  it 'should append missing icon to link text' do
+                    @result.should =~ /<span class="icon-remove-circle"><\/span><\/a>/i
+                  end
+
+                  it 'should add missing class' do
+                    @result.should =~ /class="missing"/i
+                  end
                 end
               end
             end

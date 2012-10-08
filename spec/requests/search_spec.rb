@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe "Home" do
-  describe "GET /" do
+  describe "GET /search" do
     it "should be successful" do
-      get root_path
+      get '/search'
       response.status.should be(200)
     end
   end

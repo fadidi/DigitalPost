@@ -4,7 +4,9 @@ class ReferencesController < ApplicationController
   # GET /references
   # GET /references.json
   def index
-    @references = Reference.all
+    @valid_references = Reference.valid
+    @missing_references = Reference.missing
+    @ambiguous_references = Reference.ambiguous
 
     respond_to do |format|
       format.html # index.html.erb

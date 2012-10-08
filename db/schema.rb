@@ -43,8 +43,9 @@ ActiveRecord::Schema.define(:version => 20121003162014) do
     t.string   "link_target_type"
     t.integer  "link_source_id"
     t.string   "link_source_type"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.integer  "target_count",     :default => 0
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "regions", :force => true do |t|

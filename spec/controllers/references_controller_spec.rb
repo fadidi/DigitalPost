@@ -42,10 +42,22 @@ describe ReferencesController do
   login_admin
 
   describe "GET index" do
-    it "assigns all references as @references" do
-      reference = FactoryGirl.create :reference
+    it "assigns valid references as @valid_references" do
+      reference = FactoryGirl.create(:reference, :target_count => 1)
       get :index, {}
-      assigns(:references).should eq([reference])
+      assigns(:valid_references).should eq([reference])
+    end
+
+    it "assigns missing references as @missing_references" do
+      reference = FactoryGirl.create(:reference, :target_count => 0)
+      get :index, {}
+      assigns(:missing_references).should eq([reference])
+    end
+    
+    it "assigns ambiguous references as @ambiguous_references" do
+      reference = FactoryGirl.create(:reference, :target_count => 2)
+      get :index, {}
+      assigns(:ambiguous_references).should eq([reference])
     end
   end
 
