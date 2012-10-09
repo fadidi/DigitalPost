@@ -13,6 +13,7 @@ describe Unit do
   it {should respond_to :photo}
   it {should respond_to :photo_content_type}
   it {should respond_to :photo_file_size}
+  it {should respond_to :photo_hash}
   it {should respond_to :name}
   it {should respond_to :description}
   it {should respond_to :head_id}
@@ -58,6 +59,17 @@ describe Unit do
         @unit.photo_file_size.should_not be_blank
       end
     end
+
+    describe 'photo_hash' do
+      it {Unit.new.photo_hash.should be_blank}
+
+      it 'should populate on successful attachment' do
+        @unit = FactoryGirl.create :unit
+        @unit.photo = (File.open('spec/support/images/10x10.gif'))
+        @unit.save!
+        @unit.photo_hash.should_not be_blank
+      end
+    end
   end
 
   describe 'validations' do
@@ -79,6 +91,15 @@ describe Unit do
     it {Unit.new(@attr.merge(:photo_content_type => '')).should be_valid}
     it {Unit.new(@attr.merge(:photo_file_size => '')).should be_valid}
     it {Unit.new(@attr.merge(:photo_file_size => 'a')).should_not be_valid}
+
+    describe 'photo_hash' do
+      it {Unit.new(@attr.merge(:photo_hash => '')).should be_valid}
+
+      it 'should allow duplicates' do
+        Unit.create!(@attr.merge(:photo_hash => 'test'))
+        Unit.new(@attr.merge(:photo_hash => 'test')).should_not be_valid
+      end
+    end
   end
 
   describe 'associations' do

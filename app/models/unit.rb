@@ -1,5 +1,5 @@
 class Unit < ActiveRecord::Base
-  attr_accessible :description, :head_id, :name, :photo, :photo_content_type, :photo_file_size, :remove_photo
+  attr_accessible :description, :head_id, :name, :photo, :photo_content_type, :photo_file_size, :photo_hash, :remove_photo
   
   # elasticsearch indexing
   include Tire::Model::Search
@@ -37,8 +37,6 @@ class Unit < ActiveRecord::Base
 
   default_scope :order => 'name ASC'
 
-  before_save :do_before_save
-
   def head?
     !head.nil?
   end
@@ -46,14 +44,5 @@ class Unit < ActiveRecord::Base
   def to_param
     "#{id}-#{name.parameterize}"
   end
-
-  private
-
-    def do_before_save
-      if photo.present? && photo_changed?
-        self.photo_content_type = photo.file.content_type
-        self.photo_file_size = photo.file.size
-      end
-    end
 
 end

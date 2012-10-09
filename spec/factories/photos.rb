@@ -2,16 +2,12 @@
 
 FactoryGirl.define do
   factory :photo do
-    attribution "MyString"
-    description "MyText"
     height 1
     imageable_id 1
     imageable_type "MyString"
-    photo "MyString"
-    photo_content_type "MyString"
-    photo_file_size 1
-    title "MyString"
-    user_id 1
+    photo { File.open('spec/support/images/10x10.gif') }
+    user
     width 1
+    photo_content_type 'test'
   end
 end

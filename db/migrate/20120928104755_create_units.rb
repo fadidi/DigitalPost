@@ -7,6 +7,7 @@ class CreateUnits < ActiveRecord::Migration
       t.string :photo
       t.string :photo_content_type
       t.string :photo_file_size
+      t.string :photo_hash
 
       t.timestamps
     end

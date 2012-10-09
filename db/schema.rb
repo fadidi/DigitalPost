@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
     t.string   "photo"
     t.string   "photo_content_type"
     t.string   "photo_file_size"
+    t.string   "photo_hash"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end
