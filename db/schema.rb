@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
   create_table "regions", :force => true do |t|
     t.string   "name"
     t.string   "abbreviation"
+    t.string   "photo"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

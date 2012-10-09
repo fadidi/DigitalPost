@@ -13,6 +13,7 @@ describe Region do
   # properties
   it {should respond_to :abbreviation}
   it {should respond_to :name}
+  it {should respond_to :photo}
 
   # associations
   it {should respond_to :users}
@@ -22,6 +23,11 @@ describe Region do
   # methods
   it {should respond_to :to_param}
   it {should respond_to :work_zones?}
+
+  # carrierwave
+  it {should respond_to :photo?}
+  it {should respond_to :remove_photo}
+  it {should respond_to :remove_photo!}
 
   describe 'properties' do
     describe 'abbreviation' do
@@ -34,6 +40,17 @@ describe Region do
     end
 
     it {Region.new.name.should be_blank}
+
+    describe 'photo' do
+      it {Region.new.photo.should be_blank}
+
+      it 'should not be blank with attached photo' do
+        @region = FactoryGirl.create :region
+        @region.photo = (File.open('spec/support/images/10x10.gif'))
+        @region.save!
+        @region.photo.should_not be_blank
+      end
+    end
   end
 
   describe 'validations' do
@@ -46,6 +63,8 @@ describe Region do
         Region.create! @attr.merge(:abbreviation => 'Test')
         Region.new(@attr.merge(:abbreviation => 'Test'.upcase)).should_not be_valid
       end
+
+      it {Region.new(@attr.merge(:photo => '')).should be_valid}
     end
 
     describe 'name' do

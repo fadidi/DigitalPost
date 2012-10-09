@@ -5,16 +5,27 @@
 - content_for :top_right_menu do
   %li= link_to raw('<span class="icon-plus"></span> New Region'), new_region_path if can? :create, Region
 
-.well.green
-  %h1
-    Region of
-    = @region.name
-    %small
-      #{pluralize @region.work_zones.count, 'work zone'},
-      #{pluralize @region.volunteers.count, 'PCV'}
-%ul.thumbnails
-  - for work_zone in @region.work_zones do
-    %li.span3
-      = link_to work_zone, :class => 'thumbnail' do
-        = image_tag 'http://placehold.it/300x200'
-        %h4.center= work_zone.name
+.row-fluid
+  .span4
+    = image_tag @region.photo.golden791.url
+    %br
+    %br
+    .well
+      %h1= Volunteer.model_name.human(:count => :plural)
+    %ul.nav.nav-tabs.nav-stacked
+      - for user in @region.users do
+        %li= link_to user.name, user
+  .span8
+    .well.green
+      %h1
+        Region of
+        = @region.name
+        %small
+          #{pluralize @region.work_zones.count, 'work zone'},
+          #{pluralize @region.volunteers.count, 'PCV'}
+    %ul.thumbnails
+      - for work_zone in @region.work_zones do
+        %li.span4
+          = link_to work_zone, :class => 'thumbnail' do
+            = image_tag 'http://placehold.it/300x200'
+            %h4.center= work_zone.name

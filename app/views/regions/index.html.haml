@@ -9,5 +9,5 @@
   - for region in @regions do
     %li.span3
       = link_to region, :class => 'thumbnail' do
-        = image_tag 'http://placehold.it/300x200'
+        = image_tag region.photo.golden374.url
         %h4.center= region.name
