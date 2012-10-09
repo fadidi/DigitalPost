@@ -73,14 +73,16 @@ module ApplicationHelper
   #
   # @return [String] HTML span/icon
   #
-  def action_icon(verb, text)
+  def action_icon(verb, text = nil)
     icons = {
       :create => 'plus',
       :edit => 'pencil',
       :destroy => 'minus',
+      :upload => 'plus'
     }
     icons[verb] ||= 'certificate'
-    raw("<span class='icon-#{icons[verb]}'></span> #{text}")
+    content = t("action.#{text.nil? ? verb.to_s : text}").capitalize
+    raw("<span class='icon-#{icons[verb]}'></span> #{content}")
   end
 
 end

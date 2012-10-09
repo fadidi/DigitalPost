@@ -3,7 +3,7 @@ class CreatePhotos < ActiveRecord::Migration
     create_table :photos do |t|
       t.string :attribution
       t.text :description
-      t.integer :height
+      t.integer :photo_height
       t.references :imageable, :polymorphic => true
       t.string :photo
       t.string :photo_content_type
@@ -11,7 +11,7 @@ class CreatePhotos < ActiveRecord::Migration
       t.string :photo_hash
       t.string :title
       t.references :user
-      t.integer :width
+      t.integer :photo_width
 
       t.timestamps
     end

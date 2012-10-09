@@ -2,6 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  action:
+    create: "new"
+    edit: "edit"
+    upload: "upload"
   word:
     browse: "browse"
     create: "create"
@@ -30,9 +34,54 @@ en:
     credit: "powered by %{app_link} on the %{host_link}"
   activerecord:
     models:
-      reference:
-        one: "Reference"
-        other: "References"
+      language:
+        one: "Language"
+        other: "Languages"
+      page: 
+        one: "Page"
+        other: "Pages"
+      photo:
+        one: "Photo"
+        other: "Photos"
+      reference: 
+        one: "Wiki URL"
+        other: "Wiki URLs"
+      region: 
+        one: "Region"
+        other: "Regions"
+      revision: 
+        one: "Revision"
+        other: "Revisions"
+      role:
+        one: "Role"
+        other: "Roles"
+      sector:
+        one: "Sector"
+        other: "Sectors"
+      staff:
+        one: "Staff"
+        other: "Staff"
       stage:
         one: "Training Group"
         other: "Training Groups"
+      unit: 
+        one: "Admin Unit"
+        other: "Admin Units"
+      user:
+        one: "User"
+        other: "Users"
+      valid_email: 
+        one: "Valid Email"
+        other: "Valid Emails"
+      volunteer:
+        one: "Volunteer"
+        other: "Volunteers"
+      work_zone: 
+        one: "Work Zone"
+        other: "Work Zones"
+    attributes:
+      photo:
+        title: "Title"
+        attribution: "Attribution"
+        description: "Description"
+        photo: "Photo File"

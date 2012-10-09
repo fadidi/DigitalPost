@@ -1,39 +1,22 @@
-%p#notice= notice
+- content_for :backtrack do
+  %li= link_to raw("#{Photo.model_name.human(:count => :plural)} &rang;"), photos_path
+  %li.active= link_to @photo.title, @photo
+  %li= link_to action_icon(:edit), edit_photo_path(@photo) if can? :edit, @photo
+- content_for :top_right_menu do
+  %li= link_to action_icon(:upload), new_photo_path if can? :create, Photo
 
-%p
-  %b Attribution:
-  = @photo.attribution
-%p
-  %b Description:
+.well.center
+  %h1
+    = @photo.title
+    %small
+      = @photo.attribution
+      #{@photo.photo_width}x#{@photo.photo_height}
+%ul.thumbnails
+  %li.span12
+    = link_to @photo, :class => 'thumbnail' do
+      = image_tag @photo.photo.url
+%blockquote
   = @photo.description
-%p
-  %b Height:
-  = @photo.height
-%p
-  %b Imageable:
-  = @photo.imageable_id
-%p
-  %b Imageable type:
-  = @photo.imageable_type
-%p
-  %b Photo:
-  = @photo.photo
-%p
-  %b Photo content type:
   = @photo.photo_content_type
-%p
-  %b Photo file size:
   = @photo.photo_file_size
-%p
-  %b Title:
-  = @photo.title
-%p
-  %b User:
-  = @photo.user_id
-%p
-  %b Width:
-  = @photo.width
-
-= link_to 'Edit', edit_photo_path(@photo)
-\|
-= link_to 'Back', photos_path
+  = @photo.user.name

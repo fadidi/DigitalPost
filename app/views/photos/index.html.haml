@@ -1,39 +1,10 @@
-%h1 Listing photos
+- content_for :backtrack do
+  %li.active= link_to raw("#{Photo.model_name.human(:count => :plural)} &rang;"), photos_path
+- content_for :top_right_menu do
+  %li= link_to action_icon(:upload), new_photo_path if can? :create, Photo
 
-%table
-  %tr
-    %th Attribution
-    %th Description
-    %th Height
-    %th Imageable
-    %th Imageable type
-    %th Photo
-    %th Photo content type
-    %th Photo file size
-    %th Title
-    %th User
-    %th Width
-    %th
-    %th
-    %th
-
-  - @photos.each do |photo|
-    %tr
-      %td= photo.attribution
-      %td= photo.description
-      %td= photo.height
-      %td= photo.imageable_id
-      %td= photo.imageable_type
-      %td= photo.photo
-      %td= photo.photo_content_type
-      %td= photo.photo_file_size
-      %td= photo.title
-      %td= photo.user_id
-      %td= photo.width
-      %td= link_to 'Show', photo
-      %td= link_to 'Edit', edit_photo_path(photo)
-      %td= link_to 'Destroy', photo, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Photo', new_photo_path
+%ul.thumbnails
+  - for photo in @photos do
+    %li.span2
+      = link_to photo, :class => 'thumbnail', :rel => 'popover', 'data-trigger' => 'hover', :title => photo.title, 'data-content' => (photo.description.blank? ? 'No description.' : photo.description), 'data-placement' => 'bottom' do
+        = image_tag photo.photo.square250.url

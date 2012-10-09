@@ -1,7 +1,8 @@
-%h1 Editing photo
+- content_for :backtrack do
+  %li= link_to raw("#{Photo.model_name.human(:count => :plural)} &rang;"), photos_path
+  %li= link_to @photo.title, @photo
+  %li.active= link_to action_icon(:edit), edit_photo_path(@photo) if can? :edit, @photo
+- content_for :top_right_menu do
+  %li= link_to action_icon(:upload), new_photo_path if can? :create, Photo
 
 = render 'form'
-
-= link_to 'Show', @photo
-\|
-= link_to 'Back', photos_path

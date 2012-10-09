@@ -1,43 +1,19 @@
 = form_for @photo do |f|
-  -if @photo.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@photo.errors.count, "error")} prohibited this photo from being saved:"
-      %ul
-        - @photo.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :attribution
-    = f.text_field :attribution
-  .field
-    = f.label :description
-    = f.text_area :description
-  .field
-    = f.label :height
-    = f.number_field :height
-  .field
-    = f.label :imageable_id
-    = f.number_field :imageable_id
-  .field
-    = f.label :imageable_type
-    = f.text_field :imageable_type
-  .field
-    = f.label :photo
-    = f.text_field :photo
-  .field
-    = f.label :photo_content_type
-    = f.text_field :photo_content_type
-  .field
-    = f.label :photo_file_size
-    = f.number_field :photo_file_size
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :user_id
-    = f.number_field :user_id
-  .field
-    = f.label :width
-    = f.number_field :width
-  .actions
-    = f.submit 'Save'
+  = render 'shared/form_errors', :item => @photo if @photo.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span6
+      .row-fluid
+        .span6
+          = f.label :title
+          = f.text_field :title, :class => 'span12'
+        .span6
+          = f.label :attribution
+          = f.text_field :attribution, :class => 'span12'
+      = f.label :description
+      = f.text_area :description, :rows => 5, :class => 'span12'
+    .span6
+      = f.label :photo
+      = f.file_field :photo, :class => 'span12 required'
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'

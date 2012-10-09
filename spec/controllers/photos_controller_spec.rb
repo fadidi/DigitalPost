@@ -24,7 +24,7 @@ describe PhotosController do
   # Photo. As you add validations to Photo, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    FactoryGirl.attributes_for(:photo).merge(:user_id => 1)
   end
 
   # This should return the minimal set of values that should be in the session
@@ -37,7 +37,7 @@ describe PhotosController do
   describe "GET index" do
     it "assigns all photos as @photos" do
       photo = Photo.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:photos).should eq([photo])
     end
   end
@@ -45,42 +45,49 @@ describe PhotosController do
   describe "GET show" do
     it "assigns the requested photo as @photo" do
       photo = Photo.create! valid_attributes
-      get :show, {:id => photo.to_param}, valid_session
+      get :show, {:id => photo.to_param}
       assigns(:photo).should eq(photo)
     end
   end
 
   describe "GET new" do
+    login_admin
+
     it "assigns a new photo as @photo" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:photo).should be_a_new(Photo)
     end
   end
 
   describe "GET edit" do
+    login_admin
+
     it "assigns the requested photo as @photo" do
       photo = Photo.create! valid_attributes
-      get :edit, {:id => photo.to_param}, valid_session
+      get :edit, {:id => photo.to_param}
       assigns(:photo).should eq(photo)
     end
   end
 
   describe "POST create" do
+    login_admin
+
     describe "with valid params" do
       it "creates a new Photo" do
+        puts valid_attributes.inspect
         expect {
-          post :create, {:photo => valid_attributes}, valid_session
+          post :create, {:photo => valid_attributes}
         }.to change(Photo, :count).by(1)
       end
 
       it "assigns a newly created photo as @photo" do
-        post :create, {:photo => valid_attributes}, valid_session
+        post :create, {:photo => valid_attributes}
         assigns(:photo).should be_a(Photo)
         assigns(:photo).should be_persisted
       end
 
       it "redirects to the created photo" do
-        post :create, {:photo => valid_attributes}, valid_session
+        post :create, {:photo => valid_attributes}
         response.should redirect_to(Photo.last)
       end
     end
@@ -89,20 +96,22 @@ describe PhotosController do
       it "assigns a newly created but unsaved photo as @photo" do
         # Trigger the behavior that occurs when invalid params are submitted
         Photo.any_instance.stub(:save).and_return(false)
-        post :create, {:photo => {}}, valid_session
+        post :create, {:photo => {}}
         assigns(:photo).should be_a_new(Photo)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Photo.any_instance.stub(:save).and_return(false)
-        post :create, {:photo => {}}, valid_session
+        post :create, {:photo => {}}
         response.should render_template("new")
       end
     end
   end
 
   describe "PUT update" do
+    login_admin
+
     describe "with valid params" do
       it "updates the requested photo" do
         photo = Photo.create! valid_attributes
@@ -111,18 +120,18 @@ describe PhotosController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Photo.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => photo.to_param, :photo => {'these' => 'params'}}, valid_session
+        put :update, {:id => photo.to_param, :photo => {'these' => 'params'}}
       end
 
       it "assigns the requested photo as @photo" do
         photo = Photo.create! valid_attributes
-        put :update, {:id => photo.to_param, :photo => valid_attributes}, valid_session
+        put :update, {:id => photo.to_param, :photo => valid_attributes}
         assigns(:photo).should eq(photo)
       end
 
       it "redirects to the photo" do
         photo = Photo.create! valid_attributes
-        put :update, {:id => photo.to_param, :photo => valid_attributes}, valid_session
+        put :update, {:id => photo.to_param, :photo => valid_attributes}
         response.should redirect_to(photo)
       end
     end
@@ -132,7 +141,7 @@ describe PhotosController do
         photo = Photo.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Photo.any_instance.stub(:save).and_return(false)
-        put :update, {:id => photo.to_param, :photo => {}}, valid_session
+        put :update, {:id => photo.to_param, :photo => {}}
         assigns(:photo).should eq(photo)
       end
 
@@ -140,24 +149,26 @@ describe PhotosController do
         photo = Photo.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Photo.any_instance.stub(:save).and_return(false)
-        put :update, {:id => photo.to_param, :photo => {}}, valid_session
+        put :update, {:id => photo.to_param, :photo => {}}
         response.should render_template("edit")
       end
     end
   end
 
   describe "DELETE destroy" do
+    login_admin
+
     it "destroys the requested photo" do
       photo = Photo.create! valid_attributes
       expect {
-        delete :destroy, {:id => photo.to_param}, valid_session
+        delete :destroy, {:id => photo.to_param}
       }.to change(Photo, :count).by(-1)
     end
 
     it "redirects to the photos list" do
       photo = Photo.create! valid_attributes
-      delete :destroy, {:id => photo.to_param}, valid_session
-      response.should redirect_to(photos_url)
+      delete :destroy, {:id => photo.to_param}
+      response.should redirect_to(photos_path)
     end
   end
 

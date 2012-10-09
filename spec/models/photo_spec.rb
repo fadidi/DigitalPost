@@ -10,7 +10,7 @@ describe Photo do
   # properties
   it {should respond_to :attribution}
   it {should respond_to :description}
-  it {should respond_to :height}
+  it {should respond_to :photo_height}
   it {should respond_to :imageable_id}
   it {should respond_to :imageable_type}
   it {should respond_to :photo}
@@ -19,7 +19,7 @@ describe Photo do
   it {should respond_to :photo_hash}
   it {should respond_to :title}
   it {should respond_to :user_id}
-  it {should respond_to :width}
+  it {should respond_to :photo_width}
 
   # associations
   it {should respond_to :user}
@@ -37,7 +37,7 @@ describe Photo do
   describe 'properties' do
     it {Photo.new.attribution.should be_blank}
     it {Photo.new.description.should be_blank}
-    it {Photo.new.height.should be_blank}
+    it {Photo.new.photo_height.should be_blank}
     it {Photo.new.imageable_id.should be_blank}
     it {Photo.new.imageable_type.should be_blank}
     it {Photo.new.photo.should be_blank}
@@ -60,9 +60,24 @@ describe Photo do
     end
     
     it {Photo.new.photo_hash.should be_blank}
-    it {Photo.new.title.should be_blank}
+
+    describe 'title' do
+      it {Photo.new.title.should be_blank}
+
+      it 'should populate with photo name if empty' do
+        FactoryGirl.create(:photo).title.should_not be_blank
+      end
+    end
+
     it {Photo.new.user_id.should be_blank}
-    it {Photo.new.width.should be_blank}
+
+    describe 'width' do
+      it {Photo.new.photo_width.should be_blank}
+
+      it 'should populate from photo' do
+        FactoryGirl.create(:photo).photo_width.should_not be_blank
+      end
+    end
   end
 
   describe 'validations' do
@@ -70,8 +85,6 @@ describe Photo do
     it {Photo.new(@attr.merge(:attribution => 'a'*256)).should_not be_valid}
     it {Photo.new(@attr.merge(:description => '')).should be_valid}
     it {Photo.new(@attr.merge(:description => 'a'*256)).should be_valid}
-    it {Photo.new(@attr.merge(:height => '')).should_not be_valid}
-    it {Photo.new(@attr.merge(:height => 'a')).should_not be_valid}
     it {Photo.new(@attr.merge(:imageable_id => '')).should be_valid}
     it {Photo.new(@attr.merge(:imageable_id => 'a')).should_not be_valid}
     it {Photo.new(@attr.merge(:imageable_type => '')).should be_valid}
@@ -90,7 +103,7 @@ describe Photo do
 
       it 'should be unique' do
         @photo = FactoryGirl.create :photo
-        FactoryGirl.build(:photo, :photo_hash => @photo.photo_hash).should_not be_valid
+        FactoryGirl.build(:photo).should_not be_valid
       end
     end
 
@@ -98,14 +111,12 @@ describe Photo do
     it {Photo.new(@attr.merge(:title => 'a'*256)).should_not be_valid}
     it {Photo.new(@attr.merge(:user_id => '')).should_not be_valid}
     it {Photo.new(@attr.merge(:user_id => 'a')).should_not be_valid}
-    it {Photo.new(@attr.merge(:width => '')).should_not be_valid}
-    it {Photo.new(@attr.merge(:width => 'a')).should_not be_valid}
   end
 
   describe 'methods' do
     it 'should set title in to_param' do
       @photo = FactoryGirl.create(:photo)
-      @photo.to_param.should eq "#{@photo.id}-#{@photo.title}"
+      @photo.to_param.should eq "#{@photo.id}-#{@photo.title.parameterize}"
     end
   end
 

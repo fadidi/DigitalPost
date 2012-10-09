@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
   create_table "photos", :force => true do |t|
     t.string   "attribution"
     t.text     "description"
-    t.integer  "height"
+    t.integer  "photo_height"
     t.integer  "imageable_id"
     t.string   "imageable_type"
     t.string   "photo"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
     t.string   "photo_hash"
     t.string   "title"
     t.integer  "user_id"
-    t.integer  "width"
+    t.integer  "photo_width"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end
