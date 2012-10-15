@@ -1,3 +1,8 @@
+- content_for :backtrack do
+  %li.active= link_to raw("#{ValidEmail.model_name.human(:count => :plural)} &rang;"), valid_emails_path
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:add, t('phrase.add_resource', :resource => ValidEmail.model_name.human))), new_valid_email_path if can? :create , ValidEmail
+
 .container-fluid
   .row-fluid
     .span12

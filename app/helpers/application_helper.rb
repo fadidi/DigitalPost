@@ -79,7 +79,8 @@ module ApplicationHelper
       :create => 'plus',
       :edit => 'pencil',
       :destroy => 'minus',
-      :upload => 'upload'
+      :upload => 'upload',
+      :add => 'plus'
     }
     icons[verb] ||= 'certificate'
     content = text.nil? ? t("action.#{verb.to_s}") : text

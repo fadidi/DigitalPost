@@ -20,6 +20,7 @@ en:
     search: "search"
     things: "things"
   phrase:
+    add_resource: "add %{resource}"
     contact_us: "contact us"
     edit_resource: "edit %{resource}"
     for_staff: "for staff"
