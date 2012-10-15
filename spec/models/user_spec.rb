@@ -32,6 +32,7 @@ describe User do
 
   #associations
   it {should respond_to :pages}
+  it {should respond_to :photos}
   it {should respond_to :revisions}
   it {should respond_to :staff}
   it {should respond_to :stage}
@@ -51,8 +52,7 @@ describe User do
   it {should respond_to :remove_volunteer}
 
   # scopes
-  it {should respond_to :to_param}
-  it {should respond_to :with_avatar}
+  it {User.should respond_to :with_avatar}
   
   # carrierwave
   it {should respond_to :avatar?}
@@ -290,6 +290,32 @@ describe User do
         @user.destroy
         @page.reload
         @page.user.should eq @admin
+      end
+    end
+
+    describe 'photos' do
+      before :each do
+        @user = FactoryGirl.create(:user)
+        @user.add_role :admin
+        @photo = FactoryGirl.create(:photo, :user_id => @user.id)
+      end
+
+      it 'should be a photo' do
+        @user.photos.first.should be_an_instance_of Photo
+      end
+
+      it 'should have the correct photos' do
+        @user.photos.should eq [@photo]
+      end
+
+      it { expect {
+        @user.destroy
+      }.to change(Page, :count).by(0)}
+
+      it 'should set photo user_id to nil' do
+        @user.destroy
+        @photo.reload
+        @photo.user_id.should be_blank
       end
     end
 

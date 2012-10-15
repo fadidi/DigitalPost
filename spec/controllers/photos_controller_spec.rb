@@ -74,7 +74,6 @@ describe PhotosController do
 
     describe "with valid params" do
       it "creates a new Photo" do
-        puts valid_attributes.inspect
         expect {
           post :create, {:photo => valid_attributes}
         }.to change(Photo, :count).by(1)
