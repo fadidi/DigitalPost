@@ -18,6 +18,9 @@ $(function(){
   // apply correct bootstrap styles to form error fields
   $('.field_with_errors').closest('.control-group').addClass('error');
 
+  // add styles to wiki embeds
+  $('.wiki-embedded img').addClass('img-polaroid');
+
   /*********************************************/
   /* jquery.timeago binding */
   $.timeago.settings.allowFuture = true;
