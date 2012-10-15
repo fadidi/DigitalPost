@@ -639,6 +639,15 @@ describe User do
   end
 
   describe 'scopes' do
+    describe 'default' do
+      it 'should sort by name' do
+        @a = FactoryGirl.create(:user, :name => 'Aaaaaaaa')
+        @c = FactoryGirl.create(:user, :name => 'Ccaaaaaa')
+        @b = FactoryGirl.create(:user, :name => 'Bbaaaaaa')
+        User.all.should eq [@a, @b, @c]
+      end
+    end
+
     describe 'with_avatar' do
       it 'should include users with avatars' do
         @user = FactoryGirl.create(:user)

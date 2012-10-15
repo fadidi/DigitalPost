@@ -4,8 +4,10 @@
   %li.active= link_to 'Volunteers', volunteers_path
 .well.orange
   %h1 Volunteers
-%table.table
+%table.table.table-condensed
   %thead
+    %th
+    %th
     %th Name
     %th Phone
     %th Email
@@ -21,6 +23,8 @@
       %tr
         %td
           = link_to raw('<span class="icon-edit"></span>'), edit_user_path(vol.user), :class => 'btn btn-mini', :rel => 'tooltip', :title => 'edit', 'data-placement' => 'left' if can? :edit, vol.user
+        %td= image_tag vol.user.avatar.square50.url
+        %td
           = link_to vol.user.name, vol.user
         %td= vol.user.phone
         %td= vol.user.email

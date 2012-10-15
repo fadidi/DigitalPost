@@ -2,10 +2,13 @@
   %li.active= link_to 'Everyone', users_path
   %li= link_to 'Staff', staff_index_path
   %li= link_to 'Volunteers', volunteers_path
+
 .well.blue
   %h1 Everyone
-%table.table
+%table.table.table-condensed
   %thead
+    %th
+    %th
     %th Name
     %th Phone
     %th Email
@@ -20,6 +23,8 @@
       %tr
         %td
           = link_to raw('<span class="icon-edit"></span>'), edit_user_path(user), :class => 'btn btn-mini' if can? :edit, @user
+        %td= image_tag user.avatar.square50.url
+        %td
           = link_to user.name, user
         %td= user.phone
         %td= user.email

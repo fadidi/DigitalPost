@@ -6,6 +6,8 @@
   %h1 Staff
 %table.table
   %thead
+    %th
+    %th
     %th Name
     %th Phone
     %th Email
@@ -15,6 +17,8 @@
   %tbody
     - @staff.each do |staff|
       %tr
+        %td= link_to raw('<span class="icon-edit"></span>'), edit_user_path(staff.user), :class => 'btn btn-mini', :rel => 'tooltip', :title => 'edit', 'data-placement' => 'left' if can? :edit, staff.user
+        %td= image_tag staff.user.avatar.square50.url
         %td= link_to staff.user.name, staff.user
         %td= staff.user.phone
         %td= staff.user.email

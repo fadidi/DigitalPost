@@ -27,5 +27,5 @@
       - for work_zone in @region.work_zones do
         %li.span4
           = link_to work_zone, :class => 'thumbnail' do
-            = image_tag 'http://placehold.it/300x200'
+            = image_tag work_zone.photo.golden374.url
             %h4.center= work_zone.name

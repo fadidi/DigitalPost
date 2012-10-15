@@ -1,6 +1,21 @@
 class Photo < ActiveRecord::Base
   attr_accessible :attribution, :description, :photo_height, :imageable_id, :imageable_type, :photo, :photo_content_type, :photo_file_size, :photo_hash, :title, :user_id, :photo_width
 
+  # elasticsearch indexing
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+  index_name ELASTICSEARCH_INDEX
+  mapping do
+    indexes :handle, :as => 'title'
+    indexes :attribution
+    indexes :description
+    indexes :photo_height
+    indexes :photo_content_type
+    indexes :photo_file_size
+    indexes :title
+    indexes :photo_width
+  end
+
   mount_uploader :photo, PhotoUploader
 
   validates :attribution, :title,

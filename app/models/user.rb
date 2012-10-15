@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
   before_save :do_before_save
   before_destroy :do_before_destroy
 
+  default_scope :order => 'name ASC'
   scope :with_avatar, where('avatar IS NOT NULL')
 
   def fname
