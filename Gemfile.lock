@@ -128,6 +128,19 @@ GEM
       railties (~> 3.0)
     hashie (1.2.0)
     hashr (0.0.22)
+    heroku (2.32.13)
+      heroku-api (~> 0.3.5)
+      launchy (>= 0.3.2)
+      netrc (~> 0.7.7)
+      rest-client (~> 1.6.1)
+      rubyzip
+    heroku-api (0.3.5)
+      excon (~> 0.16.1)
+    heroku_san (3.0.4)
+      activesupport
+      heroku (>= 2)
+      heroku-api (>= 0.1.2)
+      rake
     hike (1.2.1)
     hpricot (0.8.6)
     httpauth (0.2.0)
@@ -160,6 +173,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.6.0)
       jruby-pageant (>= 1.1.1)
+    netrc (0.7.7)
     nokogiri (1.5.5)
     oauth2 (0.8.0)
       faraday (~> 0.8)
@@ -301,6 +315,7 @@ DEPENDENCIES
   guard-spork
   haml (>= 3.1.7)
   haml-rails (>= 0.3.4)
+  heroku_san
   hpricot (>= 0.8.6)
   jquery-rails
   launchy (>= 2.1.2)

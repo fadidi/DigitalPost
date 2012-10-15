@@ -75,3 +75,6 @@ pickle-email-*.html
 
 # precompiled assets
 /public/assets
+
+# heroku_san file
+/config/heroku.yml

@@ -36,6 +36,7 @@ group :development do
   gem "ruby_parser", ">= 2.3.1"
   gem 'foreman'
   gem 'sextant'
+  gem 'heroku_san'
 end
 
 group :development, :test do
