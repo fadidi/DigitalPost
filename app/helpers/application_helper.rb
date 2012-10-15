@@ -58,7 +58,8 @@ module ApplicationHelper
       'page' => 'list-alt',
       'staff' => 'user',
       'user' => 'user',
-      'volunteer' => 'user'
+      'volunteer' => 'user',
+      'photo' => 'picture'
     }
     text = text.nil? ? '' : "&nbsp;#{text}"
     icons[resource] ||= 'certificate'
@@ -78,11 +79,11 @@ module ApplicationHelper
       :create => 'plus',
       :edit => 'pencil',
       :destroy => 'minus',
-      :upload => 'plus'
+      :upload => 'upload'
     }
     icons[verb] ||= 'certificate'
-    content = t("action.#{text.nil? ? verb.to_s : text}").capitalize
-    raw("<span class='icon-#{icons[verb]}'></span> #{content}")
+    content = text.nil? ? t("action.#{verb.to_s}") : text
+    raw("<span class='icon-#{icons[verb]}'></span> #{content.titleize}")
   end
 
 end

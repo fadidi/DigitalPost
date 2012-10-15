@@ -30,43 +30,13 @@
               = t 'word.resources'
               %b.caret
             %ul.dropdown-menu
-              %li.nav-header= t 'word.things'
-              %li
-                = link_to pages_path do
-                  %span.icon-list-alt
-                  = Page.model_name.human(:count => :plural)
-              %li.nav-header= ENV['COUNTRY']
-              %li= link_to icon_for('unit', Unit.model_name.human(:count => :plural)), units_path if can? :read, Unit
-              %li= link_to icon_for('language', Language.model_name.human(:count => :plural)), languages_path if can? :read, Language
-              %li= link_to icon_for('region', Region.model_name.human(:count => :plural)), regions_path if can? :read, Region
-              %li= link_to icon_for('sector', Sector.model_name.human(:count => :plural)), sectors_path if can? :read, Sector
-              %li= link_to icon_for('work_zone', WorkZone.model_name.human(:count => :plural)), work_zones_path if can? :read, WorkZone
+              = render 'shared/vmenu_list'
               - if signed_in?
-                %li.divider
-                %li.nav-header= t 'word.people'
-                %li= link_to icon_for('user', t('word.everyone').titleize), users_path
-                %li= link_to icon_for('staff', Staff.model_name.human(:count => :plural)), staff_index_path
-                %li= link_to icon_for('volunteer', Volunteer.model_name.human(:count => :plural)), volunteers_path
-                - if user_signed_in? && (current_user.has_role?(:staff) || current_user.has_role?(:volunteer))
-                  %li.divider
-                  %li.nav-header= t 'proper_noun.peace_corps'
-                  - if can? :read, Unit
-                    %li
-                      = link_to units_path do
-                        %span.icon-ok
-                        = Unit.model_name.human(:count => :plural)
-                  - if can? :read, Stage
-                    %li
-                      = link_to stages_path do
-                        %span.icon-ok
-                        = Stage.model_name.human(:count => :plural)
                 %li.divider
                 %li.nav-header= t 'word.create'
                 - if can?(:create, Page)
-                  %li
-                    = link_to new_page_path do
-                      %span.icon-plus
-                      = t('phrase.new_resource', :resource => Page.model_name.human).titleize
+                  %li= link_to action_icon(:create, t('phrase.new_resource', :resource => Page.model_name.human)), new_page_path
+                  %li= link_to action_icon(:upload, t('phrase.upload_resource', :resource => Photo.model_name.human)), new_photo_path
           -# initiatives
           -#%li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}

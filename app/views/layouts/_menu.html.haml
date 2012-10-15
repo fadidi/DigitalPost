@@ -1,0 +1,7 @@
+#left-menu-container
+  %ul.nav.nav-list
+    %li.nav-header= t('word.browse')
+    - for page in Page.all
+      %li= link_to page.title, page
+    %li.nav-header= t('phrase.quick_links')
+    = render 'shared/vmenu_list'

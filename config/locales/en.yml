@@ -29,6 +29,7 @@ en:
     quick_links: "quick links"
     sign_out: "sign out"
     site_map: "site map"
+    upload_resource: "upload %{resource}"
   proper_noun:
     peace_corps: "Peace Corps"
   footer:
