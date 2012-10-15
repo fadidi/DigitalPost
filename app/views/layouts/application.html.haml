@@ -23,7 +23,9 @@
       -#.container
         .row-fluid
           .span12
-      = yield :alerts
+      .container-fluid
+        .row12
+          = yield :alerts
       - if content_for?(:body)
         = yield :body
       - else

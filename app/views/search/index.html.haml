@@ -7,7 +7,7 @@
 - else
   %ul.nav.nav-list
     - for result in @results do
-      - if can? :read, result.type.classify
+      - if can? :read, result.type.classify.constantize
         %li
           = link_to result do
             = icon_for(result.type)
