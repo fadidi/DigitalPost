@@ -40,7 +40,6 @@ class PagesController < ApplicationController
   # GET /pages/1/edit
   def edit
     @page.revisions.build(:content => (@page.current_revision.nil? ? '' : @page.current_revision.content))
-    #session[:return_to] = request.url
   end
 
   # POST /pages
