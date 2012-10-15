@@ -4,6 +4,7 @@ class CreateSectors < ActiveRecord::Migration
       t.string :abbreviation
       t.integer :apcd_id
       t.string :name
+      t.string :photo
 
       t.timestamps
     end

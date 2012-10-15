@@ -8,8 +8,8 @@
 %ul.thumbnails
   - for sector in @sectors do
     %li.span3
-      = link_to sector, :class => 'thumbnail' do
-        = image_tag 'http://placehold.it/300x200'
-        %h4.center= sector.name
+      = link_to sector, :class => 'thumbnail', :rel => 'tooltip', 'data-placement' => 'bottom', :title => sector.name do
+        = image_tag sector.photo.golden374.url
+        %h4.center= sector.abbreviation
         - if sector.apcd?
           %p.center= sector.apcd.name

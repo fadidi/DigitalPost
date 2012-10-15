@@ -6,13 +6,9 @@
   %li= link_to raw("<span class='icon-user'></span> #{@sector.apcd.name}, APCD"), @sector.apcd.user if @sector.apcd?
   %li= link_to raw('<span class="icon-plus"></span> New Sector'), new_sector_path if can? :create, Sector
 
-.well.blue
-  %h1
-    %small= @sector.abbreviation
-    = @sector.name
-    %small= "#{@sector.apcd.name}, APCD" if @sector.apcd?
 .row-fluid
   .span4
+    = image_tag @sector.photo.golden791.url, :class => 'img-polaroid'
     .page-header
       %h1 Volunteers
     %ul.nav.nav-tabs.nav-stacked
@@ -21,3 +17,9 @@
           = link_to user do
             = user.name
             = "| #{user.volunteer.region.name}" if user.volunteer.sector.name?
+  .span8
+    .well.blue
+      %h1
+        %small= @sector.abbreviation
+        = @sector.name
+        %small= "#{@sector.apcd.name}, APCD" if @sector.apcd?

@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
     t.string   "abbreviation"
     t.integer  "apcd_id"
     t.string   "name"
+    t.string   "photo"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

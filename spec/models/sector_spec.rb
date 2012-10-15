@@ -14,6 +14,7 @@ describe Sector do
   it {should respond_to :abbreviation}
   it {should respond_to :apcd_id}
   it {should respond_to :name}
+  it {should respond_to :photo}
 
   # associations
   it {should respond_to :apcd}
@@ -23,6 +24,11 @@ describe Sector do
   # methods
   it {should respond_to :apcd?}
   it {should respond_to :to_param}
+
+  # carrierwave
+  it {should respond_to :photo?}
+  it {should respond_to :remove_photo}
+  it {should respond_to :remove_photo!}
 
   describe 'properties' do
     describe 'abbreviation' do
@@ -35,6 +41,17 @@ describe Sector do
     end
     it {Sector.new.apcd_id.should be_blank}
     it {Sector.new.name.should be_blank}
+
+    describe 'photo' do
+      it {Sector.new.photo.should be_blank}
+
+      it 'should populate on upload' do
+        @sector = FactoryGirl.create :sector
+        @sector.photo = (File.open('spec/support/images/10x10.gif'))
+        @sector.save!
+        @sector.photo.should_not be_blank
+      end
+    end
   end
 
   describe 'validations' do
@@ -59,6 +76,8 @@ describe Sector do
         FactoryGirl.build(:sector, :name => FactoryGirl.create(:sector).name).should_not be_valid
       end
     end
+
+    it {Sector.new(@attr.merge(:photo => '')).should be_valid}
   end
 
   describe 'associations' do
@@ -130,6 +149,29 @@ describe Sector do
       it 'should be id and name' do
         @sector = FactoryGirl.create(:sector, :name => 'Test Sector')
         @sector.to_param.should eq "#{@sector.id}-#{@sector.name.parameterize}"
+      end
+    end
+  end
+
+  describe 'scopes' do
+    describe 'default' do
+      it 'should order by name ASC' do
+        @a = FactoryGirl.create(:sector, :name => 'Aaa')
+        @c = FactoryGirl.create(:sector, :name => 'Ccc')
+        @b = FactoryGirl.create(:sector, :name => 'Bbb')
+        Sector.all.should eq [@a, @b, @c]
+      end
+    end
+  end
+
+  describe 'carrierwave' do
+    describe 'remove_photo' do
+      it 'should remove the photo when true' do
+        @sector = FactoryGirl.create :sector
+        @sector.photo = (File.open('spec/support/images/10x10.gif'))
+        @sector.save!
+        @sector.update_attributes(:remove_photo => true)
+        @sector.photo.should be_blank
       end
     end
   end
