@@ -7,7 +7,7 @@
 .well.orange
   %h1
     = @stage.name
-    %small arrived #{timeago(@stage.arrival.to_time)}, left #{timeago(@stage.anticipated_cos.to_time)}.
+    %small arrived #{timeago(@stage.arrival.to_time)}, COS #{timeago(@stage.anticipated_cos.to_time)}.
 %table.table
   %thead
     %th Name

@@ -3,20 +3,25 @@
   = render 'shared/form_info'
   .row-fluid
     .span6
-      = f.label :name, 'Work Zone Name'
+      = f.label :name
       = f.text_field :name, :class => 'span12 required'
-    .span6
       = f.label :abbreviation
       = f.text_field :abbreviation, :class => 'span12 required'
       %span.help-block 2-7 character short-form notation for the work zone
-  .row-fluid
-    .span6
       = f.label :region_id
       = f.collection_select :region_id, Region.all, :id, :name, {}, :class => 'span12, required'
       %span.help-block primary region in which the work zone lies
-    .span6
-      = f.label :leader_id, 'Work Zone Leader'
-      = f.collection_select :leader_id, User.all, :id, :name, {:include_blank => true}, :class => 'span12'
+      = f.label :leader_id
+      = f.collection_select :leader_id, Volunteer.all, :id, :name, {:include_blank => true}, :class => 'span12'
       %span.help-block PCV responsible for the work zone
+    .span6
+      = f.label :photo
+      = f.file_field :photo, :class => 'span12'
+      - if @work_zone.photo?
+        %label.checkbox
+          = f.check_box :remove_photo
+          Remove
+      %span.help-block the photo will be used to visually identify this unit
+      = image_tag(@work_zone.photo.golden791.url)
   .form-actions
     = f.submit 'Save', :class => 'btn btn-primary'

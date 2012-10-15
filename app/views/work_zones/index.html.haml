@@ -16,11 +16,11 @@
       - for work_zone in @work_zones do
         %li.span3
           = link_to work_zone, :class => 'thumbnail' do
-            = image_tag 'http://placehold.it/300x200'
+            = image_tag work_zone.photo.golden374.url
             %h4.center
               = work_zone.name
               = "(#{work_zone.region.abbreviation})" if work_zone.region?
   .span3
     %ul.nav.nav-tabs.nav-stacked
       - for work_zone in @work_zones do
-        %li= link_to work_zone.leader.name, work_zone.leader if work_zone.leader?
+        %li= link_to "#{work_zone.leader.name}, #{work_zone.name}", work_zone.leader if work_zone.leader?

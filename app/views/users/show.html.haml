@@ -63,6 +63,10 @@
                   %dd
                     = @user.volunteer.local_name
                     &nbsp;
+                  %dt Work Zone
+                  %dd
+                    = link_to @user.volunteer.work_zone.name, @user.volunteer.work_zone if @user.volunteer.work_zone?
+                    &nbsp;
                   %dt Site
                   %dd
                     = @user.volunteer.site

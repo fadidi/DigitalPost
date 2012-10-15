@@ -8,11 +8,14 @@
 .well.orange
   %h1
     = @work_zone.region.name
-    &rang;
+    |
     = @work_zone.name
     Volunteers
-%table.table
+    %small
+      (#{t 'phrase.leaders_in_green'})
+%table.table.table-valign-middle
   %thead
+    %th
     %th Name
     %th Phone
     %th Email
@@ -23,7 +26,8 @@
     %th COS Date
   %tbody
     - @work_zone.volunteers.each do |vol|
-      %tr
+      %tr{:class => (vol.leader?(@work_zone) ? 'success' : '')}
+        %td= image_tag(vol.user.avatar.square50.url)
         %td= link_to vol.user.name, vol.user
         %td= vol.user.phone
         %td= vol.user.email

@@ -15,6 +15,7 @@ describe WorkZone do
   it {should respond_to :abbreviation}
   it {should respond_to :leader_id}
   it {should respond_to :name}
+  it {should respond_to :photo}
   it {should respond_to :region_id}
 
   # associations
@@ -27,10 +28,27 @@ describe WorkZone do
   it {should respond_to :leader?}
   it {should respond_to :to_param}
 
+  # carrierwave
+  it {should respond_to :photo?}
+  it {should respond_to :remove_photo}
+  it {should respond_to :remove_photo!}
+
   describe 'properties' do
     it {WorkZone.new.abbreviation.should be_blank}
     it {WorkZone.new.leader_id.should be_blank}
     it {WorkZone.new.name.should be_blank}
+
+    describe 'photo' do
+      it {WorkZone.new.photo.should be_blank}
+
+      it 'should populate on upload' do
+        @wz = FactoryGirl.create :work_zone
+        @wz.photo = (File.open('spec/support/images/10x10.gif'))
+        @wz.save!
+        @wz.photo.should_not be_blank
+      end
+    end
+    
     it {WorkZone.new.region_id.should be_blank}
   end
 
@@ -53,6 +71,7 @@ describe WorkZone do
 
     it {WorkZone.new(@attr.merge(:leader_id => '')).should be_valid}
     it {WorkZone.new(@attr.merge(:leader_id => 'a')).should_not be_valid}
+    it {WorkZone.new(@attr.merge(:photo => '')).should be_valid}
 
     describe 'name' do
       it {WorkZone.new(@attr.merge(:name => '')).should_not be_valid}

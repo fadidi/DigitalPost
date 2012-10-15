@@ -37,6 +37,11 @@ body {
     }
     table {
       background-color: $white;
+      &.table-valign-middle {
+        td {
+          vertical-align: middle;
+        }
+      }
     }
     .hide-overflow {
       overflow: hidden;

@@ -29,6 +29,8 @@ describe Volunteer do
   it {should respond_to :lead_work_zone}
 
   # methods
+  it {should respond_to(:leader?).with(1).argument}
+  it {should respond_to :name}
   it {should respond_to :region?}
   it {should respond_to :sector?}
   it {should respond_to :stage?}
@@ -224,6 +226,27 @@ describe Volunteer do
   end
 
   describe 'methods' do
+    describe 'leader?' do
+      it 'should be false for a random work_zone' do
+        @vol = FactoryGirl.create :volunteer
+        @wz = FactoryGirl.create :work_zone
+        @vol.leader?(@wz).should_not be_true
+      end
+
+      it 'should be false for a work_zone led by someone else' do
+        @vol = FactoryGirl.create :volunteer
+        @wz = FactoryGirl.create(:work_zone, :leader => FactoryGirl.create(:volunteer))
+        @vol.leader?(@wz).should_not be_true
+      end
+
+      it 'should be true for a led work_zone' do
+        @wz = FactoryGirl.create(:work_zone, :leader => @vol = FactoryGirl.create(:volunteer))
+        @vol.leader?(@wz).should be_true
+      end
+    end
+
+    it {FactoryGirl.create(:volunteer, :user => @user = FactoryGirl.create(:user)).name.should eq @user.name}
+
     describe 'region?' do
       it {Volunteer.new.region?.should_not be_true}
       it {FactoryGirl.create(:volunteer, :work_zone_id => 1).region?.should_not be_true}

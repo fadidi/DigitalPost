@@ -16,6 +16,18 @@ class Volunteer < ActiveRecord::Base
 
   before_save :do_before_save
 
+  def leader?(work_zone)
+    if work_zone.leader_id.blank?
+      false
+    elsif work_zone.leader_id == id
+      true
+    end
+  end
+
+  def name
+    user.name
+  end
+
   def region?
     work_zone? ? (work_zone.region? ? true : false) : false
   end

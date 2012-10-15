@@ -52,6 +52,7 @@ describe User do
 
   # scopes
   it {should respond_to :to_param}
+  it {should respond_to :with_avatar}
   
   # carrierwave
   it {should respond_to :avatar?}
@@ -607,6 +608,22 @@ describe User do
 
       it 'should be false without a volunteer' do
         @user.volunteer?.should_not be_true
+      end
+    end
+  end
+
+  describe 'scopes' do
+    describe 'with_avatar' do
+      it 'should include users with avatars' do
+        @user = FactoryGirl.create(:user)
+        @user.avatar = (File.open('spec/support/images/10x10.gif'))
+        @user.save!
+        User.with_avatar.should eq [@user]
+      end
+
+      it 'should ignore users without avatars' do
+        @user = FactoryGirl.create(:user)
+        User.with_avatar.should be_empty
       end
     end
   end

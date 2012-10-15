@@ -53,6 +53,8 @@ class User < ActiveRecord::Base
   before_save :do_before_save
   before_destroy :do_before_destroy
 
+  scope :with_avatar, where('avatar IS NOT NULL')
+
   def fname
     name[/^([^ ]+)/i,1]
   end

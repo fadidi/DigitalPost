@@ -28,4 +28,10 @@ describe AvatarUploader do
       @uploader.square250.should have_dimensions(250, 250)
     end
   end
+
+  describe 'square50' do
+    it "should scale down to 50x50" do
+      @uploader.square50.should have_dimensions(50, 50)
+    end
+  end
 end

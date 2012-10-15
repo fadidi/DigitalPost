@@ -8,5 +8,8 @@
   - for stage in @stages do
     %li.span2
       = link_to stage, :class => 'thumbnail' do
-        = image_tag 'http://placehold.it/300x200'
+        - if stage.users.with_avatar.any?
+          = image_tag stage.users.unscoped.with_avatar.first.avatar.square250.url if stage.users.with_avatar.any?
+        - else
+          = image_tag AvatarUploader.new.square250.default_url
         %p.center= stage.name

@@ -1,4 +1,5 @@
 class WorkZone < ActiveRecord::Base
+  attr_accessible :abbreviation, :leader_id, :name, :photo, :region_id, :remove_photo
 
   # elasticsearch indexing
   include Tire::Model::Search
@@ -12,7 +13,7 @@ class WorkZone < ActiveRecord::Base
     indexes :region_id, :as => proc { |w| w.region.name }
   end
 
-  attr_accessible :abbreviation, :leader_id, :name, :region_id
+  mount_uploader :photo, PhotoUploader
 
   validates :abbreviation, :length => {:minimum => 2, :maximum => 8}, :uniqueness => {:case_sensitive => false}
   validates :leader_id, :numericality => {:is_integer => true}, :allow_blank => true

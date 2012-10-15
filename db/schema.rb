@@ -224,8 +224,9 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
 
   create_table "work_zones", :force => true do |t|
     t.string   "abbreviation"
-    t.string   "name"
     t.integer  "leader_id"
+    t.string   "name"
+    t.string   "photo"
     t.integer  "region_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
