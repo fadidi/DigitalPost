@@ -18,6 +18,9 @@
     %header
       = render 'layouts/navigation'
     #main{:role => "main"}
+      #photobar.visible-desktop
+        - for photo in Photo.limit(20) do
+          %img{:src => photo.photo.square100.url}<>
       -#= render 'layouts/developer_messages'
       = render 'layouts/messages' if flash.any?
       -#.container

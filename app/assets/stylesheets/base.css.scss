@@ -25,6 +25,15 @@ body {
     }
   }
   #main {
+    #photobar {
+      border-bottom: 1em solid $blue;
+      background-color: $black;
+      @include box-shadow(0 0 1px $black);
+      margin-bottom: .5em;
+      img {
+        width: 5%;
+      }
+    }
     #left-menu-container {
       border-top: 1px solid lightgray;
       border-right: 1px solid lightgray;
