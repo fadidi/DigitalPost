@@ -50,6 +50,7 @@
           - for language in Language.all do
             %li= link_to language.name, language
       %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
+      %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
   = yield :backtrack
 %ul.nav.nav-pills.pull-right
   = yield :top_right_menu
