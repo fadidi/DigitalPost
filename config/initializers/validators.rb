@@ -36,7 +36,7 @@ end
 
 class UrlValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    unless value =~ /^https?:\/\/[a-z]+.[a-zA-Z]+[-\/0-9a-z_%?=.&]*$/i
+    unless value =~ /^https?:\/\/[a-z]+\.[a-zA-Z]+[-\/0-9a-z_%?=.&]*$/i
       record.errors[attribute] << (options[:message] || "is not a valid URL (as far as we can tell)")
     end
   end

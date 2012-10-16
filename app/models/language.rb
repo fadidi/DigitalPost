@@ -15,6 +15,7 @@ class Language < ActiveRecord::Base
   validates :code, :length => { :in => 2..7 }, :uniqueness => { :case_sensitive => false }
   validates :name, :length => { :maximum => 255 }, :presence => true, :uniqueness => { :case_sensitive => false }
 
+  has_many :links, :dependent => :nullify
   has_many :pages
 
   before_validation :do_before_validation

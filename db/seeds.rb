@@ -63,3 +63,25 @@ Page.create!([{
   :html => '<p>You should edit this page, or replace it with a better page...</p>',
   :user_id => 1
 }])
+
+puts 'CREATING DEFAULT LINKS...'
+[{
+  :description => 'Fadidi Digital Media',
+  :language_id => Language.find_by_code('EN').id,
+  :name => 'Fadidi Digital Media',
+  :url => 'http://www.fadidi.com'
+},{
+  :description => 'Home base for Peace Corps Senegal.',
+  :language_id => Language.find_by_code('EN').id,
+  :name => 'Peace Corps|Senegal',
+  :url => 'http://www.pcsenegal.org'
+},{
+  :description => 'Learn all about Peace Corps!',
+  :language_id => Language.find_by_code('EN').id,
+  :name => 'Peace Corps Washington',
+  :url => 'http://www.peacecorsp.gov'
+}].each do |link|
+  Link.create!(link.merge(:user_id => User.first.id, :language_id => Language.find_by_code('EN').id))
+  puts 'pausing...'
+  sleep 1
+end

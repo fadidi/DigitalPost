@@ -55,6 +55,7 @@ module ApplicationHelper
   def icon_for(resource, text = nil)
     icons = {
       'language' => 'bullhorn',
+      'link' => 'hand-right',
       'page' => 'list-alt',
       'staff' => 'user',
       'user' => 'user',

@@ -1,0 +1,23 @@
+- content_for :backtrack do
+  %li.active= link_to raw("#{icon_for('link', Link.model_name.human(:count => :plural))} &rang;"), links_path
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:add, t('phrase.add_resource', :resource => Link.model_name.human(:count => :plural)))), new_link_path
+
+.well.red
+  %h1= Link.model_name.human(:count => :plural)
+%table.table
+  %thead
+    %th
+    %th Name
+    %th URL
+    %th Description
+    %th Contributor
+  %tbody
+  - @links.each do |link|
+    %tr
+      %td= link_to link.language.code, link.language
+      %td= link_to link.name, link
+      %td= link_to link.url, link.url, :target => '_blank'
+      %td= link.description
+      %td= link.user.name

@@ -1,0 +1,7 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('link', Link.model_name.human(:count => :plural))} &rang;"), links_path
+
+- content_for :top_right_menu do
+  %li.active= link_to raw(action_icon(:add, t('phrase.add_resource', :resource => Link.model_name.human(:count => :plural)))), new_link_path
+
+= render 'form'

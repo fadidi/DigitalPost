@@ -1,0 +1,19 @@
+= form_for @link do |f|
+  = render 'shared/form_errors', :item => @link if @link.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span6
+      = f.label :name
+      = f.text_field :name, :class => 'span12'
+    .span6
+      = f.label :language_id
+      = f.collection_select :language_id, Language.all, :id, :name, {}, {:class => 'span12 required'}
+  .row-fluid
+    .span12
+      = f.label :url
+      = f.text_field :url, :class => 'span12 required'
+      %p.help-block (include http:// or https://)
+      = f.label :description
+      = f.text_area :description, :class => 'span12', :rows => 3
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'

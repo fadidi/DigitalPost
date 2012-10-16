@@ -4,20 +4,20 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
 
-    can :read, [ Language, Page, Photo ]
+    can :read, [ Language, Link, Page, Photo ]
     can :manage, user
 
     if user.has_role? :admin
       can :manage, :all
     elsif user.has_role?(:volunteer) || user.has_role?(:staff)
-      can :read, [ Page, Reference, Region, Revision, Stage, Sector, User, Volunteer, Unit, WorkZone ]
-      can :create, [ Page, Photo, Revision ]
+      can :read, [ Reference, Region, Revision, Stage, Sector, User, Volunteer, Unit, WorkZone ]
+      can :create, [ Link, Page, Photo, Revision ]
       can :manage, Volunteer, :user_id => user.id if user.has_role?(:volunteer)
       can :manage, Staff, :user_id => user.id if user.has_role?(:staff)
     end
 
     if user.has_role? :moderator
-      can :manage, [Language, Page, Photo, Region, Revision, Role, Sector, Stage, ValidEmail, WorkZone]
+      can :manage, [Language, Link, Page, Photo, Region, Revision, Role, Sector, Stage, ValidEmail, WorkZone]
     end
 
     # Define abilities for the passed in user here. For example:

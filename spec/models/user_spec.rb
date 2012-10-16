@@ -31,6 +31,7 @@ describe User do
   it {should respond_to :website}
 
   #associations
+  it {should respond_to :links}
   it {should respond_to :pages}
   it {should respond_to :photos}
   it {should respond_to :revisions}
@@ -262,6 +263,31 @@ describe User do
   end
 
   describe 'associations' do
+    describe 'links' do
+      before :each do
+        @link = FactoryGirl.create(:link, :user => @user = FactoryGirl.create(:user))
+      end
+
+      it 'should be a link' do
+        @user.links.first.should be_an_instance_of Link
+      end
+
+      it 'should have the correct link' do
+        FactoryGirl.create :link
+        @user.links.should eq [@link]
+      end
+
+      it { expect {
+        @user.destroy
+      }.to change(Link, :count).by(0)}
+
+      it 'should set photo user_id to nil' do
+        @user.destroy
+        @link.reload
+        @link.user_id.should be_blank
+      end
+    end
+
     describe 'pages' do
       before :each do
         @page = FactoryGirl.create(:page, :user => @user = FactoryGirl.create(:user))
@@ -670,14 +696,14 @@ describe User do
       end
 
       it 'should read correctly' do
-        [Page, Photo].
+        [Language, Link, Page, Photo].
           each { |resource| @ability.should be_able_to :read, resource }
         [Ability, Reference, Region, Revision, Role, Sector, @user, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to :read, resource }
       end
 
       it 'should create, edit, destroy correctly' do
-        [Ability, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, Language, Link, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to [:create, :edit, :destroy], resource }
       end
     end
@@ -706,7 +732,7 @@ describe User do
       it 'should read correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [Page, Photo, Reference, Region, Revision, Sector, Stage, User, Volunteer, Unit, WorkZone].
+          [Language, Link, Page, Photo, Reference, Region, Revision, Sector, Stage, User, Volunteer, Unit, WorkZone].
             each { |resource| @ability.should be_able_to :read, resource }
           [Ability, Role, ValidEmail].
             each { |resource| @ability.should_not be_able_to :read, resource }
@@ -716,9 +742,9 @@ describe User do
       it 'should create correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [Page, Photo, Revision].
+          [Link, Page, Photo, Revision].
             each { |resource| @ability.should be_able_to :create, resource }
-          [Ability, Region, Reference, Role, Sector, Stage, User, WorkZone].
+          [Ability, Language, Region, Reference, Role, Sector, Stage, User, WorkZone].
             each { |resource| @ability.should_not be_able_to :create, resource }
         end
       end
@@ -732,7 +758,7 @@ describe User do
       end
 
       it 'should manage correctly' do
-        [Page, Photo, Region, Revision, Role, Sector, Stage, ValidEmail, WorkZone].
+        [Language, Link, Page, Photo, Region, Revision, Role, Sector, Stage, ValidEmail, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
         [Ability, Unit, User].
           each { |resource| @ability.should_not be_able_to :manage, resource }
@@ -747,7 +773,7 @@ describe User do
       end
 
       it 'should manage everything' do
-        [Ability, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Unit, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, Language, Link, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Unit, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121008182753) do
+ActiveRecord::Schema.define(:version => 20121016101946) do
 
   create_table "languages", :force => true do |t|
     t.string   "code"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(:version => 20121008182753) do
 
   add_index "languages", ["code"], :name => "index_languages_on_code", :unique => true
   add_index "languages", ["name"], :name => "index_languages_on_name", :unique => true
+
+  create_table "links", :force => true do |t|
+    t.text     "description"
+    t.integer  "language_id"
+    t.string   "name"
+    t.text     "url"
+    t.integer  "user_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "links", ["url"], :name => "index_links_on_url", :unique => true
 
   create_table "pages", :force => true do |t|
     t.integer  "language_id", :default => 1

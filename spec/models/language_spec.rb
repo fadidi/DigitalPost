@@ -18,7 +18,7 @@ describe Language do
   # associations
   pending {should respond_to :case_studies}
   pending {should respond_to :documents}
-  pending {should respond_to :links}
+  it {should respond_to :links}
   it {should respond_to :pages}
   pending {should respond_to :videos}
 
@@ -50,6 +50,29 @@ describe Language do
   end
 
   describe 'associations' do
+    describe 'links' do
+      before :each do
+        @link = FactoryGirl.create(:link, :language => @language = FactoryGirl.create(:language))
+      end
+
+      it {@language.links.first.should be_a_kind_of Link}
+
+      it 'should be the correct links' do
+        FactoryGirl.create :link
+        @language.links.should eq [@link]
+      end
+
+      it { expect {
+        @language.destroy
+      }.to change(Link, :count).by(0)}
+
+      it 'should reset the language_id on the link' do
+        @language.destroy
+        @link.reload
+        @link.language_id.should be_blank
+      end
+    end
+
     describe 'pages' do
       before :each do
         @page = FactoryGirl.create(:page, :language => @language = FactoryGirl.create(:language))
