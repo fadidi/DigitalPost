@@ -95,7 +95,7 @@ describe Unit do
     describe 'photo_hash' do
       it {Unit.new(@attr.merge(:photo_hash => '')).should be_valid}
 
-      it 'should allow duplicates' do
+      it 'should not allow duplicates' do
         Unit.create!(@attr.merge(:photo_hash => 'test'))
         Unit.new(@attr.merge(:photo_hash => 'test')).should_not be_valid
       end

@@ -1,0 +1,9 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('timeline', Timeline.model_name.human(:count => :plural))} &rang;"), timelines_path
+  %li= link_to @timeline.headline, @timeline if can? :read, @timeline
+  %li.active= link_to raw(action_icon(:edit)), edit_timeline_path(@timeline) if can? :edit, @timeline
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:create, t('phrase.new_resource', :resource => Timeline.model_name.human))), new_timeline_path if can? :create, Timeline
+
+= render 'form'

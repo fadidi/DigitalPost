@@ -75,6 +75,9 @@ en:
       stage:
         one: "Training Group"
         other: "Training Groups"
+      timeline:
+        one: "Timeline"
+        other: "Timelines"
       unit: 
         one: "Admin Unit"
         other: "Admin Units"
@@ -112,3 +115,11 @@ en:
         attribution: "Attribution"
         description: "Description"
         photo: "Photo File"
+      timeline:
+        asset_caption: "Media Caption"
+        asset_credit: "Media Credit"
+        asset_media: "Media"
+        headline: "Headline"
+        startdate: "Start Date"
+        text: "Content"
+        ttype: "Type"

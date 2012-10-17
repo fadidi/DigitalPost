@@ -59,6 +59,7 @@ module ApplicationHelper
       'link' => 'hand-right',
       'page' => 'list-alt',
       'staff' => 'user',
+      'timeline' => 'time',
       'user' => 'user',
       'volunteer' => 'user',
       'photo' => 'picture'

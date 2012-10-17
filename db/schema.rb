@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017094353) do
+ActiveRecord::Schema.define(:version => 20121017121425) do
 
   create_table "case_studies", :force => true do |t|
     t.text     "approach"
@@ -163,6 +163,20 @@ ActiveRecord::Schema.define(:version => 20121017094353) do
   add_index "stages", ["anticipated_cos"], :name => "index_stages_on_anticipated_cos", :unique => true
   add_index "stages", ["arrival"], :name => "index_stages_on_arrival", :unique => true
   add_index "stages", ["swear_in"], :name => "index_stages_on_swear_in", :unique => true
+
+  create_table "timelines", :force => true do |t|
+    t.string   "asset_caption"
+    t.string   "asset_credit"
+    t.text     "asset_media"
+    t.string   "headline"
+    t.date     "startdate"
+    t.text     "text"
+    t.string   "ttype",         :default => "default"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "timelines", ["headline"], :name => "index_timelines_on_headline", :unique => true
 
   create_table "units", :force => true do |t|
     t.text     "description"

@@ -696,14 +696,14 @@ describe User do
       end
 
       it 'should read correctly' do
-        [CaseStudy, Language, Link, Page, Photo].
+        [CaseStudy, Language, Link, Page, Photo, Timeline].
           each { |resource| @ability.should be_able_to :read, resource }
         [Ability, Reference, Region, Revision, Role, Sector, @user, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to :read, resource }
       end
 
       it 'should create, edit, destroy correctly' do
-        [Ability, CaseStudy, Language, Link, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, CaseStudy, Language, Link, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Timeline, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to [:create, :edit, :destroy], resource }
       end
     end
@@ -732,7 +732,7 @@ describe User do
       it 'should read correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [CaseStudy, Language, Link, Page, Photo, Reference, Region, Revision, Sector, Stage, User, Volunteer, Unit, WorkZone].
+          [CaseStudy, Language, Link, Page, Photo, Reference, Region, Revision, Sector, Stage, Timeline, User, Volunteer, Unit, WorkZone].
             each { |resource| @ability.should be_able_to :read, resource }
           [Ability, Role, ValidEmail].
             each { |resource| @ability.should_not be_able_to :read, resource }
@@ -744,7 +744,7 @@ describe User do
           @ability = Ability.new(user)
           [CaseStudy, Link, Page, Photo, Revision].
             each { |resource| @ability.should be_able_to :create, resource }
-          [Ability, Language, Region, Reference, Role, Sector, Stage, User, WorkZone].
+          [Ability, Language, Region, Reference, Role, Sector, Stage, Timeline, User, WorkZone].
             each { |resource| @ability.should_not be_able_to :create, resource }
         end
       end
@@ -758,7 +758,7 @@ describe User do
       end
 
       it 'should manage correctly' do
-        [CaseStudy, Language, Link, Page, Photo, Region, Revision, Role, Sector, Stage, ValidEmail, WorkZone].
+        [CaseStudy, Language, Link, Page, Photo, Region, Revision, Role, Sector, Stage, Timeline, ValidEmail, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
         [Ability, Unit, User].
           each { |resource| @ability.should_not be_able_to :manage, resource }
@@ -773,7 +773,7 @@ describe User do
       end
 
       it 'should manage everything' do
-        [Ability, CaseStudy, Language, Link, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Unit, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, CaseStudy, Language, Link, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Timeline, Unit, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
       end
     end
