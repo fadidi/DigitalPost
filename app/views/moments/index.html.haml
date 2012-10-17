@@ -1,0 +1,23 @@
+- content_for :backtrack do
+  %li.active= link_to raw("#{icon_for('moment', Moment.model_name.human(:count => :plural))}"), moments_path
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:create, t('phrase.new_resource', :resource => Moment.model_name.human))), new_moment_path if can? :create, Moment
+
+%table.table
+  %tr
+    %th Headline
+    %th Media
+    %th Start Date
+    %th Content
+    %th Timeline
+    %th User
+
+  - @moments.each do |moment|
+    %tr
+      %td= link_to moment.headline, moment
+      %td= moment.asset_media
+      %td= moment.startdate.strftime('%d %b %Y')
+      %td= moment.text
+      %td= link_to moment.timeline.headline, moment.timeline
+      %td= link_to moment.user.name, moment.user

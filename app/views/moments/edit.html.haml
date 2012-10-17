@@ -1,0 +1,9 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('moment', Moment.model_name.human(:count => :plural))} &rang;"), moments_path
+  %li= link_to @moment.headline, @moment
+  %li.active= link_to raw(action_icon(:edit)), edit_moment_path(@moment) if can? :edit, @moment
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:create, t('phrase.new_resource', :resource => Moment.model_name.human))), new_moment_path if can? :create, Moment
+
+= render 'form'

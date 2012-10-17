@@ -17,10 +17,10 @@ describe Timeline do
   it {should respond_to :headline}
   it {should respond_to :startdate}
   it {should respond_to :text}
-  it {should respond_to :}
+  it {should respond_to :ttype}
  
   # associations
-  pending {should respond_to :moments}
+  it {should respond_to :moments}
 
   describe 'attributes' do
     it {Timeline.new.asset_caption.should be_blank}
@@ -56,5 +56,19 @@ describe Timeline do
     it {Timeline.new(@attr.merge(:text => '')).should be_valid}
     it {Timeline.new(@attr.merge(:ttype => '')).should be_valid}
     it {Timeline.new(@attr.merge(:ttype => 'a'*256)).should_not be_valid}
+  end
+
+  describe 'associations' do
+    describe 'moments' do
+      before :each do
+        @moment = FactoryGirl.create(:moment, :timeline => @timeline = FactoryGirl.create(:timeline))
+      end
+
+      it {@timeline.moments.first.should be_a_kind_of Moment}
+      it {@timeline.moments.should eq [@moment]}
+      it { expect {
+        @timeline.destroy
+      }.to change(Moment, :count).by(-1)}
+    end
   end
 end

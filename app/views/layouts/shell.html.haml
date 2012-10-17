@@ -4,8 +4,4 @@
       .span12
         = render 'layouts/backtrack'
   = yield
-  - if Rails.env.development?
-    .container-fluid
-      .row-fluid
-        .span12= debug(params)
 = render :template => 'layouts/application'

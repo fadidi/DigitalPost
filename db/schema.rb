@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017121425) do
+ActiveRecord::Schema.define(:version => 20121017161739) do
 
   create_table "case_studies", :force => true do |t|
     t.text     "approach"
@@ -52,6 +52,20 @@ ActiveRecord::Schema.define(:version => 20121017121425) do
   end
 
   add_index "links", ["url"], :name => "index_links_on_url", :unique => true
+
+  create_table "moments", :force => true do |t|
+    t.string   "asset_caption"
+    t.string   "asset_credit"
+    t.text     "asset_media"
+    t.string   "headline"
+    t.date     "startdate"
+    t.date     "enddate"
+    t.text     "text"
+    t.integer  "timeline_id"
+    t.integer  "user_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "pages", :force => true do |t|
     t.integer  "language_id", :default => 1

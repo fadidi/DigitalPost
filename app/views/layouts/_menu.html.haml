@@ -1,7 +1,22 @@
-#left-menu-container
+.left-menu-container
   %ul.nav.nav-list
     %li.nav-header= t('word.browse')
     - for page in Page.all
       %li= link_to page.title, page
     %li.nav-header= t('phrase.quick_links')
     = render 'shared/vmenu_list'
+
+- if signed_in?
+  - search = Tire.search ELASTICSEARCH_INDEX do |search|
+    - search.query do |query|
+      - query.string current_user.name
+  - @results = search.results
+  .left-menu-container
+    %ul.nav.nav-list
+      %li.nav-header= t 'phrase.your_stuff'
+      - for result in @results do
+        - if can? :read, result.type.classify.constantize
+          %li
+            = link_to result do
+              = icon_for(result.type)
+              = result.handle

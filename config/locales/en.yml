@@ -33,6 +33,7 @@ en:
     sign_out: "sign out"
     site_map: "site map"
     upload_resource: "upload %{resource}"
+    your_stuff: "your stuff"
   proper_noun:
     peace_corps: "Peace Corps"
   footer:
@@ -48,6 +49,9 @@ en:
       link:
         one: "External Link"
         other: "External Links"
+      moment:
+        one: "Timeline Event"
+        other: "Timeline Events"
       page: 
         one: "Page"
         other: "Pages"
@@ -110,6 +114,15 @@ en:
         name: "Name"
         url: "URL"
         user_id: "User"
+      moment:
+        asset_caption: "Media Caption"
+        asset_credit: "Media Credit"
+        asset_media: "Media"
+        enddate: "End Date"
+        headline: "Headline"
+        library_id: "Library"
+        startdate: "Start Date"
+        text: "Content"
       photo:
         title: "Title"
         attribution: "Attribution"

@@ -47,7 +47,7 @@ module DigitalPost
     # to include the nested locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     # hack around the default_locale fail
-    config.i18n.locale = :wo
+    config.i18n.locale = :en
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"

@@ -3,6 +3,7 @@
 %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
 %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
 %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
+%li= link_to icon_for('timeline', Timeline.model_name.human(:count => :plural)), timelines_path
 - if can? :read, User
   %li.nav-header= t 'word.people'
   %li= link_to icon_for('user', t('word.everyone').titleize), users_path

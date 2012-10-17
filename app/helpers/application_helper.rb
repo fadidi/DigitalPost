@@ -57,6 +57,7 @@ module ApplicationHelper
       'case_study' => 'road',
       'language' => 'bullhorn',
       'link' => 'hand-right',
+      'moment' => 'time',
       'page' => 'list-alt',
       'staff' => 'user',
       'timeline' => 'time',

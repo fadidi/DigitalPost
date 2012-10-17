@@ -1,5 +1,7 @@
 DigitalPost::Application.routes.draw do
 
+  resources :moments
+
   resources :timelines
 
   resources :case_studies

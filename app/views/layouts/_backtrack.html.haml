@@ -34,6 +34,12 @@
           %ul.dropdown-menu
             - for sector in Sector.all do
               %li= link_to sector.name, sector
+      %li.dropdown-submenu
+        = link_to icon_for('timeline', Timeline.model_name.human(:count => :plural)), timelines_path, :tabindex => '-1'
+        %ul.dropdown-menu
+          - for timeline in Timeline.limit(10) do
+            %li= link_to timeline.headline, timeline
+      %li= link_to icon_for('moment', Moment.model_name.human(:count => :plural)), moments_path
       - if can? :read, Stage
         %li.dropdown-submenu
           = link_to icon_for('stage', Stage.model_name.human(:count => :plural)), stages_path, :tabindex => '-1'

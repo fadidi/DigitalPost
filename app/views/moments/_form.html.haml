@@ -1,0 +1,33 @@
+= form_for @moment do |f|
+  = render 'shared/form_errors', :item => @moment if @moment.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span9
+      = f.label :headline
+      = f.text_field :headline, :class => 'required span12'
+    .span3
+      = f.label :timeline_id
+      = f.collection_select :timeline_id, Timeline.all, :id, :headline, {}, {:class => 'span12 required'}
+  .row-fluid
+    .span9
+      = f.label :asset_media
+      = f.text_field :asset_media, :class => 'span12'
+    .span3
+      = f.label :asset_credit
+      = f.text_field :asset_credit, :class => 'span12'
+  .row-fluid
+    .span6
+      = f.label :asset_caption
+      = f.text_field :asset_caption, :class => 'span12'
+      .row-fluid
+        .span6
+          = f.label :startdate
+          = f.text_field :startdate, :class => 'datepicker span12 required'
+        .span6
+          = f.label :enddate
+          = f.text_field :enddate, :class => 'datepicker span12'
+    .span6
+      = f.label :text
+      = f.text_area :text, :rows => 7, :class => 'span12'
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'
