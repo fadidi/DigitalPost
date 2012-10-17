@@ -1,0 +1,11 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('case_study', CaseStudy.model_name.human(:count => :plural))}"), case_studies_path
+
+- content_for :top_right_menu do
+  %li.active= link_to raw(action_icon(:create, t('phrase.new_resource', :resource => CaseStudy.model_name.human))), new_case_study_path if can? :create, CaseStudy
+
+.row-fluid
+  .span8
+    = render 'form'
+  .span4
+    = render 'shared/markdown_help'

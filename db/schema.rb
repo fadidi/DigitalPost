@@ -11,7 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016101946) do
+ActiveRecord::Schema.define(:version => 20121017094353) do
+
+  create_table "case_studies", :force => true do |t|
+    t.text     "approach"
+    t.text     "challenges"
+    t.text     "context"
+    t.text     "html"
+    t.text     "lessons"
+    t.integer  "language_id"
+    t.text     "recommendations"
+    t.text     "results"
+    t.text     "summary"
+    t.string   "title"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "case_studies", ["title"], :name => "index_case_studies_on_title", :unique => true
 
   create_table "languages", :force => true do |t|
     t.string   "code"

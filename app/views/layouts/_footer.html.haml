@@ -3,14 +3,15 @@
     .span3
       %Ul.nav.nav-list
         %li.nav-header= t 'word.things'
+        %li= link_to icon_for('case_study', Link.model_name.human(:count => :plural)), case_studies_path
         %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
         %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
         %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
         - if can?(:read, User)
           %li.nav-header= t 'word.people'
-          %li= link_to t('word.everyone').titleize, users_path
-          %li= link_to Staff.model_name.human(:count => :plural), staff_index_path if can? :read, Staff
-          %li= link_to Volunteer.model_name.human(:count => :plural), volunteers_path if can? :read, Volunteer
+          %li= link_to raw(icon_for('user', t('word.everyone').titleize)), users_path
+          %li= link_to raw(icon_for('user', Staff.model_name.human(:count => :plural))), staff_index_path if can? :read, Staff
+          %li= link_to raw(icon_for('user', Volunteer.model_name.human(:count => :plural))), volunteers_path if can? :read, Volunteer
     .span3
       %ul.nav.nav-list
         %li.nav-header= t 'word.links'

@@ -1,5 +1,7 @@
 DigitalPost::Application.routes.draw do
 
+  resources :case_studies
+
   resources :links
 
   resources :photos

@@ -1,0 +1,17 @@
+- content_for :backtrack do
+  %li.active= link_to raw("#{icon_for('case_study', CaseStudy.model_name.human(:count => :plural))}"), case_studies_path
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:create, t('phrase.new_resource', :resource => CaseStudy.model_name.human))), new_case_study_path if can? :create, CaseStudy
+
+%table.table
+  %tr
+    %th
+    %th Title
+    %th Summary
+
+  - @case_studies.each do |case_study|
+    %tr
+      %td= case_study.language.code
+      %td= link_to case_study.title, case_study
+      %td= case_study.summary

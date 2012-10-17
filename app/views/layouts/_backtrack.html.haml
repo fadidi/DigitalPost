@@ -7,25 +7,21 @@
     %ul.dropdown-menu
       %li= link_to 'Front Page', root_path
       %li.divider
-      %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
       - if can? :read, Unit
         %li.dropdown-submenu
           = link_to icon_for('unit', Unit.model_name.human(:count => :plural)), units_path, :tabindex => '-1'
           %ul.dropdown-menu
             - for unit in Unit.all do
               %li= link_to unit.name, unit
-      - if can? :read, User
-        %li.dropdown-submenu
-          = link_to icon_for('user', User.model_name.human(:count => :plural)), users_path, :tabindex => '-1'
-          %ul.dropdown-menu
-            %li= link_to Staff.model_name.human(:count => :plural), staff_index_path if can? :read, Staff
-            %li= link_to Volunteer.model_name.human(:count => :plural), volunteers_path if can? :read, Volunteer
-      - if can? :read, WorkZone
-        %li.dropdown-submenu
-          = link_to icon_for('work_zone', WorkZone.model_name.human(:count => :plural)), work_zones_path, :tabindex => '-1'
-          %ul.dropdown-menu
-            - for work_zone in WorkZone.all do
-              %li= link_to work_zone.name, work_zone
+      %li= link_to icon_for('case_study', CaseStudy.model_name.human(:count => :plural)), case_studies_path
+      %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
+      %li.dropdown-submenu
+        = link_to icon_for('language', Language.model_name.human(:count => :plural)), languages_path, :tabindex => '-1'
+        %ul.dropdown-menu
+          - for language in Language.all do
+            %li= link_to language.name, language
+      %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
+      %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
       - if can? :read, Region
         %li.dropdown-submenu
           = link_to icon_for('region', Region.model_name.human(:count => :plural)), regions_path, :tabindex => '-1'
@@ -44,13 +40,18 @@
           %ul.dropdown-menu
             - for stage in Stage.limit(6) do
               %li= link_to stage.name, stage
-      %li.dropdown-submenu
-        = link_to icon_for('language', Language.model_name.human(:count => :plural)), languages_path, :tabindex => '-1'
-        %ul.dropdown-menu
-          - for language in Language.all do
-            %li= link_to language.name, language
-      %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
-      %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
+      - if can? :read, User
+        %li.dropdown-submenu
+          = link_to icon_for('user', User.model_name.human(:count => :plural)), users_path, :tabindex => '-1'
+          %ul.dropdown-menu
+            %li= link_to Staff.model_name.human(:count => :plural), staff_index_path if can? :read, Staff
+            %li= link_to Volunteer.model_name.human(:count => :plural), volunteers_path if can? :read, Volunteer
+      - if can? :read, WorkZone
+        %li.dropdown-submenu
+          = link_to icon_for('work_zone', WorkZone.model_name.human(:count => :plural)), work_zones_path, :tabindex => '-1'
+          %ul.dropdown-menu
+            - for work_zone in WorkZone.all do
+              %li= link_to work_zone.name, work_zone
   = yield :backtrack
 %ul.nav.nav-pills.pull-right
   = yield :top_right_menu

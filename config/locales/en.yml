@@ -21,8 +21,10 @@ en:
     things: "things"
   phrase:
     add_resource: "add %{resource}"
+    all_fields_required: "all fields are required"
     contact_us: "contact us"
     edit_resource: "edit %{resource}"
+    heads_up: "heads up!"
     for_staff: "for staff"
     leaders_in_green: "leaders in green"
     new_resource: "new %{resource}"
@@ -37,6 +39,9 @@ en:
     credit: "powered by %{app_link} on the %{host_link}"
   activerecord:
     models:
+      case_study:
+        one: "Case Study"
+        other: "Case Studies"
       language:
         one: "Language"
         other: "Languages"
@@ -86,6 +91,16 @@ en:
         one: "Work Zone"
         other: "Work Zones"
     attributes:
+      case_study:
+        approach: "Approach"
+        challenges: "Challenges"
+        context: "Context"
+        lessons: "Lessons Learned"
+        language_id: "Language"
+        recommendations: "Recommendations"
+        results: "Results"
+        summary: "Summary"
+        title: "Title"
       link:
         description: "Description"
         language_id: "Language"

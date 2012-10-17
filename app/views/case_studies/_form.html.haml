@@ -1,0 +1,33 @@
+= form_for @case_study do |f|
+  = render 'shared/form_errors', :item => @case_study if @case_study.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span12
+      .alert.alert-danger
+        %strong= t('phrase.heads_up').upcase
+        #{t('phrase.all_fields_required').capitalize}.
+  .row-fluid
+    .span8
+      = f.label :title
+      = f.text_field :title, :class => 'required span12'
+    .span4
+      = f.label :language_id
+      = f.collection_select :language_id, Language.all, :id, :name, {}, {:class => 'required span12'}
+  .row-fluid
+    .span12
+      = f.label :summary
+      = f.text_area :summary, :rows => 5, :class => 'markdown span12'
+      = f.label :context
+      = f.text_area :context, :rows => 5, :class => 'markdown span12'
+      = f.label :approach
+      = f.text_area :approach, :rows => 5, :class => 'markdown span12'
+      = f.label :challenges
+      = f.text_area :challenges, :rows => 5, :class => 'markdown span12'
+      = f.label :results
+      = f.text_area :results, :rows => 5, :class => 'markdown span12'
+      = f.label :lessons
+      = f.text_area :lessons, :rows => 5, :class => 'markdown span12'
+      = f.label :recommendations
+      = f.text_area :recommendations, :rows => 5, :class => 'markdown span12'
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'

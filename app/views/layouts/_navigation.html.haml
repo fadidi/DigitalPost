@@ -11,19 +11,9 @@
         %span#brand-locale= ENV['COUNTRY']
       .nav-collapse
         %ul.nav
-          %li
-            = link_to pages_path do
-              %span.icon-list-alt.icon-white
-              = t('phrase.site_map').titleize
-          %li
-            = link_to units_path do
-              %span.icon-user.icon-white
-              = t('word.for').titleize
-              PCVs
-          %li
-            = link_to work_zones_path do
-              %span.icon-user.icon-white
-              = t('phrase.for_staff').titleize
+          %li= link_to raw('<span class="icon-home icon-white"></span> '), root_path
+          %li= link_to raw('<span class="icon-user icon-white"></span> '+t('word.for').titleize+' PCVs'), units_path
+          %li= link_to raw('<span class="icon-user icon-white"></span> '+t('phrase.for_staff').titleize), work_zones_path
           %li.divider-vertical
           %li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}

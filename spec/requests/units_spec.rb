@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Units" do
   describe "GET /units" do
-    it "should be successful" do
+    it "should redirect" do
       get units_path
       response.status.should be(302)
     end
@@ -16,7 +16,7 @@ describe "Units" do
   end
   
   describe "GET /units/1" do
-    it "should be successful" do
+    it "should redirect" do
       get units_path(:id => 1)
       response.status.should be(302)
     end
