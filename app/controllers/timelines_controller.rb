@@ -18,8 +18,8 @@ class TimelinesController < ApplicationController
     @timeline = Timeline.find(params[:id])
 
     respond_to do |format|
-      format.html { render :layout => 'one_column' } # show.html.erb
-      format.json { render json: @timeline }
+      format.html { render :layout => 'shell' } # show.html.erb
+      format.json
     end
   end
 

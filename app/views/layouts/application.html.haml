@@ -8,7 +8,7 @@
     %meta{:content => "Peace Corps|#{ENV['COUNTRY']} Online", :name => "description"}
     %meta{:content => "John Brown | Peace Corps Senegal", :name => "author"}
     %link{:href => image_path('favicon.ico'), :type => 'image/x-icon', :rel => 'icon'}
-    = stylesheet_link_tag    "application", :media => "all"
+    = stylesheet_link_tag "application", :media => "all"
     = yield :stylesheets
     = javascript_include_tag "application"
     = yield :javascripts

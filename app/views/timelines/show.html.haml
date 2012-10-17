@@ -6,4 +6,18 @@
 - content_for :top_right_menu do
   %li= link_to raw(action_icon(:create, t('phrase.new_resource', :resource => Timeline.model_name.human))), new_timeline_path if can? :create, Timeline
 
-.well= @timeline.headline
+-# content_for :stylesheets do
+  = stylesheet_link_tag 'timeline'
+
+-# content_for :javascripts do
+  -#%script{:type => "text/javascript", src => "path_to_js/storyjs-embed.js"}
+  = javascript_include_tag 'storyjs-embed'
+
+#timeline-embed
+:javascript
+  var config = {
+    source: 'http://www.pcsenegal.org/moments.json',
+    css: "#{asset_path 'timeline.css'}",
+    js: "#{asset_path 'timeline-min.js'}"
+  } 
+= javascript_include_tag 'timeline-embed'
