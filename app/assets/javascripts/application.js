@@ -17,4 +17,5 @@
 //= require bootstrap-datepicker
 //= require jquery_nested_form
 //= require jquery.timeago
+//= require chosen-jquery
 //= require_tree .

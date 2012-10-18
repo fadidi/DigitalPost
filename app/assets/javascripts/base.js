@@ -21,6 +21,11 @@ $(function(){
   // add styles to wiki embeds
   $('.wiki-embedded img').addClass('img-polaroid');
 
+  // activate chosen
+  $('select').chosen({
+    allow_single_deselect: true
+  });
+
   /*********************************************/
   /* jquery.timeago binding */
   $.timeago.settings.allowFuture = true;
