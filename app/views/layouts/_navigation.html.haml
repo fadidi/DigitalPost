@@ -52,7 +52,7 @@
             - if current_user.has_role?(:moderator) || current_user.has_role?(:admin)
               %li.dropdown
                 %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-                  = t('word.manage').titleize
+                  = t('word.admin').titleize
                   %b.caret
                 %ul.dropdown-menu.pull-right
                   %li
@@ -75,7 +75,7 @@
                     = t('word.profile').titleize
                 %li.divider
                 %li
-                  = link_to edit_user_registration_path do
+                  = link_to edit_user_path(current_user) do
                     %span.icon-wrench
                     = t('phrase.edit_resource', :resource => t('word.profile')).titleize
                 %li

@@ -7,6 +7,7 @@ en:
     edit: "edit"
     upload: "upload"
   word:
+    admin: "admin"
     browse: "browse"
     create: "create"
     everyone: "everyone"
@@ -28,6 +29,7 @@ en:
     for_staff: "for staff"
     leaders_in_green: "leaders in green"
     new_resource: "new %{resource}"
+    password_email: "password/email"
     quick_link: "quick link"
     quick_links: "quick links"
     sign_out: "sign out"

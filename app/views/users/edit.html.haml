@@ -1,9 +1,9 @@
 - content_for :backtrack do
   %li= link_to raw('Everyone &rang;'), users_path
   %li= link_to raw("#{@user.name} &rang;"), @user
-  %li.active= link_to 'Edit', edit_user_path(@user) if can? :edit, @user
+  %li.active= link_to raw(action_icon(:edit)), edit_user_path(@user) if can? :edit, @user
 - content_for :top_right_menu do
-  %li= link_to 'Edit Password/Email', ''
+  %li= link_to raw(action_icon(:edit, t('phrase.edit_resource', :resource => t('phrase.password_email')))), edit_user_registration_path if can? :manage, @user
 
 .row-fluid
   .span8
