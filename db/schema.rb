@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017161739) do
+ActiveRecord::Schema.define(:version => 20121020102322) do
 
   create_table "case_studies", :force => true do |t|
     t.text     "approach"
@@ -29,6 +29,24 @@ ActiveRecord::Schema.define(:version => 20121017161739) do
   end
 
   add_index "case_studies", ["title"], :name => "index_case_studies_on_title", :unique => true
+
+  create_table "documents", :force => true do |t|
+    t.string   "author"
+    t.string   "file"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.string   "file_hash"
+    t.text     "description"
+    t.integer  "language_id"
+    t.string   "title"
+    t.boolean  "restricted",          :default => false
+    t.string   "source"
+    t.string   "source_content_type"
+    t.integer  "source_file_size"
+    t.integer  "user_id"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
 
   create_table "languages", :force => true do |t|
     t.string   "code"

@@ -5,6 +5,7 @@
         %li.nav-header= t 'word.things'
         %li= link_to icon_for('case_study', CaseStudy.model_name.human(:count => :plural)), case_studies_path
         %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
+        %li= link_to icon_for('document', Document.model_name.human(:count => :plural)), documents_path
         %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
         %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
         %li= link_to icon_for('timeline', Timeline.model_name.human(:count => :plural)), timelines_path

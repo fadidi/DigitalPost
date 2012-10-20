@@ -38,3 +38,13 @@ body { padding-top: 40px; }
 /****************************************/
 /* Bootstrap fixes */
 
+// override icon colors for active nav tabs
+.nav.nav-tabs {
+  .active {
+    a {
+      [class^="icon-"] {
+        background-image: url(/assets/glyphicons-halflings.png);
+      }
+    }
+  }
+}

@@ -2,11 +2,16 @@
   .container
     .row
       .span8
-        %ul.nav.nav-pills
-          %li.active= link_to 'Home', ''
-          %li= link_to 'test', 'test'
+        %ul.nav.nav-tabs
+          %li.active= link_to icon_for('home'), root_path
+          %li= link_to icon_for('case_study', CaseStudy.model_name.human(:count => :plural)), case_studies_path
+          %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
+          %li= link_to icon_for('document', Document.model_name.human(:count => :plural)), documents_path
+          %li= link_to icon_for('page', Page.model_name.human(:count => :plural)), pages_path
+          %li= link_to icon_for('photo', Photo.model_name.human(:count => :plural)), photos_path
+          %li= link_to icon_for('timeline', Timeline.model_name.human(:count => :plural)), timelines_path
       .span4
-        %ul.nav.nav-pills.pull-right
+        %ul.nav.nav-tabs.pull-right
           - if signed_in?
             %li= link_to 'Sign out', destroy_user_session_path
           - else

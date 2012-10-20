@@ -1,0 +1,27 @@
+- content_for :backtrack do
+  %li.active= link_to raw("#{icon_for('document', Document.model_name.human(:count => :plural))}"), documents_path
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:upload, t('phrase.upload_resource', :resource => Document.model_name.human))), new_document_path if can? :create, Document
+
+.well.blue
+  %h1= Document.model_name.human(:count => :plural)
+
+%table.table.table-condensed
+  %thead
+    %th
+    %th= t 'activerecord.attributes.document.title'
+    %th= t 'activerecord.attributes.document.author'
+    %th= t 'activerecord.attributes.document.description'
+    %th= t 'activerecord.attributes.document.file_content_type'
+    %th= t 'activerecord.attributes.document.file_file_size'
+    %th= t 'activerecord.attributes.document.user_id'
+  - @documents.each do |document|
+    %tr
+      %td= link_to document.language.code, document.language
+      %td= link_to document.title, document
+      %td= document.author
+      %td= document.description
+      %td= document.file_content_type
+      %td= document.file_file_size
+      %td= link_to document.user.name, document.user

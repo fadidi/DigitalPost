@@ -45,6 +45,9 @@ en:
       case_study:
         one: "Case Study"
         other: "Case Studies"
+      document:
+        one: "File"
+        other: "Files"
       language:
         one: "Language"
         other: "Languages"
@@ -110,6 +113,19 @@ en:
         results: "Results"
         summary: "Summary"
         title: "Title"
+      document:
+        author: "Author"
+        file: "File"
+        file_content_type: "File Type"
+        file_file_size: "File Size"
+        description: "Description"
+        language_id: "Language"
+        title: "Title"
+        restricted: "Private"
+        source: "Source File"
+        source_content_type: "Source Type"
+        source_file_size: "Source Size"
+        user_id: "User"
       link:
         description: "Description"
         language_id: "Language"

@@ -15,6 +15,7 @@
               %li= link_to unit.name, unit
       %li= link_to icon_for('case_study', CaseStudy.model_name.human(:count => :plural)), case_studies_path
       %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
+      %li= link_to icon_for('document', Document.model_name.human(:count => :plural)), documents_path
       %li.dropdown-submenu
         = link_to icon_for('language', Language.model_name.human(:count => :plural)), languages_path, :tabindex => '-1'
         %ul.dropdown-menu

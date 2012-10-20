@@ -16,8 +16,8 @@ describe Language do
   it {should respond_to :description}
 
   # associations
-  pending {should respond_to :case_studies}
-  pending {should respond_to :documents}
+  it {should respond_to :case_studies}
+  it {should respond_to :documents}
   it {should respond_to :links}
   it {should respond_to :pages}
   pending {should respond_to :videos}
@@ -50,6 +50,52 @@ describe Language do
   end
 
   describe 'associations' do
+    describe 'case studies' do
+      before :each do
+        @cs = FactoryGirl.create(:case_study, :language => @language = FactoryGirl.create(:language))
+      end
+
+      it {@language.case_studies.first.should be_a_kind_of CaseStudy}
+
+      it 'should be the correct case studies' do
+        FactoryGirl.create :case_study
+        @language.case_studies.should eq [@cs]
+      end
+
+      it { expect {
+        @language.destroy
+      }.to change(CaseStudy, :count).by(0)}
+
+      it 'should reset the language_id on the case study' do
+        @language.destroy
+        @cs.reload
+        @cs.language_id.should be_blank
+      end
+    end
+
+    describe 'documents' do
+      before :each do
+        @doc = FactoryGirl.create(:document, :language => @language = FactoryGirl.create(:language))
+      end
+
+      it {@language.documents.first.should be_a_kind_of Document}
+
+      it 'should be the correct docs' do
+        FactoryGirl.create :document
+        @language.documents.should eq [@doc]
+      end
+
+      it { expect {
+        @language.destroy
+      }.to change(Document, :count).by(0)}
+
+      it 'should reset the language_id on the document' do
+        @language.destroy
+        @doc.reload
+        @doc.language_id.should be_blank
+      end
+    end
+
     describe 'links' do
       before :each do
         @link = FactoryGirl.create(:link, :language => @language = FactoryGirl.create(:language))

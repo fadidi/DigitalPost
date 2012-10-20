@@ -52,14 +52,18 @@ module ApplicationHelper
   #
   # @return [String] HTML span/icon
   #
-  def icon_for(resource, text = nil)
+  def icon_for(resource, text = nil, white = false)
     icons = {
       'case_study' => 'road',
+      'document' => 'file',
+      'home' => 'home',
       'language' => 'bullhorn',
       'link' => 'hand-right',
       'moment' => 'time',
       'page' => 'list-alt',
       'staff' => 'user',
+      'tag' => 'tag',
+      'tags' => 'tags',
       'timeline' => 'time',
       'user' => 'user',
       'volunteer' => 'user',
@@ -67,7 +71,7 @@ module ApplicationHelper
     }
     text = text.nil? ? '' : "&nbsp;#{text}"
     icons[resource] ||= 'certificate'
-    raw("<span class='icon-#{icons[resource]}'></span>#{text}")
+    raw("<span class='icon-#{icons[resource]} #{'icon-white' if white}'></span>#{text}")
   end
 
   # @author John Brown
@@ -78,7 +82,7 @@ module ApplicationHelper
   #
   # @return [String] HTML span/icon
   #
-  def action_icon(verb, text = nil)
+  def action_icon(verb, text = nil, light = false)
     icons = {
       :create => 'plus',
       :edit => 'pencil',
@@ -88,7 +92,7 @@ module ApplicationHelper
     }
     icons[verb] ||= 'certificate'
     content = text.nil? ? t("action.#{verb.to_s}") : text
-    raw("<span class='icon-#{icons[verb]}'></span> #{content.titleize}")
+    raw("<span class='icon-#{icons[verb]} #{'icon-white' if light}'></span> #{content.titleize}")
   end
 
 end

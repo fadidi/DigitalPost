@@ -1,0 +1,26 @@
+= form_for @document do |f|
+  = render 'shared/form_errors', :item => @document if @document.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span6
+      = f.label :file
+      = f.file_field :file, :class => 'span12 required'
+    .span6
+      = f.label :source
+      = f.file_field :source, :class => 'span12 required'
+  .row-fluid
+    .span6
+      = f.label :title
+      = f.text_field :title, :class => 'span12'
+      = f.label :author
+      = f.text_field :author, :class => 'span12'
+      = f.label :language_id
+      = f.collection_select :language_id, Language.all, :id, :name, {}, :class => 'span12 required'
+      = f.label :restricted, :class => 'checkbox' do
+        = f.check_box :restricted
+        = t 'activerecord.attributes.document.restricted'
+    .span6
+      = f.label :description
+      = f.text_area :description, :rows => 6, :class => 'span12'
+  .form-actions
+    = f.submit 'Save', :class => 'btn btn-primary'

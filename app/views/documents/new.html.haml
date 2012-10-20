@@ -1,0 +1,7 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('document', Document.model_name.human(:count => :plural))}"), documents_path
+
+- content_for :top_right_menu do
+  %li.active= link_to raw(action_icon(:upload, t('phrase.upload_resource', :resource => Document.model_name.human))), new_document_path if can? :create, Document
+
+= render 'form'

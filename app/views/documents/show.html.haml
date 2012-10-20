@@ -1,0 +1,33 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('document', Document.model_name.human(:count => :plural))} &rang;"), documents_path
+  %li.active= link_to raw("#{@document.title}"), @document
+  %li= link_to raw(action_icon(:edit)), edit_document_path(@document) if can? :edit, @document
+
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:upload, t('phrase.upload_resource', :resource => Document.model_name.human))), new_document_path if can? :create, Document
+
+.page-header
+  %h1
+    = @document.title
+    %small #{@document.file_content_type}, #{@document.file_file_size}
+  %p
+    = icon_for('tags')
+    = link_to 'tags', ''
+  %p
+    = link_to 'download', ''
+    = link_to 'download source', '' if @document.source?
+.row-fluid
+  .span6
+    %h3= @document.author
+    %blockquote
+      %p= @document.description
+      %small= @document.user.name
+  .span6
+    %p.right
+      %span.label.label-info
+        = @document.language.name
+      %br
+      = @document.file.url
+      %br
+      = @document.source.url
+%p= 'This is a private file.' if @document.restricted?

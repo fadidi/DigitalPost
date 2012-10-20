@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
   validates :name, :length => { :minimum => 8, :maximum => 255 }, :uniqueness => { :case_sensitive => false }
   validates :blog_title, :length => { :maximum => 255 }
 
+  has_many :documents, :dependent => :nullify
   has_many :links, :dependent => :nullify
   has_many :moments, :dependent => :nullify
   has_many :pages
