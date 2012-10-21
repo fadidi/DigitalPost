@@ -8,30 +8,39 @@
 
 # this has a lot of sleeps because of the searchbox api query limit.
 
-ValidEmail.create!([{
+[{
   :email => 'jack@brownjohnf.com',
   :permissions => 'admin'
-}])
+}].each do |email|
+  ValidEmail.where(:email => email[:email]).first_or_create!(email)
+  puts 'pausing...'
+  sleep 1
+end
 
 # create default users
 puts 'SETTING UP DEFAULT USER LOGIN'
-User.create!([{
+[{
   :name => 'Fadidi Media Admin',
   :email => 'jack@brownjohnf.com',
   :password => 'password',
   :password_confirmation => 'password',
   :bio_markdown => 'Founder and lead developer at Fadidi Digital Media.',
   :website => 'http://www.fadidi.com'
-}])
-
-puts 'pausing...'
-sleep 1
+}].each do |user|
+  User.where(:email => user[:email]).first_or_create!(user)
+  puts 'pausing...'
+  sleep 1
+end
 
 puts 'SETTING UP LANGUAGES...'
-Language.create!(:code => 'EN', :name => 'English')
-
-puts 'pausing...'
-sleep 1
+[{
+  :code => 'EN',
+  :name => 'English'
+}].each do |language|
+  Language.where(:code => language[:code]).first_or_create!(language)
+  puts 'pausing...'
+  sleep 1
+end
 
 puts 'SETTING UP DEFAULT UNITS...'
 # warning! need to update lib/tasks/load_sample_data if you change the names of these!
@@ -51,18 +60,22 @@ puts 'SETTING UP DEFAULT UNITS...'
   :name => 'Medical',
   :description => 'The medical unit is responsible for preventative and treatment healthcare for PCVs throughout their training and service.'
 }].each do |unit|
-  Unit.create! unit
+  Unit.where(:name => unit[:name]).first_or_create!(unit)
   puts 'pausing...'
   sleep 1
 end
 
 # create default page
-puts 'CREATING DEFAULT PAGES'
-Page.create!([{
+puts 'CREATING DEFAULT PAGES...'
+[{
   :title => 'Default Page',
   :html => '<p>You should edit this page, or replace it with a better page...</p>',
   :user_id => 1
-}])
+}].each do |page|
+  Page.where(:title => page[:title]).first_or_create!(page)
+  puts 'pausing...'
+  sleep 1
+end
 
 puts 'CREATING DEFAULT LINKS...'
 [{
@@ -81,7 +94,7 @@ puts 'CREATING DEFAULT LINKS...'
   :name => 'Peace Corps Washington',
   :url => 'http://www.peacecorsp.gov'
 }].each do |link|
-  Link.create!(link.merge(:user_id => User.first.id, :language_id => Language.find_by_code('EN').id))
+  Link.where(:url => link[:url]).first_or_create!(link.merge(:user_id => User.first.id, :language_id => Language.find_by_code('EN').id))
   puts 'pausing...'
   sleep 1
 end
