@@ -26,6 +26,12 @@ $requiredColor: #ffffe0;
 // ?, defined for markdown fields
 $markdownColor: lighten($lightBlue, 20%);
 
+// set font to Ubuntu, loaded below
+$sansFontFamily: "Ubuntu", Helvetica, Arial, sans-serif !default;
+
+// load Ubuntu font
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic|&subset=latin,cyrillic,greek,greek-ext,latin-ext,cyrillic-ext);
+
 // load bootstrap
 @import "bootstrap";
 
