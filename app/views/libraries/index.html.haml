@@ -1,0 +1,16 @@
+- content_for :backtrack do
+  %li.active= link_to raw("#{icon_for('library', Library.model_name.human(:count => :plural))}"), libraries_path
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path
+
+%table.table
+  %thead
+    %th Name
+    %th Description
+    %th Owner
+  %tbody
+    - @libraries.each do |library|
+      %tr
+        %td= link_to library.name, library
+        %td= library.description
+        %td= link_to library.owner.name, library.owner if library.owner?

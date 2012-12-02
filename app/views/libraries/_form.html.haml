@@ -1,0 +1,11 @@
+= form_for @library do |f|
+  = render 'shared/form_errors', :item => @library if @library.errors.any?
+  = render 'shared/form_info'
+  .row-fluid
+    .span6
+      = f.label :name
+      = f.text_field :name, :class => 'required span12'
+      = f.label :description
+      = f.text_area :description, :class => 'span12', :rows => 4
+  .form-actions
+    = f.submit 'Save'

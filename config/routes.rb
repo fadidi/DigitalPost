@@ -1,5 +1,7 @@
 DigitalPost::Application.routes.draw do
 
+  resources :libraries
+
   resources :documents
 
   resources :moments

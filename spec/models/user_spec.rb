@@ -32,6 +32,7 @@ describe User do
 
   #associations
   it {should respond_to :documents}
+  it {should respond_to :libraries}
   it {should respond_to :links}
   it {should respond_to :moments}
   it {should respond_to :pages}
@@ -287,6 +288,31 @@ describe User do
         @user.destroy
         @doc.reload
         @doc.user_id.should be_blank
+      end
+    end
+
+    describe 'libraries' do
+      before :each do
+        @lib = FactoryGirl.create(:library, :owner => @user = FactoryGirl.create(:user))
+      end
+
+      it 'should be a library' do
+        @user.libraries.first.should be_an_instance_of Library
+      end
+
+      it 'should have the correct library' do
+        FactoryGirl.create :library
+        @user.libraries.should eq [@lib]
+      end
+
+      it { expect {
+        @user.destroy
+      }.to change(Library, :count).by(0)}
+
+      it 'should set owner_id to nil' do
+        @user.destroy
+        @lib.reload
+        @lib.owner_id.should be_blank
       end
     end
 
@@ -746,7 +772,7 @@ describe User do
       end
 
       it 'should read correctly' do
-        [CaseStudy, Document, Language, Link, Moment, Page, Photo, Timeline].
+        [CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Timeline].
           each { |resource| @ability.should be_able_to :read, resource }
         @ability.should_not be_able_to :read, FactoryGirl.create(:document, :restricted => true)
         [Ability, Reference, Region, Revision, Role, Sector, @user, ValidEmail, Volunteer, WorkZone].
@@ -754,7 +780,7 @@ describe User do
       end
 
       it 'should create, edit, destroy correctly' do
-        [Ability, CaseStudy, Document, Language, Link, Moment, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Timeline, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Timeline, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to [:create, :edit, :destroy], resource }
       end
     end
@@ -783,7 +809,7 @@ describe User do
       it 'should read correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [CaseStudy, Document, Language, Link, Moment, Page, Photo, Reference, Region, Revision, Sector, Stage, Timeline, User, Volunteer, Unit, WorkZone].
+          [CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Reference, Region, Revision, Sector, Stage, Timeline, User, Volunteer, Unit, WorkZone].
             each { |resource| @ability.should be_able_to :read, resource }
           [Ability, Role, ValidEmail].
             each { |resource| @ability.should_not be_able_to :read, resource }
@@ -793,7 +819,7 @@ describe User do
       it 'should create correctly' do
         [@vol, @staff].each do |user|
           @ability = Ability.new(user)
-          [CaseStudy, Document, Link, Moment, Page, Photo, Revision].
+          [CaseStudy, Document, Library, Link, Moment, Page, Photo, Revision].
             each { |resource| @ability.should be_able_to :create, resource }
           [Ability, Language, Region, Reference, Role, Sector, Stage, Timeline, User, WorkZone].
             each { |resource| @ability.should_not be_able_to :create, resource }
@@ -809,7 +835,7 @@ describe User do
       end
 
       it 'should manage correctly' do
-        [CaseStudy, Document, Language, Link, Moment, Page, Photo, Region, Revision, Role, Sector, Stage, Timeline, ValidEmail, WorkZone].
+        [CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Region, Revision, Role, Sector, Stage, Timeline, ValidEmail, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
         [Ability, Unit, User].
           each { |resource| @ability.should_not be_able_to :manage, resource }
@@ -824,7 +850,7 @@ describe User do
       end
 
       it 'should manage everything' do
-        [Ability, CaseStudy, Document, Language, Link, Moment, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Timeline, Unit, User, ValidEmail, Volunteer, WorkZone].
+        [Ability, CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Reference, Region, Revision, Role, Sector, Stage, Timeline, Unit, User, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should be_able_to :manage, resource }
       end
     end

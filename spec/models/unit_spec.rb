@@ -108,11 +108,11 @@ describe Unit do
         @unit = FactoryGirl.create(:unit, :head => @staff = FactoryGirl.create(:staff))
       end
 
-      it 'should be a User' do
+      it 'should be a Staff' do
         @unit.head.should be_a_kind_of Staff
       end
 
-      it 'should be the correct user' do
+      it 'should be the correct staff' do
         FactoryGirl.create :staff
         @unit.head.should eq @staff
       end

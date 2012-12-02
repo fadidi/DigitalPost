@@ -58,6 +58,7 @@ module ApplicationHelper
       'document' => 'file',
       'home' => 'home',
       'language' => 'bullhorn',
+      'library' => 'book',
       'link' => 'hand-right',
       'moment' => 'time',
       'page' => 'list-alt',

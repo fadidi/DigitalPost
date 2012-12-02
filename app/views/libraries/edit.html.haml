@@ -1,0 +1,8 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('library', Library.model_name.human(:count => :plural))} &rang;"), libraries_path
+  %li= link_to raw("#{@library.name} &rang;"), @library
+  %li.active= link_to raw(action_icon(:edit)), edit_library_path(@library)
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path
+
+= render 'form'

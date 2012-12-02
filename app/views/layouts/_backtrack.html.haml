@@ -14,6 +14,7 @@
             - for unit in Unit.all do
               %li= link_to unit.name, unit
       %li= link_to icon_for('case_study', CaseStudy.model_name.human(:count => :plural)), case_studies_path
+      %li= link_to icon_for('library', Library.model_name.human(:count => :plural)), libraries_path
       %li= link_to icon_for('link', Link.model_name.human(:count => :plural)), links_path
       %li= link_to icon_for('document', Document.model_name.human(:count => :plural)), documents_path
       %li.dropdown-submenu

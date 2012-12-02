@@ -1,0 +1,30 @@
+- content_for :backtrack do
+  %li= link_to raw("#{icon_for('library', Library.model_name.human(:count => :plural))} &rang;"), libraries_path
+  %li.active= link_to raw("#{@library.name}"), @library
+  %li= link_to raw(action_icon(:edit)), edit_library_path(@library)
+- content_for :top_right_menu do
+  %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path
+
+.row-fluid
+  .span4
+    %ul.thumbnails
+      %li.span12
+        = link_to '', :class => 'thumbnail' do
+          = image_tag 'http://placehold.it/791x489'
+    %ul.thumbnails
+      %li.span4
+        = link_to '', :class => 'thumbnail' do
+          = image_tag 'http://placehold.it/791x489'
+  .span8
+    .well.blue
+      %h1
+        = @library.name
+        %small
+          owned by
+          = link_to @library.owner.name, @library.owner if @library.owner
+    %blockquote= @library.description
+    .row-fluid
+      .span6
+        %h1 Files
+      .span6
+        %h1 Pages

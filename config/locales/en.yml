@@ -51,6 +51,9 @@ en:
       language:
         one: "Language"
         other: "Languages"
+      library:
+        one: "Library"
+        other: "Libraries"
       link:
         one: "External Link"
         other: "External Links"

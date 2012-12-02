@@ -30,6 +30,7 @@
     .tabbable.tabs-right
       %ul.nav.nav-tabs
         %li.active= link_to 'Profile', '#profile', 'data-toggle' => 'tab'
+        %li= link_to "#{Library.model_name.human(:count => :plural)} (#{@user.libraries.count})", '#libraries', 'data-toggle' => 'tab'
         %li= link_to "Pages (#{@user.pages.count})", '#pages', 'data-toggle' => 'tab'
         %li= link_to "Revisions (#{@user.revisions.count})", '#revisions', 'data-toggle' => 'tab'
       .tab-content
@@ -115,11 +116,26 @@
               - else
                 %blockquote
                   %p User not verified.
+        .tab-pane#libraries
+          - if @user.verified?
+            .page-header
+              %h1 Libraries
+            %p #{@user.name} has created #{pluralize(@user.pages.count, 'page')}.
+            %ul
+              - for library in @user.libraries do
+                %li= link_to library.name, library
+          - else
+            .well.blue
+              %h1 This user is not verified.
+
         .tab-pane#pages
           - if @user.verified?
             .page-header
               %h1 Pages
             %p #{@user.name} has created #{pluralize(@user.pages.count, 'page')}.
+            %ul
+              - for page in @user.pages do
+                %li= link_to page.title, page
           - else
             .well.blue
               %h1 This user is not verified.
@@ -127,8 +143,11 @@
         .tab-pane#revisions
           - if @user.verified?
             .page-header
-              %h1 Revisions
+              %h1 Page Revisions
             %p #{@user.name} has made #{pluralize(@user.revisions.count, 'revision')} on the site.
+            %ul
+              - for revision in @user.revisions do
+                %li= link_to revision.page.title, revision
           - else
             .well.blue
               %h1 This user is not verified.

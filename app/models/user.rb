@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
   validates :blog_title, :length => { :maximum => 255 }
 
   has_many :documents, :dependent => :nullify
+  has_many :libraries, :foreign_key => :owner_id
   has_many :links, :dependent => :nullify
   has_many :moments, :dependent => :nullify
   has_many :pages
