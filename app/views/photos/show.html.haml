@@ -17,6 +17,6 @@
       = image_tag @photo.photo.url
 %blockquote
   = @photo.description
-  = @photo.photo_content_type
-  = @photo.photo_file_size
-  = @photo.user.name
+  %br
+  #{@photo.photo_content_type}; #{@photo.photo_file_size}; #{@photo.user.name};
+  = link_to t('phrase.view_full_size'), @photo.photo.url

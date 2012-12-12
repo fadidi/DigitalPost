@@ -35,6 +35,7 @@ en:
     sign_out: "sign out"
     site_map: "site map"
     upload_resource: "upload %{resource}"
+    view_full_size: "view full size"
     your_stuff: "your stuff"
   proper_noun:
     peace_corps: "Peace Corps"
