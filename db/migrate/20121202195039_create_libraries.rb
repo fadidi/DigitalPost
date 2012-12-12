@@ -4,6 +4,8 @@ class CreateLibraries < ActiveRecord::Migration
       t.text :description
       t.string :name
       t.integer :owner_id
+      t.string :photo
+      t.boolean :restricted, :default => false
 
       t.timestamps
     end

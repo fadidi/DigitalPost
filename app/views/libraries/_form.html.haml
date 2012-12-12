@@ -7,5 +7,17 @@
       = f.text_field :name, :class => 'required span12'
       = f.label :description
       = f.text_area :description, :class => 'span12', :rows => 4
+      = f.label :restricted, :class => 'checkbox' do
+        = f.check_box :restricted
+        = t 'activerecord.attributes.library.restricted'
+    .span6
+      = f.label :photo
+      = f.file_field :photo, :class => 'span12'
+      - if @library.photo?
+        %label.checkbox
+          = f.check_box :remove_photo
+          Remove
+      %span.help-block the photo will be used to visually identify this #{Library.model_name.human.downcase}
+      = image_tag(@library.photo.golden791.url)
   .form-actions
     = f.submit 'Save'

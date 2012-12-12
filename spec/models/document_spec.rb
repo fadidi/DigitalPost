@@ -15,6 +15,7 @@ describe Document do
   it {should respond_to :file_hash}
   it {should respond_to :description}
   it {should respond_to :language_id}
+  it {should respond_to :photo}
   it {should respond_to :source}
   it {should respond_to :source_content_type}
   it {should respond_to :source_file_size}
@@ -32,8 +33,11 @@ describe Document do
 
   # carrierwave
   it {should respond_to :file?}
+  it {should respond_to :photo?}
   it {should respond_to :remove_file}
   it {should respond_to :remove_file!}
+  it {should respond_to :remove_photo}
+  it {should respond_to :remove_photo!}
   it {should respond_to :remove_source}
   it {should respond_to :remove_source!}
   it {should respond_to :source?}
@@ -62,6 +66,7 @@ describe Document do
 
     it {Document.new.description.should be_blank}
     it {Document.new.language_id.should be_blank}
+    it {Document.new.photo.should be_blank}
 
     describe 'source fields' do
       context 'without source' do
@@ -100,6 +105,7 @@ describe Document do
     it {Document.new(@attr.merge(:description => '')).should be_valid}
     it {Document.new(@attr.merge(:language_id => '')).should_not be_valid}
     it {Document.new(@attr.merge(:language_id => 'a')).should_not be_valid}
+    it {Document.new(@attr.merge(:photo => '')).should be_valid}
     it {Document.new(@attr.merge(:source => '')).should be_valid}
     it {Document.new(@attr.merge(:source_content_type => '')).should be_valid}
     it {Document.new(@attr.merge(:source_file_size => '')).should be_valid}

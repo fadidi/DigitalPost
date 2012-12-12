@@ -42,7 +42,7 @@ class LibrariesController < ApplicationController
   # POST /libraries
   # POST /libraries.json
   def create
-    @library = Library.new(params[:library])
+    @library = current_user.libraries.build(params[:library])
 
     respond_to do |format|
       if @library.save

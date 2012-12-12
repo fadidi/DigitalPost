@@ -9,7 +9,7 @@ describe Unit do
 
   it {Unit.create! @attr}
 
-  # properties
+  # attributes
   it {should respond_to :photo}
   it {should respond_to :photo_content_type}
   it {should respond_to :photo_file_size}
@@ -171,7 +171,7 @@ describe Unit do
     describe 'head?' do
       it {Unit.new.head?.should_not be_true}
 
-      it 'should be true with a unit assigned' do
+      it 'should be true with a head assigned' do
         FactoryGirl.create(:unit, :head => FactoryGirl.create(:staff)).head?.should be_true
       end
     end

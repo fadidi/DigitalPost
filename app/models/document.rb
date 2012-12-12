@@ -1,5 +1,5 @@
 class Document < ActiveRecord::Base
-  attr_accessible :author, :description, :file, :file_content_type, :file_file_size, :file_hash, :language_id, :remove_file, :remove_source, :restricted, :source, :source_content_type, :source_file_size, :title, :user_id
+  attr_accessible :author, :description, :file, :file_content_type, :file_file_size, :file_hash, :language_id, :photo, :remove_file, :remove_photo, :remove_source, :restricted, :source, :source_content_type, :source_file_size, :title, :user_id
 
   # elasticsearch indexing
   include Tire::Model::Search
@@ -18,11 +18,16 @@ class Document < ActiveRecord::Base
   end
 
   mount_uploader :file, DocumentUploader
+  mount_uploader :photo, PhotoUploader
   mount_uploader :source, DocumentUploader
 
   validates :author, :length => { :maximum => 255 }
   validates :file, :presence => true
   validates :language_id, :user_id, :presence => true, :numericality => { :is_integer => true }
+  validates :photo,
+    :file_size => {
+      :maximum => 10.megabytes.to_i
+    }
   validates :title, :presence => true, :length => { :maximum => 255 }
 
   belongs_to :language

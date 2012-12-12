@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20121202195039) do
     t.text     "description"
     t.integer  "language_id"
     t.string   "title"
+    t.string   "photo"
     t.boolean  "restricted",          :default => false
     t.string   "source"
     t.string   "source_content_type"
@@ -63,8 +64,10 @@ ActiveRecord::Schema.define(:version => 20121202195039) do
     t.text     "description"
     t.string   "name"
     t.integer  "owner_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "photo"
+    t.boolean  "restricted",  :default => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   create_table "links", :force => true do |t|

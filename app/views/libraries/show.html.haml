@@ -5,12 +5,21 @@
 - content_for :top_right_menu do
   %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path
 
+- if @library.restricted?
+  .alert.alert-error
+    %b RESTRICTED CONTENT.
+    You are viewing a restricted #{Library.model_name}. Only other staff and PCVs will be able to view it. Unrestricted content
+    %em in
+    the #{Library.model_name} remains unaffected.
 .row-fluid
   .span4
     %ul.thumbnails
       %li.span12
         = link_to '', :class => 'thumbnail' do
-          = image_tag 'http://placehold.it/791x489'
+          - if @library.photo?
+            = image_tag @library.photo.golden791.url
+          - else
+            = image_tag 'http://placehold.it/791x489'
     %ul.thumbnails
       %li.span4
         = link_to '', :class => 'thumbnail' do

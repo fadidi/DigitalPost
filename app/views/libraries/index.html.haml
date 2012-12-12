@@ -5,12 +5,14 @@
 
 %table.table
   %thead
+    %th
     %th Name
     %th Description
     %th Owner
   %tbody
     - @libraries.each do |library|
       %tr
+        %td= image_tag library.photo.square100.url
         %td= link_to library.name, library
         %td= library.description
         %td= link_to library.owner.name, library.owner if library.owner?

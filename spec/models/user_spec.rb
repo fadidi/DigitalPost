@@ -775,6 +775,7 @@ describe User do
         [CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Timeline].
           each { |resource| @ability.should be_able_to :read, resource }
         @ability.should_not be_able_to :read, FactoryGirl.create(:document, :restricted => true)
+        @ability.should_not be_able_to :read, FactoryGirl.create(:library, :restricted => true)
         [Ability, Reference, Region, Revision, Role, Sector, @user, ValidEmail, Volunteer, WorkZone].
           each { |resource| @ability.should_not be_able_to :read, resource }
       end
@@ -811,6 +812,10 @@ describe User do
           @ability = Ability.new(user)
           [CaseStudy, Document, Language, Library, Link, Moment, Page, Photo, Reference, Region, Revision, Sector, Stage, Timeline, User, Volunteer, Unit, WorkZone].
             each { |resource| @ability.should be_able_to :read, resource }
+          [Document, Library].each do |resource|
+            item = FactoryGirl.create(resource, :restricted => true)
+            @ability.should be_able_to :read, item
+          end
           [Ability, Role, ValidEmail].
             each { |resource| @ability.should_not be_able_to :read, resource }
         end

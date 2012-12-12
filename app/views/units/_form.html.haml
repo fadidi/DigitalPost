@@ -19,7 +19,7 @@
             %label.checkbox
               = f.check_box :remove_photo
               Remove
-          %span.help-block the photo will be used to visually identify this unit
+          %span.help-block the photo will be used to visually identify this #{Unit.model_name.human.downcase}
           = image_tag(@unit.photo.golden791.url)
       .form-actions
         = f.submit 'Save', :class => 'btn btn-primary'

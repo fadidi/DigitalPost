@@ -9,6 +9,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.text :description
       t.integer :language_id
       t.string :title
+      t.string :photo
       t.boolean :restricted, :default => false
       t.string :source
       t.string :source_content_type
