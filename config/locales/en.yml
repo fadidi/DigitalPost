@@ -130,6 +130,15 @@ en:
         source_content_type: "Source Type"
         source_file_size: "Source Size"
         user_id: "User"
+      library:
+        description: "Description"
+        name: "Name"
+        official: "Official"
+        owner_id: "Owner/Manager"
+        photo: "Photo/Avatar"
+        remove_photo: "Remove Photo/Avatar"
+        restricted: "Restricted"
+        shared: "Shared"
       link:
         description: "Description"
         language_id: "Language"

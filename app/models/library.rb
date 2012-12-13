@@ -1,5 +1,5 @@
 class Library < ActiveRecord::Base
-  attr_accessible :description, :name, :owner_id, :photo, :remove_photo, :restricted
+  attr_accessible :description, :name, :official, :owner_id, :photo, :remove_photo, :restricted, :shared
 
   # elasticsearch indexing
   include Tire::Model::Search
@@ -24,6 +24,9 @@ class Library < ActiveRecord::Base
     }
 
   belongs_to :owner, :class_name => 'User', :foreign_key => :owner_id
+
+  has_many :contributors, :through => :stackables
+  has_many :stackables, :class_name => 'Stack'
 
   default_scope :order => 'name ASC'
 

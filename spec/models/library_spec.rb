@@ -17,7 +17,9 @@ describe Library do
   it {should respond_to :restricted}
 
   # associations
+  it {should respond_to :contributors}
   it {should respond_to :owner}
+  it {should respond_to :stackables}
 
   # methods
   it {should respond_to :owner?}
@@ -30,19 +32,23 @@ describe Library do
   describe 'properties' do
     it {Library.new.description.should be_blank}
     it {Library.new.name.should be_blank}
+    it {Library.new.official.should be_false}
     it {Library.new.owner_id.should be_blank}
     it {Library.new.photo.should be_blank}
     it {Library.new.restricted.should be_false}
+    it {Library.new.shared.should be_false}
   end
 
   describe 'validations' do
     it {Library.new(@attr.merge(:description => '')).should be_valid}
     it {Library.new(@attr.merge(:name => '')).should_not be_valid}
     it {Library.new(@attr.merge(:name => 'a'*256)).should_not be_valid}
+    it {Library.new(@attr.merge(:official => '')).should be_valid}
     it {Library.new(@attr.merge(:owner_id => '')).should be_valid}
     it {Library.new(@attr.merge(:owner_id => 'a')).should_not be_valid}
     it {Library.new(@attr.merge(:photo => '')).should be_valid}
     it {Library.new(@attr.merge(:restricted => '')).should be_valid}
+    it {Library.new(@attr.merge(:shared => '')).should be_valid}
   end
 
   describe 'associations' do
@@ -67,6 +73,11 @@ describe Library do
   end
 
   describe 'methods' do
+    describe 'official?' do
+      it {Library.new.official?.should be_false}
+      it {Library.new(@attr.merge(:official => true)).official?.should be_true}
+    end
+
     describe 'owner?' do
       it {Library.new.owner?.should_not be_true}
 
@@ -78,6 +89,11 @@ describe Library do
     describe 'restricted?' do
       it {Library.new.restricted?.should be_false}
       it {Library.new(@attr.merge(:restricted => true)).restricted?.should be_true}
+    end
+
+    describe 'shared?' do
+      it {Library.new.shared?.should be_false}
+      it {Library.new(@attr.merge(:shared => true)).shared?.should be_true}
     end
 
     describe 'to_param' do

@@ -6,6 +6,10 @@
 - content_for :top_right_menu do
   %li= link_to raw(action_icon(:upload, t('phrase.upload_resource', :resource => Document.model_name.human))), new_document_path if can? :create, Document
 
+- if @document.restricted?
+  .alert.alert-error
+    %b RESTRICTED CONTENT.
+    You are viewing a restricted #{Document.model_name.human.downcase}. Only other staff and PCVs will be able to view it.
 .page-header
   %h1
     = @document.title

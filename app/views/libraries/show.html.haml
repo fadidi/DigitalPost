@@ -3,14 +3,24 @@
   %li.active= link_to raw("#{@library.name}"), @library
   %li= link_to raw(action_icon(:edit)), edit_library_path(@library)
 - content_for :top_right_menu do
-  %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path
+  %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path if can? :create, Library
 
 - if @library.restricted?
   .alert.alert-error
     %b RESTRICTED CONTENT.
-    You are viewing a restricted #{Library.model_name}. Only other staff and PCVs will be able to view it. Unrestricted content
+    You are viewing a restricted #{Library.model_name.human.downcase}. Only other staff and PCVs
+    %b AT YOUR POST
+    will be able to view it. Unrestricted content
     %em in
     the #{Library.model_name} remains unaffected.
+- if @library.shared?
+  .alert.alert-info
+    %b Shared Library
+    This library allows other PCVs and Staff to add and remove content.
+- elsif @library.official?
+  .alert.alert-success
+    %b Official Library
+    This is an official library. Contents may be relied upon.
 .row-fluid
   .span4
     %ul.thumbnails

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121202195039) do
+ActiveRecord::Schema.define(:version => 20121212205756) do
 
   create_table "case_studies", :force => true do |t|
     t.text     "approach"
@@ -63,9 +63,11 @@ ActiveRecord::Schema.define(:version => 20121202195039) do
   create_table "libraries", :force => true do |t|
     t.text     "description"
     t.string   "name"
+    t.boolean  "official",    :default => false
     t.integer  "owner_id"
     t.string   "photo"
     t.boolean  "restricted",  :default => false
+    t.boolean  "shared",      :default => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
   end
@@ -181,6 +183,15 @@ ActiveRecord::Schema.define(:version => 20121202195039) do
 
   add_index "sectors", ["abbreviation"], :name => "index_sectors_on_abbreviation", :unique => true
   add_index "sectors", ["name"], :name => "index_sectors_on_name", :unique => true
+
+  create_table "stacks", :force => true do |t|
+    t.integer  "library_id"
+    t.integer  "stackable_id"
+    t.string   "stackable_type"
+    t.integer  "user_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "staff", :force => true do |t|
     t.integer  "user_id"

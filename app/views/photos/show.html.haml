@@ -13,10 +13,10 @@
       #{@photo.photo_width}x#{@photo.photo_height}
 %ul.thumbnails
   %li.span12
-    = link_to @photo, :class => 'thumbnail' do
+    = link_to @photo.photo.url, :class => 'thumbnail', :target => '_blank' do
       = image_tag @photo.photo.url
 %blockquote
   = @photo.description
   %br
   #{@photo.photo_content_type}; #{@photo.photo_file_size}; #{@photo.user.name};
-  = link_to t('phrase.view_full_size'), @photo.photo.url
+  = link_to t('phrase.view_full_size'), @photo.photo.url, :target => '_blank'
