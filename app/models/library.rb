@@ -25,10 +25,18 @@ class Library < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => :owner_id
 
-  has_many :contributors, :through => :stackables
-  has_many :stackables, :class_name => 'Stack'
+  has_many :contributors, :through => :stacks, :source => :user
+  has_many :stacks, :dependent => :destroy
 
   default_scope :order => 'name ASC'
+
+  def documents
+    docs = []
+    stacks.documents.all.each do |stack|
+      docs << stack.stackable
+    end
+    docs
+  end
 
   def owner?
     !owner.nil?

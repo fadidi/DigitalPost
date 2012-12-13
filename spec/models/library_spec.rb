@@ -19,7 +19,7 @@ describe Library do
   # associations
   it {should respond_to :contributors}
   it {should respond_to :owner}
-  it {should respond_to :stackables}
+  it {should respond_to :stacks}
 
   # methods
   it {should respond_to :owner?}
@@ -52,6 +52,44 @@ describe Library do
   end
 
   describe 'associations' do
+    describe 'contributors' do
+      before :each do
+        FactoryGirl.create(:stack, :user => @user = FactoryGirl.create(:user), :library => @lib = FactoryGirl.create(:library))
+      end
+
+      it 'should be a user' do
+        @lib.contributors.first.should be_a_kind_of User
+      end
+
+      it 'should be the correct user' do
+        FactoryGirl.create(:user)
+        @lib.contributors.should eq [@user]
+      end
+
+      it { expect {
+        @lib.destroy
+      }.to change(User, :count).by(0)}
+    end
+
+    describe 'stacks' do
+      before :each do
+        @stack = FactoryGirl.create(:stack, :library => @lib = FactoryGirl.create(:library))
+      end
+
+      it 'should be a stack' do
+        @lib.stacks.first.should be_a_kind_of Stack
+      end
+
+      it 'should be the correct stack' do
+        FactoryGirl.create(:stack)
+        @lib.stacks.should eq [@stack]
+      end
+
+      it { expect {
+        @lib.destroy
+      }.to change(Stack, :count).by(-1)}
+    end
+
     describe 'owner' do
       before :each do
         @lib = FactoryGirl.create(:library, :owner => @user = FactoryGirl.create(:user))
@@ -73,6 +111,25 @@ describe Library do
   end
 
   describe 'methods' do
+    describe 'documents' do
+      before :each do
+        FactoryGirl.create(:stack, :library => @lib = FactoryGirl.create(:library), :stackable => @stackable = FactoryGirl.create(:document))
+      end
+
+      it 'should be a document' do
+        @lib.documents.first.should be_a_kind_of Document
+      end
+
+      it 'should be the correct document' do
+        FactoryGirl.create(:document)
+        @lib.documents.should eq [@stackable]
+      end
+
+      it { expect {
+        @lib.destroy
+      }.to change(Document, :count).by(0)}
+    end
+
     describe 'official?' do
       it {Library.new.official?.should be_false}
       it {Library.new(@attr.merge(:official => true)).official?.should be_true}

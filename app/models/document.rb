@@ -33,6 +33,10 @@ class Document < ActiveRecord::Base
   belongs_to :language
   belongs_to :user
 
+  has_many :stacks, :as => :stackable, :dependent => :destroy
+  has_many :stackers, :through => :stacks, :source => :user
+  has_many :libraries, :through => :stacks
+
   default_scope :order => 'id DESC'
 
   def to_param

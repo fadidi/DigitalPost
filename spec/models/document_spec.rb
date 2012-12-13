@@ -25,7 +25,10 @@ describe Document do
 
   # associations
   it {should respond_to :language}
+  it {should respond_to :stacks}
+  it {should respond_to :stackers}
   it {should respond_to :user}
+  it {should respond_to :libraries}
 
   # methods
   it {should respond_to :restricted?}
@@ -133,6 +136,57 @@ describe Document do
       it { expect {
         @doc.destroy
       }.to change(Language, :count).by(0)}
+    end
+
+    describe 'libraries' do
+      before :each do
+        FactoryGirl.create(:stack, :library => @lib = FactoryGirl.create(:library), :stackable => @doc = FactoryGirl.create(:document))
+      end
+
+      it {@doc.libraries.first.should be_a_kind_of Library}
+
+      it 'should be the correct stack' do
+        FactoryGirl.create(:library)
+        @doc.libraries.should eq [@lib]
+      end
+
+      it { expect {
+        @doc.destroy
+      }.to change(Library, :count).by(0)}
+    end
+
+    describe 'stackers' do
+      before :each do
+        FactoryGirl.create(:stack, :user => @user = FactoryGirl.create(:user), :stackable => @doc = FactoryGirl.create(:document))
+      end
+
+      it {@doc.stackers.first.should be_a_kind_of User}
+
+      it 'should be the correct user' do
+        FactoryGirl.create(:user)
+        @doc.stackers.should eq [@user]
+      end
+
+      it { expect {
+        @doc.destroy
+      }.to change(User, :count).by(0)}
+    end
+
+    describe 'stacks' do
+      before :each do
+        @stack = FactoryGirl.create(:stack, :stackable => @doc = FactoryGirl.create(:document))
+      end
+
+      it {@doc.stacks.first.should be_a_kind_of Stack}
+
+      it 'should be the correct stack' do
+        FactoryGirl.create(:stack)
+        @doc.stacks.should eq [@stack]
+      end
+
+      it { expect {
+        @doc.destroy
+      }.to change(Stack, :count).by(-1)}
     end
 
     describe 'user' do

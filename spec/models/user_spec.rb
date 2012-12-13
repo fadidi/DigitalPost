@@ -38,6 +38,7 @@ describe User do
   it {should respond_to :pages}
   it {should respond_to :photos}
   it {should respond_to :revisions}
+  it {should respond_to :stacks}
   it {should respond_to :staff}
   it {should respond_to :stage}
   it {should respond_to :unit}
@@ -428,6 +429,29 @@ describe User do
 
       it 'should have the correct revisions' do
         @user.revisions.should eq [@revision]
+      end
+    end
+
+    describe 'stacks' do
+      before :each do
+        @stack = FactoryGirl.create(:stack, :user => @user = FactoryGirl.create(:user))
+      end
+
+      it {@user.stacks.first.should be_an_instance_of Stack}
+
+      it 'should be the correct stack' do
+        FactoryGirl.create(:stack)
+        @user.stacks.should eq [@stack]
+      end
+
+      it { expect {
+        @user.destroy
+      }.to change(Stack, :count).by(0)}
+
+      it 'should set stack user_id to nil' do
+        @user.destroy
+        @stack.reload
+        @stack.user_id.should be_nil
       end
     end
 

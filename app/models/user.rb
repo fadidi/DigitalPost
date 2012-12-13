@@ -47,6 +47,7 @@ class User < ActiveRecord::Base
   has_many :pages
   has_many :photos, :dependent => :nullify
   has_many :revisions, :foreign_key => :author_id
+  has_many :stacks, :dependent => :nullify
   has_one :staff, :dependent => :destroy
   has_one :volunteer, :dependent => :destroy
   has_one :stage, :through => :volunteer

@@ -26,6 +26,9 @@ describe Stack do
   # methods
   it {should respond_to :to_param}
 
+  # scopes
+  it {Stack.should respond_to :documents}
+
   describe 'properties' do
   	it {Stack.new.library_id.should be_blank}
   	it {Stack.new.stackable_id.should be_blank}
@@ -101,4 +104,19 @@ describe Stack do
   		}.to change(User, :count).by(0)}
   	end
   end
+
+  describe 'scopes' do
+  	describe 'documents' do
+	  	before :each do
+	  		FactoryGirl.create(:stack, :stackable => @doc = FactoryGirl.create(:document))
+	  		FactoryGirl.create(:stack, :stackable => @photo = FactoryGirl.create(:photo))
+	  	end
+
+	  	it 'should return document stacks' do
+	  		Stack.documents.each do |stack|
+	  			stack.stackable.should be_a_kind_of Document
+	  		end
+	  	end
+	  end
+	end
 end
