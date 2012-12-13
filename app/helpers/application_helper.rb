@@ -62,13 +62,18 @@ module ApplicationHelper
       'link' => 'hand-right',
       'moment' => 'time',
       'page' => 'list-alt',
+      'photo' => 'picture',
+      'region' => 'globe',
+      'sector' => 'filter',
       'staff' => 'user',
+      'stage' => 'plane',
       'tag' => 'tag',
       'tags' => 'tags',
       'timeline' => 'time',
+      'unit' => 'briefcase',
       'user' => 'user',
       'volunteer' => 'user',
-      'photo' => 'picture'
+      'work_zone' => 'flag'
     }
     text = text.nil? ? '' : "&nbsp;#{text}"
     icons[resource] ||= 'certificate'
@@ -94,6 +99,17 @@ module ApplicationHelper
     icons[verb] ||= 'certificate'
     content = text.nil? ? t("action.#{verb.to_s}") : text
     raw("<span class='icon-#{icons[verb]} #{'icon-white' if light}'></span> #{content.titleize}")
+  end
+
+  # @author John Brown
+  # Accepts resource and creates destroy button
+  #
+  # @param [Constant] resource
+  #
+  # @return [String] destroy button link
+  #
+  def destroy_button(resource)
+    link_to raw(action_icon(:destroy, t('phrase.destroy_resource', :resource => resource.class.model_name.human))), resource, :confirm => t('phrase.confirm_destroy'), :class => 'btn btn-danger', :method => :delete
   end
 
 end

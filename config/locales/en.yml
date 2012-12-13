@@ -23,6 +23,7 @@ en:
   phrase:
     add_resource: "add %{resource}"
     all_fields_required: "all fields are required"
+    confirm_destroy: "Are you sure you want to destroy this resource?"
     contact_us: "contact us"
     destroy_resource: "remove %{resource}"
     edit_resource: "edit %{resource}"
