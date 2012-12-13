@@ -16,3 +16,5 @@
         %td= link_to library.name, library
         %td= library.description
         %td= link_to library.owner.name, library.owner if library.owner?
+- if Library.count == 0 && can?(:create, Library)
+  = link_to t('phrase.new_resource', :resource => Library.model_name.human).capitalize, new_library_path, :class => 'btn btn-block btn-large btn-success'

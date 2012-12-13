@@ -4,6 +4,8 @@
   %li= link_to raw(action_icon(:edit)), edit_library_path(@library)
 - content_for :top_right_menu do
   %li= link_to raw(action_icon(:add, t('phrase.new_resource', :resource => Library.model_name.human))), new_library_path if can? :create, Library
+- content_for :bottom_right_menu do
+  = link_to raw(action_icon(:destroy, t('phrase.destroy_resource', :resource => Library.model_name.human))), library_path(@library), :class => 'btn btn-danger' if can? :destroy, @library
 
 - if @library.restricted?
   .alert.alert-error

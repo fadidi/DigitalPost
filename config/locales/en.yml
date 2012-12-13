@@ -24,6 +24,7 @@ en:
     add_resource: "add %{resource}"
     all_fields_required: "all fields are required"
     contact_us: "contact us"
+    destroy_resource: "remove %{resource}"
     edit_resource: "edit %{resource}"
     heads_up: "heads up!"
     for_staff: "for staff"
