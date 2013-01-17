@@ -1,4 +1,6 @@
-This is a demo app which offers instant support for login using:
+# DigitalPost
+
+This is a an app which offers instant support for login using:
 
 * Facebook
 * Google
